@@ -100,6 +100,7 @@
 }
 
 .nav__logo {
+  text-decoration: none;
   color: var(--title-color);
   transition: color 0.4s;
   font-size: var(--h2-font-size);
