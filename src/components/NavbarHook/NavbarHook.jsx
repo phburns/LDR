@@ -30,17 +30,17 @@ const NavbarHook = () => {
           </NavLink>
         </li>
         <li className="nav__item">
-          <NavLink to="/products" className={linkClassName} onClick={closeMobileMenu}>
+          <NavLink to="/inventory" className={linkClassName} onClick={closeMobileMenu}>
             Inventory
           </NavLink>
         </li>
         <li className="nav__item">
-          <NavLink to="/userbuilds" className={linkClassName} onClick={closeMobileMenu}>
-            Partner's
+          <NavLink to="/partners" className={linkClassName} onClick={closeMobileMenu}>
+            Partners
           </NavLink>
         </li>
         <li className="nav__item">
-          <NavLink to="/yourlist" className={linkClassName} onClick={closeMobileMenu}>
+          <NavLink to="/aboutus" className={linkClassName} onClick={closeMobileMenu}>
               About Us
           </NavLink>
         </li>
