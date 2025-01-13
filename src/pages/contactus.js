@@ -111,9 +111,6 @@ const ContactUs = () => {
                         required
                     />
                 </div>
-                <div className='mb-3'>
-                    <div className="g-recaptcha" data-sitekey="your-recaptcha-site-key"></div>
-                </div>
                 <button type="submit" className='btn btn-success' disabled={state.submitting}>
                     Submit Inquiry Form
                 </button>
