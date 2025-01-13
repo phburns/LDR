@@ -7,7 +7,7 @@ import NavbarHook from './components/NavbarHook/NavbarHook';
 import Home from './pages/home';
 import Inventory from './pages/inventory';
 import Partners from './pages/partners';
-import AboutUs from './pages/aboutus';
+import ContactUs from './pages/contactus';
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/inventory' element={<Inventory />} />
             <Route path='/partners' element={<Partners />} />
-            <Route path='/aboutus' element={<AboutUs />} />
+            <Route path='/contactus' element={<ContactUs />} />
           </Routes>
         </main>
         <Footer />
