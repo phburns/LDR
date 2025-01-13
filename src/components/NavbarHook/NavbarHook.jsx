@@ -50,7 +50,7 @@ const NavbarHook = () => {
 
   return (
     <header className="header">
-      <nav className="nav container navbar">
+      <nav className="nav container">
         <div className="navbar-brand">
           <NavLink to="/" className="nav__logo">
             Larry's Diesel and Repair
