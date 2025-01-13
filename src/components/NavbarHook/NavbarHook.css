@@ -110,6 +110,7 @@
 .navbar-brand {
   display: flex;
   align-items: center;
+  font-size: 1.5rem;
 }
 
 .nav__toggle,
@@ -143,7 +144,7 @@
 }
   
   .nav__link:hover {
-    color: var(--body-color);
+    color: #FFA810;
   }
   
   .nav__close {
@@ -163,5 +164,10 @@
     align-items: center;
     list-style-type: none;
     padding: 0;
+  }
+
+  .navbar {
+    background-color: #AF231C; 
+    color: white;
   }
 

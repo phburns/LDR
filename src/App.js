@@ -8,10 +8,10 @@ function App() {
   return (
   <Router>
     <div className="App">
-      <header className="App-header">
+      <header>
         <NavbarHook/>
-        <Footer/>
       </header>
+      <Footer/>
     </div>
   </Router>
   );
