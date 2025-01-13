@@ -8,7 +8,7 @@ const Home = () => {
     const carousel = new bootstrap.Carousel(
       document.getElementById("carouselExampleIndicators"),
       {
-        interval: 3000,
+        interval: 6000,
       }
     );
   }, []);
