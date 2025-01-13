@@ -40,8 +40,8 @@ const NavbarHook = () => {
           </NavLink>
         </li>
         <li className="nav__item">
-          <NavLink to="/aboutus" className={linkClassName} onClick={closeMobileMenu}>
-              About Us
+          <NavLink to="/contactus" className={linkClassName} onClick={closeMobileMenu}>
+              Contact Us
           </NavLink>
         </li>
       </ul>
