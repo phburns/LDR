@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./home.css"; // Create this file
+import "./home.css"; 
 
 const Home = () => {
   useEffect(() => {
@@ -58,37 +58,53 @@ const Home = () => {
           <div className="carousel-item active">
             <img
               src="/images/versatiledeltatrack.jpg"
-              className="d-block w-100"
               alt="Slide showcasing a versatile deltatrack tractor"
             />
+            <div className='carousel-caption d-none d-md-block'>
+                <h5>Versatile Tractor</h5>
+                <p>We are proud to be a dealer of versatile tractor.</p>
+            </div>
           </div>
           <div className="carousel-item">
             <img
               src="/images/claaslexion.jpg"
-              className="d-block w-100"
               alt="Slide showcasing a claas lexion combine"
             />
+            <div className='carousel-caption d-none d-md-block'>
+                <h5>CLAAS Lexion</h5>
+                <p>Proud Dealer of CLAAS Lexion. </p>
+            </div>
           </div>
           <div className="carousel-item">
             <img
               src="/images/kiotitractor.jpg"
-              className="d-block w-100"
               alt="Slide showcasing a kioti tractor"
             />
+            <div className='carousel-caption d-none d-md-block'>
+                <h5>Kioti Tractors</h5>
+                <p>Proud Dealer of Kioti Tractor.</p>
+            </div>
           </div>
           <div className="carousel-item">
             <img
               src="/images/grasshoppermower.jpg"
-              className="d-block w-100"
-              alt="Slide showcasing a kioti tractor"
+              className="carosel-caption d-block w-100"
+              alt="Slide showcasing 2 grasshopper mowers"
             />
+            <div className='carousel-caption d-none d-md-block'>
+                <h5>Grasshopper Mowers</h5>
+                <p>Proud Dealer of Grasshopper Mowers.</p>
+            </div>
           </div>
           <div className="carousel-item">
             <img
               src="/images/ldrshop.png"
-              className="d-block w-100"
-              alt="Slide showcasing a kioti tractor"
+              alt="Slide showcasing an image of Larry's Diesel and Repair Shop"
             />
+            <div className='carousel-caption d-none d-md-block'>
+                <h5>Our Shop</h5>
+                <p>Serving Crawford County Since 1992.</p>
+            </div>
           </div>
         </div>
         <button

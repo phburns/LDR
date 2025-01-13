@@ -29,3 +29,8 @@
 .carousel-indicators button {
     background-color: black !important;
 }
+
+.carousel-caption h5,
+.carousel-caption p {
+  color: black;
+}
