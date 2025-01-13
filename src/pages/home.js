@@ -41,6 +41,18 @@ const Home = () => {
             data-bs-slide-to="2"
             aria-label="Slide 3"
           ></button>
+        <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="3"
+            aria-label="Slide 4"
+          ></button>
+        <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="4"
+            aria-label="Slide 5"
+          ></button>
         </div>
         <div className="carousel-inner">
           <div className="carousel-item active">
@@ -52,16 +64,30 @@ const Home = () => {
           </div>
           <div className="carousel-item">
             <img
-              src="/image2.jpg"
+              src="/images/claaslexion.jpg"
               className="d-block w-100"
-              alt="Second slide"
+              alt="Slide showcasing a claas lexion combine"
             />
           </div>
           <div className="carousel-item">
             <img
-              src="/image3.jpg"
+              src="/images/kiotitractor.jpg"
               className="d-block w-100"
-              alt="Third slide"
+              alt="Slide showcasing a kioti tractor"
+            />
+          </div>
+          <div className="carousel-item">
+            <img
+              src="/images/grasshoppermower.jpg"
+              className="d-block w-100"
+              alt="Slide showcasing a kioti tractor"
+            />
+          </div>
+          <div className="carousel-item">
+            <img
+              src="/images/ldrshop.png"
+              className="d-block w-100"
+              alt="Slide showcasing a kioti tractor"
             />
           </div>
         </div>
