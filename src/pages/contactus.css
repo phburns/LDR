@@ -1,0 +1,103 @@
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    background-color: #2b2b2b;
+    color: white;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+}
+
+.contact-info {
+    padding-right: 2rem;
+}
+
+.company-details {
+    margin-top: 2rem;
+}
+
+.company-details p {
+    margin-bottom: 0.5rem;
+}
+
+.social-links {
+    margin-top: 1.5rem;
+}
+
+.contact-form {
+    background-color: #2b2b2b;
+    padding: 1rem;
+}
+
+.form-label {
+    color: white;
+}
+
+.form-control, .form-select {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #1a1a1a;
+    border-color: #4a4a4a;
+    color: white;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+}
+
+.form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.btn-success {
+    background-color: #FFA810;
+    border: none;
+    color: #000000;
+}
+
+.btn-success:hover {
+    background-color: #FFA810;
+    color: #000000;
+}
+
+@media (max-width: 768px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-info {
+        padding-right: 0;
+    }
+}
+
+.email-section {
+    margin-top: 1.5rem;
+}
+
+.email-section p {
+    margin-bottom: 0.25rem;
+}
+
+.email-section a {
+    color: #8ab4f8;
+    text-decoration: none;
+}
+
+.email-section a:hover {
+    text-decoration: underline;
+    color: #adc8f8;
+}
+
+.email-section strong {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.email-section strong:first-child {
+    margin-top: 0;
+}
