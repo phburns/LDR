@@ -31,17 +31,17 @@ const NavbarHook = () => {
         </li>
         <li className="nav__item">
           <NavLink to="/products" className={linkClassName} onClick={closeMobileMenu}>
-            Products
+            Inventory
           </NavLink>
         </li>
         <li className="nav__item">
           <NavLink to="/userbuilds" className={linkClassName} onClick={closeMobileMenu}>
-            User Builds
+            Partner's
           </NavLink>
         </li>
         <li className="nav__item">
           <NavLink to="/yourlist" className={linkClassName} onClick={closeMobileMenu}>
-            Your List
+              About Us
           </NavLink>
         </li>
       </ul>
