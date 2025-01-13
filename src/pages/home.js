@@ -45,7 +45,7 @@ const Home = () => {
         <div className="carousel-inner">
           <div className="carousel-item active">
             <img
-              src="/versatiledeltatrack.jpg"
+              src="/images/versatiledeltatrack.jpg"
               className="d-block w-100"
               alt="Slide showcasing a versatile deltatrack tractor"
             />
