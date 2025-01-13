@@ -1,10 +1,9 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const Home = () => {
     return (
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -12,7 +11,7 @@ const Home = () => {
   </ol>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img class="d-block w-100" src="versatiledeltatrack.jpg" alt="First slide"/>
+      <img class="d-block w-100" src="versatiledeltatrack.jpg" alt="Slide showcasing a versatile deltatrack tractor"/>
     </div>
     <div class="carousel-item">
       <img class="d-block w-100" src="..." alt="Second slide"/>
