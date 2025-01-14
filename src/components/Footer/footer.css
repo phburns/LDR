@@ -22,3 +22,15 @@
 .footer a:hover {
   text-decoration: underline;
 }
+
+.facebook-icon {
+  font-size: 2.5rem;
+  vertical-align: middle;
+  margin-left: 10px;
+  color: #1877f2;
+  transition: color 0.3s ease;
+}
+
+.facebook-icon:hover {
+  color: #ffa810;
+}
