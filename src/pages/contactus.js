@@ -16,7 +16,7 @@ const ContactUs = () => {
                 <div className='company-details'>
                     <h3>Larry's Diesel and Repair</h3>
                     <p>260 N Industrial Drive</p>
-                    <p>Frontenac, KS 66763</p>
+                    <p>Pittsburg, KS 66762</p>
                     <p><strong>Phone:</strong> (620) 231-5420</p>
                     
                     <div className='email-section'>

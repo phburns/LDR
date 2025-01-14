@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./home.css"; 
+import "./home.css";
 
 const Home = () => {
   useEffect(() => {
@@ -56,41 +56,53 @@ const Home = () => {
         </div>
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <img
-              src="/images/versatiledeltatrack.jpg"
-              alt="Slide showcasing a versatile deltatrack tractor"
-            />
+            <a href="https://versatile-ag.com/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/images/versatiledeltatrack.jpg"
+                alt="Slide showcasing a versatile deltatrack tractor"
+              />
+              <div className="website-hint">Click to visit website</div>
+            </a>
             <div className='carousel-caption d-none d-md-block'>
                 <h5>Versatile Tractor</h5>
                 <p>We are proud to be a dealer of versatile tractor.</p>
             </div>
           </div>
           <div className="carousel-item">
-            <img
-              src="/images/claaslexion.jpg"
-              alt="Slide showcasing a claas lexion combine"
-            />
+            <a href="https://www.claas.com/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/images/claaslexion.jpg"
+                alt="Slide showcasing a claas lexion combine"
+              />
+              <div className="website-hint">Click to visit website</div>
+            </a>
             <div className='carousel-caption d-none d-md-block'>
                 <h5>CLAAS Lexion</h5>
                 <p>Proud Dealer of CLAAS Lexion. </p>
             </div>
           </div>
           <div className="carousel-item">
-            <img
-              src="/images/kiotitractor.jpg"
-              alt="Slide showcasing a kioti tractor"
-            />
+            <a href="https://kioti.com/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/images/kiotitractor.jpg"
+                alt="Slide showcasing a kioti tractor"
+              />
+              <div className="website-hint">Click to visit website</div>
+            </a>
             <div className='carousel-caption d-none d-md-block'>
                 <h5>Kioti Tractors</h5>
                 <p>Proud Dealer of Kioti Tractor.</p>
             </div>
           </div>
           <div className="carousel-item">
-            <img
-              src="/images/grasshoppermower.jpg"
-              className="carosel-caption d-block w-100"
-              alt="Slide showcasing 2 grasshopper mowers"
-            />
+            <a href="https://www.grasshoppermower.com/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/images/grasshoppermower.jpg"
+                className="carosel-caption d-block w-100"
+                alt="Slide showcasing 2 grasshopper mowers"
+              />
+              <div className="website-hint">Click to visit website</div>
+            </a>
             <div className='carousel-caption d-none d-md-block'>
                 <h5>Grasshopper Mowers</h5>
                 <p>Proud Dealer of Grasshopper Mowers.</p>
