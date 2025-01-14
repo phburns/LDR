@@ -7,8 +7,6 @@ const prisma = new PrismaClient();
 router.post('/', async (req, res) => {
   try {
     const machineData = req.body;
-    console.log('Received data:', machineData);
-
     const newMachine = await prisma.machine.create({
       data: {
         ...machineData,
@@ -19,34 +17,27 @@ router.post('/', async (req, res) => {
         deckSize: machineData.deckSize || null,
       }
     });
-
-    console.log('Created machine:', newMachine);
     res.status(201).json(newMachine);
   } catch (error) {
-    console.error('Error creating machine:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: 'Error creating machine' });
   }
 });
 
 router.get('/', async (req, res) => {
   try {
-    console.log('Fetching machines from database...');
     const machines = await prisma.machine.findMany({
       orderBy: {
         createdAt: 'desc'
       }
     });
     
-    console.log('Fetched machines:', machines);
-    
     if (!machines || machines.length === 0) {
-      console.log('No machines found in database');
+      return res.json([]);
     }
     
     res.json(machines);
   } catch (error) {
-    console.error('Error fetching machines:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: 'Error fetching machines' });
   }
 });
 
@@ -54,14 +45,11 @@ router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await prisma.machine.delete({
-      where: {
-        id: id
-      }
+      where: { id }
     });
     res.status(200).json({ message: 'Machine deleted successfully' });
   } catch (error) {
-    console.error('Error deleting machine:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: 'Error deleting machine' });
   }
 });
 
@@ -71,9 +59,7 @@ router.put('/:id', async (req, res) => {
     const machineData = req.body;
     
     const updatedMachine = await prisma.machine.update({
-      where: {
-        id: id
-      },
+      where: { id },
       data: {
         condition: machineData.condition,
         make: machineData.make,
@@ -95,8 +81,7 @@ router.put('/:id', async (req, res) => {
     
     res.json(updatedMachine);
   } catch (error) {
-    console.error('Error updating machine:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: 'Error updating machine' });
   }
 });
 

@@ -34,7 +34,6 @@ const Inventory = () => {
         
         setInventory(inventoryData);
       } catch (error) {
-        console.error('Error fetching inventory:', error);
         setError('Failed to load inventory items');
       } finally {
         setLoading(false);
