@@ -1,0 +1,121 @@
+.repair-container {
+    padding-top: 100px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+  }
+  
+  .repair-hero {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 40px 20px;
+    background-color: var(--first-color);
+    color: black ;
+    border-radius: 8px;
+  }
+  
+  .repair-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-family: var(--second-font);
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+  
+  .repair-content {
+    padding: 0 20px;
+  }
+  
+  .repair-description {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+    font-size: 1.1rem;
+  }
+  
+  .repair-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  
+  .image-container {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .repair-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .image-container:hover .repair-image {
+    transform: scale(1.05);
+  }
+  
+  .image-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .repair-cta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+    text-align: center;
+  }
+  
+  .certification, .contact-info {
+    padding: 30px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .certification:hover, .contact-info:hover {
+    transform: translateY(-5px);
+  }
+  
+  .repair-cta h3 {
+    color: var(--title-color);
+    margin-bottom: 15px;
+  }
+  
+  .repair-cta a {
+    color: #AF231C;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .repair-cta a:hover {
+    color: #FFA810;
+  }
+  
+  @media (max-width: 768px) {
+    .repair-hero h1 {
+      font-size: 2rem;
+    }
+    
+    .repair-description {
+      font-size: 1rem;
+    }
+    
+    .repair-images {
+      grid-template-columns: 1fr;
+    }
+  }

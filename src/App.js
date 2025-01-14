@@ -8,7 +8,7 @@ import AdminPage from './pages/admin/admin';
 import ContactUs from './pages/contactus/contactus';
 import Home from './pages/home/home';
 import Inventory from './pages/inventory/inventory';
-import Partners from './pages/partners/partners';
+import Repair from './pages/repair/repair';
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/inventory' element={<Inventory />} />
-            <Route path='/partners' element={<Partners />} />
+            <Route path='/repair' element={<Repair />} />
             <Route path='/contactus' element={<ContactUs />} />
             <Route path='/admin' element={<AdminPage />} />
           </Routes>

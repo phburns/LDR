@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { IoClose, IoMenu } from "react-icons/io5";
+import { IoClose, IoMenu, IoChevronDown } from "react-icons/io5";
 import {useMediaQuery} from "react-responsive";
 import "./NavbarHook.css";
 
@@ -31,7 +31,7 @@ const NavbarHook = () => {
         </li>
         <li className="nav__item dropdown">
           <NavLink to="/inventory" className={linkClassName} onClick={closeMobileMenu}>
-            Inventory
+            Inventory <IoChevronDown ClassName='dropdown-icon' />
           </NavLink>
           <ul className="dropdown-menu">
             <li><NavLink to="/inventory/new" className="dropdown-item" onClick={closeMobileMenu}>New Equipment</NavLink></li>
@@ -42,12 +42,15 @@ const NavbarHook = () => {
             <li><NavLink to="/inventory/claas" className="dropdown-item" onClick={closeMobileMenu}>CLAAS Lexion</NavLink></li>
           </ul>
         </li>
-        <li className="nav__item">
-          <NavLink to="/partners" className={linkClassName} onClick={closeMobileMenu}>
-            Partners
+        <li className="nav__item dropdown">
+          <NavLink to="/repair" className={linkClassName} onClick={closeMobileMenu}>
+            Repair Services <IoChevronDown ClassName='dropdown-icon' />
           </NavLink>
+          <ul className="dropdown-menu">
+            <li><NavLink to="/repair/schedule" className="dropdown-item" onClick={closeMobileMenu}>Schedule Repair</NavLink></li>
+          </ul>
         </li>
-        <li className="nav__item">
+        <li className="nav__item dropdown">
           <NavLink to="/contactus" className={linkClassName} onClick={closeMobileMenu}>
               Contact Us
           </NavLink>

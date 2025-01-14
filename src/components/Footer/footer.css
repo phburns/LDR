@@ -1,11 +1,17 @@
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .footer {
   background-color: #000000;
   color: #fff;
   text-align: center;
   padding: 1rem;
-  position: fixed;
   bottom: 0;
   width: 100%;
+  margin-top: auto;
 }
 
 .footer-content {
