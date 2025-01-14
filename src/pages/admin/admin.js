@@ -33,7 +33,6 @@ const AdminPage = () => {
       setLoading(true);
       try {
         const response = await axios.get('http://localhost:5000/api/inventory');
-        console.log('Raw inventory data:', response.data);
         
         if (!response.data) {
           throw new Error('No data received from server');
@@ -44,11 +43,9 @@ const AdminPage = () => {
           ? response.data.filter(item => item && item.id)
           : [];
         
-        console.log('Filtered inventory data:', inventoryData);
         setInventory(inventoryData);
         
       } catch (error) {
-        console.error('Error fetching inventory:', error);
         setError('Failed to load inventory items: ' + (error.response?.data?.message || error.message));
       } finally {
         setLoading(false);
@@ -56,7 +53,7 @@ const AdminPage = () => {
     };
 
     fetchInventory();
-  }, []);  // Remove success from dependencies to prevent infinite loops
+  }, []);
 
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
@@ -82,8 +79,8 @@ const AdminPage = () => {
 
   const handleInventorySubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Clear any previous errors
-    setSuccess(''); // Clear any previous success messages
+    setError(''); 
+    setSuccess(''); 
     
     try {
       const dataToSubmit = {
@@ -92,8 +89,6 @@ const AdminPage = () => {
         horsepower: inventoryData.horsepower ? parseInt(inventoryData.horsepower) : null,
         engineHours: inventoryData.engineHours ? parseInt(inventoryData.engineHours) : null,
       };
-
-      console.log('Submitting data:', dataToSubmit);
 
       const response = await axios.post('http://localhost:5000/api/inventory', dataToSubmit);
       
@@ -118,7 +113,6 @@ const AdminPage = () => {
         });
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
       setError(error.response?.data?.message || 'Failed to add inventory. Please try again.');
     }
   };
@@ -138,7 +132,6 @@ const AdminPage = () => {
         setInventory(prevInventory => prevInventory.filter(item => item._id !== id));
         setSuccess('Item deleted successfully');
       } catch (error) {
-        console.error('Error deleting item:', error);
         setError('Failed to delete item');
       }
     }
@@ -146,7 +139,6 @@ const AdminPage = () => {
 
   const handleEditClick = (item) => {
     if (!item || !item.id) {
-      console.error('Invalid item:', item);
       setError('Cannot edit this item: Invalid data');
       return;
     }
@@ -197,7 +189,6 @@ const AdminPage = () => {
       setEditFormData(null);
       setSuccess('Item updated successfully');
     } catch (error) {
-      console.error('Error updating item:', error);
       setError(error.message || 'Failed to update item');
     }
   };
@@ -448,9 +439,6 @@ const AdminPage = () => {
 
       <div className="current-inventory">
         <h2>Current Inventory</h2>
-        {console.log('Loading:', loading)}
-        {console.log('Error:', error)}
-        {console.log('Inventory:', inventory)}
         {loading ? (
           <div className="text-center">Loading inventory...</div>
         ) : error ? (
@@ -458,13 +446,8 @@ const AdminPage = () => {
         ) : inventory && inventory.length > 0 ? (
           <div className="inventory-grid">
             {inventory
-              .filter(item => {
-                console.log('Filtering item:', item);
-                return item && item.id;
-              })
-              .map((item) => {
-                console.log('Rendering item:', item);
-                return (
+              .filter(item => item && item.id)
+              .map((item) => (
                   <div 
                     key={item.id}
                     className={`inventory-card ${editingItem?.id === item.id ? 'editing' : ''}`}
@@ -575,8 +558,7 @@ const AdminPage = () => {
                       </>
                     )}
                   </div>
-                );
-              })}
+              ))}
           </div>
         ) : (
           <div className="text-center">No inventory items found</div>
