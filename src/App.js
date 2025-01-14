@@ -4,10 +4,11 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import Footer from './components/Footer/Footer';
 import NavbarHook from './components/NavbarHook/NavbarHook';
+import AdminPage from './pages/admin/admin';
+import ContactUs from './pages/contactus/contactus';
 import Home from './pages/home/home';
 import Inventory from './pages/inventory/inventory';
 import Partners from './pages/partners/partners';
-import ContactUs from './pages/contactus/contactus';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path='/inventory' element={<Inventory />} />
             <Route path='/partners' element={<Partners />} />
             <Route path='/contactus' element={<ContactUs />} />
+            <Route path='/admin' element={<AdminPage />} />
           </Routes>
         </main>
         <Footer />
