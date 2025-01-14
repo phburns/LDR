@@ -19,12 +19,16 @@ model Machine {
   year         Int
   make         String
   model        String
+  brand        String
+  description  String
+  price        Float?
   horsepower   Int?
   engineHours  Int?
   fuelType     String?
   liftCapacity String?
   weight       String?
   drive        String?
+  deckSize     String?
   images       String[] // Array of base64 encoded images
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

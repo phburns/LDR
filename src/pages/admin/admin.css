@@ -1,6 +1,7 @@
 .admin-container {
   padding: 2rem;
-  max-width: 50rem;
+  max-width: 90rem;
+  margin: 4rem auto;
 }
 
 .login-form,
@@ -9,10 +10,34 @@
   padding: 2rem;
   border-radius: 0.5rem;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  margin-bottom: 4rem;
 }
 
 .form-group {
   margin-bottom: 1rem;
+}
+
+/* Style form inputs and select */
+.inventory-form .form-control,
+.inventory-form select {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  color: #212529;
+}
+
+.inventory-form .form-control:focus,
+.inventory-form select:focus {
+  background-color: #fff;
+  border-color: #FFA810;
+  box-shadow: 0 0 0 0.25rem rgba(255, 168, 16, 0.25);
+  color: #212529;
+}
+
+/* Style form labels */
+.inventory-form label {
+  color: #212529;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 
 .image-preview {
@@ -20,4 +45,253 @@
   max-width: 12.5rem;
   height: auto;
   margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .admin-container {
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .inventory-form {
+    margin-bottom: 2rem;
+  }
+}
+
+.inventory-form textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.image-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.image-upload-container small {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+}
+
+/* Style the file input to look more consistent */
+.image-upload-container input[type="file"] {
+  padding: 0.375rem 0.75rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.image-upload-container input[type="file"]:hover {
+  background-color: #e9ecef;
+}
+
+.current-inventory {
+  margin-top: 3rem;
+  margin-bottom: 6rem;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.current-inventory h2 {
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.inventory-card {
+  position: relative;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  min-height: 200px;
+}
+
+.inventory-card:hover {
+  transform: translateY(-5px);
+}
+
+.inventory-image-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  background-color: #f8f9fa;
+}
+
+.inventory-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.delete-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.delete-button:hover {
+  background: #ff4444;
+  color: white;
+}
+
+.inventory-details {
+  text-align: left;
+}
+
+.inventory-details h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.inventory-details p {
+  margin: 0.5rem 0;
+  color: #666;
+}
+
+.inventory-details .brand {
+  color: #AF231C;
+  font-weight: 600;
+}
+
+.inventory-details .year {
+  font-size: 0.9rem;
+}
+
+.inventory-details .description {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.inventory-details .price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .inventory-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .inventory-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .inventory-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.delete-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 1;
+  padding: 0;
+}
+
+.delete-button:hover {
+  background-color: #dc3545;
+  color: white;
+  transform: scale(1.1);
+}
+
+.delete-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.inventory-card.editing {
+  transform: scale(1.05);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  cursor: default;
+}
+
+.edit-form {
+  padding: 1rem;
+  background-color: white;
+}
+
+.edit-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.edit-form label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.edit-form-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.edit-form-buttons button {
+  flex: 1;
+}
+
+.inventory-card .edit-form input,
+.inventory-card .edit-form select,
+.inventory-card .edit-form textarea {
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.inventory-card .edit-form input:focus,
+.inventory-card .edit-form select:focus,
+.inventory-card .edit-form textarea:focus {
+  border-color: #FFA810;
+  box-shadow: 0 0 0 0.2rem rgba(255, 168, 16, 0.25);
+  outline: none;
 }
