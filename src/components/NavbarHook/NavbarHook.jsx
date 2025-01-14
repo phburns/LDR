@@ -29,10 +29,18 @@ const NavbarHook = () => {
             Home
           </NavLink>
         </li>
-        <li className="nav__item">
+        <li className="nav__item dropdown">
           <NavLink to="/inventory" className={linkClassName} onClick={closeMobileMenu}>
             Inventory
           </NavLink>
+          <ul className="dropdown-menu">
+            <li><NavLink to="/inventory/new" className="dropdown-item" onClick={closeMobileMenu}>New Equipment</NavLink></li>
+            <li><NavLink to="/inventory/pre-owned" className="dropdown-item" onClick={closeMobileMenu}>Pre-Owned</NavLink></li>
+            <li><NavLink to="/inventory/versatile" className="dropdown-item" onClick={closeMobileMenu}>Versatile</NavLink></li>
+            <li><NavLink to="/inventory/kioti" className="dropdown-item" onClick={closeMobileMenu}>Kioti</NavLink></li>
+            <li><NavLink to="/inventory/grasshopper" className="dropdown-item" onClick={closeMobileMenu}>Grasshopper</NavLink></li>
+            <li><NavLink to="/inventory/claas" className="dropdown-item" onClick={closeMobileMenu}>CLAAS Lexion</NavLink></li>
+          </ul>
         </li>
         <li className="nav__item">
           <NavLink to="/partners" className={linkClassName} onClick={closeMobileMenu}>

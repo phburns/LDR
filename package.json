@@ -6,6 +6,7 @@
     "@formspree/react": "^2.5.1",
     "@iconify-icons/mdi": "^1.2.48",
     "@iconify/react": "^5.2.0",
+    "@prisma/client": "^6.2.1",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
@@ -46,5 +47,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "",
+  "main": "postcss.config.js",
+  "devDependencies": {
+    "@types/node": "^22.10.6",
+    "prisma": "^6.2.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
