@@ -1,9 +1,11 @@
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import "./inventory.css";
 
 const Inventory = () => {
+  const { brand } = useParams();
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -19,9 +21,16 @@ const Inventory = () => {
           throw new Error('No data received from server');
         }
         
-        const inventoryData = Array.isArray(response.data) 
+        let inventoryData = Array.isArray(response.data) 
           ? response.data.filter(item => item && item.id)
           : [];
+
+        // Filter by brand if specified
+        if (brand) {
+          inventoryData = inventoryData.filter(item => 
+            item.brand?.toLowerCase() === brand.toLowerCase()
+          );
+        }
         
         setInventory(inventoryData);
       } catch (error) {
@@ -33,7 +42,7 @@ const Inventory = () => {
     };
 
     fetchInventory();
-  }, []);
+  }, [brand]);
 
   const handleCardClick = (item) => {
     setSelectedItem(item);
@@ -96,9 +105,6 @@ const Inventory = () => {
                   <p className="year">{item.year || 'Year N/A'}</p>
                   <p className="description">{item.description || 'No description available'}</p>
                   <p className="price">${((item.price || 0).toLocaleString())}</p>
-                  {item.horsepower && <p className="specs">Horsepower: {item.horsepower}</p>}
-                  {item.engineHours && <p className="specs">Engine Hours: {item.engineHours}</p>}
-                  {item.fuelType && <p className="specs">Fuel Type: {item.fuelType}</p>}
                 </div>
               </div>
             ))}

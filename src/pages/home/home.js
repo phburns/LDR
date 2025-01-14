@@ -152,18 +152,18 @@ const Home = () => {
       <div className="brand-section">
         <h2 className="brand-title">Shop By Brand</h2>
         <div className="brand-container">
-          <a href="https://www.grasshoppermower.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
+          <NavLink to="/inventory/grasshopper" className="brand-link">
             <img src="/images/grasshopper_logo.png" alt="Grasshopper" className="brand-logo" />
-          </a>
-          <a href="https://www.claas.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
+          </NavLink>
+          <NavLink to="/inventory/claas" className="brand-link">
             <img src="/images/claas-logo.png" alt="CLAAS" className="brand-logo" style={{height: '200px'}} />
-          </a>
-          <a href="https://kioti.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
+          </NavLink>
+          <NavLink to="/inventory/kioti" className="brand-link">
             <img src="/images/kioti_logo.png" alt="Kioti" className="brand-logo" style={{width: '100px', height: '100px'}} />
-          </a>
-          <a href="https://versatile-ag.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
+          </NavLink>
+          <NavLink to="/inventory/versatile" className="brand-link">
             <img src="/images/versatile_logo.svg.png" alt="Versatile" className="brand-logo" />
-          </a>
+          </NavLink>
         </div>
       </div>
     </div>
