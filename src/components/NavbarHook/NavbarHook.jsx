@@ -44,10 +44,11 @@ const NavbarHook = () => {
         </li>
         <li className="nav__item dropdown">
           <NavLink to="/repair" className={linkClassName} onClick={closeMobileMenu}>
-            Repair Services <IoChevronDown ClassName='dropdown-icon' />
+            Repairs <IoChevronDown ClassName='dropdown-icon' />
           </NavLink>
           <ul className="dropdown-menu">
-            <li><NavLink to="/repair/schedule" className="dropdown-item" onClick={closeMobileMenu}>Schedule Repair</NavLink></li>
+            <li><NavLink to="/repair" className="dropdown-item" onClick={closeMobileMenu}>About Our Repairs</NavLink></li>
+            <li><NavLink to="/contactus" className="dropdown-item" onClick={closeMobileMenu}>Schedule Repair</NavLink></li>
           </ul>
         </li>
         <li className="nav__item dropdown">

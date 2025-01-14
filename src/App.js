@@ -9,6 +9,7 @@ import ContactUs from './pages/contactus/contactus';
 import Home from './pages/home/home';
 import Inventory from './pages/inventory/inventory';
 import Repair from './pages/repair/repair';
+import NotFound from './components/NotFound/NotFound';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path='/repair' element={<Repair />} />
             <Route path='/contactus' element={<ContactUs />} />
             <Route path='/admin' element={<AdminPage />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </main>
         <Footer />

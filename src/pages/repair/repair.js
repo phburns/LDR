@@ -33,7 +33,7 @@ const Repair = () => {
           </div>
           <div className="image-container">
             <img 
-              src="/images/.jpg" 
+              src="/images/placeholder.jpg" 
               alt="Detailed repair work" 
               className="repair-image"
             />
@@ -48,7 +48,7 @@ const Repair = () => {
           </div>
           <div className="contact-info">
             <h3>Schedule Your Repair</h3>
-            <p>Call us at: <a href="tel:620-231-5420">620-231-5420</a></p>
+            <p>Call us at: <a href="tel:620-231-5420">620-231-5420</a> or send us an <a href='/contactus'>email.</a></p>
           </div>
         </div>
       </div>
