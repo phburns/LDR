@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Icon } from '@iconify/react';
 import "./home.css";
 
 const Home = () => {
@@ -143,6 +144,25 @@ const Home = () => {
           ></span>
           <span className="visually-hidden">Next</span>
         </button>
+      </div>
+      
+      <div className="brand-section">
+        <h2 className="brand-title">Shop By Brand</h2>
+        <div className="brand-container">
+          <a href="https://www.grasshoppermower.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
+            <img src="/images/grasshopper_logo.png" alt="Grasshopper" className="brand-logo" />
+          </a>
+          <a href="https://www.claas.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
+            <img src="/images/claas-logo.png" alt="CLAAS" className="brand-logo" style={{width: '400px'}} />
+          </a>
+          <a href="https://kioti.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
+            <img src="/images/kioti_logo.png" alt="Kioti" className="brand-logo" />
+          </a>
+          <a href="https://versatile-ag.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
+            <img src="/images/versatile_logo.svg.png" alt="Versatile" className="brand-logo" />
+            <Icon icon="mdi:arrow-top-right" className="brand-logo" />
+          </a>
+        </div>
       </div>
     </div>
   );
