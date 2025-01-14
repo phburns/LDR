@@ -66,7 +66,7 @@ const Home = () => {
             </a>
             <div className='carousel-caption d-none d-md-block'>
                 <h5>Versatile Tractor</h5>
-                <p>Proud Dealer of Versatile Tractor.</p>
+                <p>Simply Powerful. Simply Versatile.</p>
             </div>
           </div>
           <div className="carousel-item">
@@ -78,8 +78,8 @@ const Home = () => {
               <div className="website-hint">Click to visit website</div>
             </a>
             <div className='carousel-caption d-none d-md-block'>
-                <h5>CLAAS Lexion</h5>
-                <p>Proud Dealer of CLAAS Lexion. </p>
+                <h5>CLAAS</h5>
+                <p>Increase Your Productivity. </p>
             </div>
           </div>
           <div className="carousel-item">
@@ -92,7 +92,7 @@ const Home = () => {
             </a>
             <div className='carousel-caption d-none d-md-block'>
                 <h5>Kioti Tractors</h5>
-                <p>Proud Dealer of Kioti Tractor.</p>
+                <p>Unleash the Possibility of the Land.</p>
             </div>
           </div>
           <div className="carousel-item">
@@ -106,7 +106,7 @@ const Home = () => {
             </a>
             <div className='carousel-caption d-none d-md-block'>
                 <h5>Grasshopper Mowers</h5>
-                <p>Proud Dealer of Grasshopper Mowers.</p>
+                <p>Committed to the Cut.</p>
             </div>
           </div>
           <div className="carousel-item">
@@ -115,7 +115,7 @@ const Home = () => {
                 src="/images/ldrshop.png"
                 alt="Slide showcasing an image of Larry's Diesel and Repair Shop"
               />
-              <div className="website-hint">Click to contact us</div>
+              <div className="website-hint">Click to Contact Us.</div>
             </NavLink>
             <div className='carousel-caption d-none d-md-block'>
               <h5>Our Shop</h5>
@@ -151,7 +151,7 @@ const Home = () => {
       
       <div className="brand-section">
         <h2 className="brand-title">Shop By Brand</h2>
-        <div className="brand-container">
+        <div className="brand-container certification">
           <NavLink to="/inventory/grasshopper" className="brand-link">
             <img src="/images/grasshopper_logo.png" alt="Grasshopper" className="brand-logo" />
           </NavLink>
