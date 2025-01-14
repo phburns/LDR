@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Icon } from '@iconify/react';
+import { NavLink } from "react-router-dom";
 import "./home.css";
 
 const Home = () => {
@@ -66,7 +66,7 @@ const Home = () => {
             </a>
             <div className='carousel-caption d-none d-md-block'>
                 <h5>Versatile Tractor</h5>
-                <p>We are proud to be a dealer of versatile tractor.</p>
+                <p>Proud Dealer of Versatile Tractor.</p>
             </div>
           </div>
           <div className="carousel-item">
@@ -110,13 +110,16 @@ const Home = () => {
             </div>
           </div>
           <div className="carousel-item">
-            <img
-              src="/images/ldrshop.png"
-              alt="Slide showcasing an image of Larry's Diesel and Repair Shop"
-            />
+            <NavLink to="/contactus">
+              <img
+                src="/images/ldrshop.png"
+                alt="Slide showcasing an image of Larry's Diesel and Repair Shop"
+              />
+              <div className="website-hint">Click to contact us</div>
+            </NavLink>
             <div className='carousel-caption d-none d-md-block'>
-                <h5>Our Shop</h5>
-                <p>Serving Crawford County Since 1992.</p>
+              <h5>Our Shop</h5>
+              <p>Serving Crawford County Since 1992.</p>
             </div>
           </div>
         </div>
@@ -153,14 +156,13 @@ const Home = () => {
             <img src="/images/grasshopper_logo.png" alt="Grasshopper" className="brand-logo" />
           </a>
           <a href="https://www.claas.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
-            <img src="/images/claas-logo.png" alt="CLAAS" className="brand-logo" style={{width: '400px'}} />
+            <img src="/images/claas-logo.png" alt="CLAAS" className="brand-logo" style={{height: '200px'}} />
           </a>
           <a href="https://kioti.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
-            <img src="/images/kioti_logo.png" alt="Kioti" className="brand-logo" />
+            <img src="/images/kioti_logo.png" alt="Kioti" className="brand-logo" style={{width: '100px', height: '100px'}} />
           </a>
           <a href="https://versatile-ag.com/" target="_blank" rel="noopener noreferrer" className="brand-link">
             <img src="/images/versatile_logo.svg.png" alt="Versatile" className="brand-logo" />
-            <Icon icon="mdi:arrow-top-right" className="brand-logo" />
           </a>
         </div>
       </div>
