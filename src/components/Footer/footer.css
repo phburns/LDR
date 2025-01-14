@@ -14,7 +14,12 @@
     flex: 1
   }
   
-  .footer p {
-    margin: 0;
-    color: #fff;
+  
+  .footer a {
+    color: #FFA810; 
+    text-decoration: none;
+  }
+  
+  .footer a:hover {
+    text-decoration: underline;
   }
