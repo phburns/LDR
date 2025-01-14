@@ -46,9 +46,9 @@ const Repair = () => {
             <h3>Authorized CAT Service Center</h3>
             <p>We look forward to taking care of your repair needs.</p>
           </div>
-          <div className="contact-info">
+          <div className="certification">
             <h3>Schedule Your Repair</h3>
-            <p>Call us at: <a href="tel:620-231-5420">620-231-5420</a> or send us an <a href='/contactus'>email.</a></p>
+            <p>Call us at: <a href="tel:620-231-5420">620-231-5420</a> or send us an <a href='/contactus'>email</a></p>
           </div>
         </div>
       </div>
