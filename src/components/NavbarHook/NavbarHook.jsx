@@ -65,7 +65,7 @@ const NavbarHook = () => {
       <nav className="nav container">
         <div className="navbar-brand">
           <NavLink to="/" className="nav__logo">
-            Larry's Diesel and Repair
+            Larry's Diesel Repair
           </NavLink>
         </div>
 

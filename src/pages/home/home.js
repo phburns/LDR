@@ -5,14 +5,14 @@ import '../repair/repair.css';
 
 const Home = () => {
   useEffect(() => {
+  const carousel = document.getElementById("carouselExampleIndicators");
+  if (carousel) {
     const bootstrap = require("bootstrap/dist/js/bootstrap.bundle.min.js");
-    const carousel = new bootstrap.Carousel(
-      document.getElementById("carouselExampleIndicators"),
-      {
-        interval: 6000,
-      }
-    );
-  }, []);
+    new bootstrap.Carousel(carousel, {
+      interval: 6000,
+    });
+  }
+}, []);
 
   return (
     <div className="home-container">
@@ -53,6 +53,12 @@ const Home = () => {
             data-bs-target="#carouselExampleIndicators"
             data-bs-slide-to="4"
             aria-label="Slide 5"
+          ></button>
+        <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="5"
+            aria-label="Slide 6"
           ></button>
         </div>
         <div className="carousel-inner">
@@ -110,9 +116,23 @@ const Home = () => {
             </div>
           </div>
           <div className="carousel-item">
+            <a href="https://www.ironcraftusa.com/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/images/ironcraftusa.jpg"
+                className="carosel-caption d-block w-100"
+                alt="Slide showcasing Ironcraft Equipment"
+              />
+              <div className="website-hint">Click to visit website</div>
+            </a>
+            <div className='carousel-caption d-none d-md-block'>
+                <h5>Grasshopper Mowers</h5>
+                <p>Committed to the Cut.</p>
+            </div>
+          </div>
+          <div className="carousel-item">
             <NavLink to="/contactus">
               <img
-                src="/images/ldrshop.png"
+                src="/images/ldrshop.jpg"
                 alt="Slide showcasing Larry's Diesel and Repair Shop"
               />
               <div className="website-hint">Click to Contact Us.</div>
@@ -122,6 +142,7 @@ const Home = () => {
               <p>Serving Crawford County Since 1992.</p>
             </div>
           </div>
+          
         </div>
         <button
           className="carousel-control-prev"
@@ -149,6 +170,27 @@ const Home = () => {
         </button>
       </div>
 
+      <div className="brand-section">
+        <h2 className="brand-title">Shop Our Inventory By Brand</h2>
+        <div className="brand-container certification">
+          <NavLink to="/inventory/grasshopper" className="brand-link">
+            <img src="/images/grasshopper_logo.png" alt="Grasshopper" className="brand-logo" />
+          </NavLink>
+          <NavLink to="/inventory/claas" className="brand-link">
+            <img src="/images/claaslogo.png" alt="CLAAS" className="brand-logo" style={{height: '200px'}} />
+          </NavLink>
+          <NavLink to="/inventory/kioti" className="brand-link">
+            <img src="/images/kioti_logo.png" alt="Kioti" className="brand-logo" style={{width: '100px', height: '100px'}} />
+          </NavLink>
+          <NavLink to="/inventory/versatile" className="brand-link">
+            <img src="/images/versatile_logo.svg.png" alt="Versatile" className="brand-logo" />
+          </NavLink>
+          <NavLink to="/inventory/ironcraft" className="brand-link">
+            <img src="/images/ironcraftlogo.jpg" alt="Ironcraft" className="brand-logo" />
+          </NavLink>
+        </div>
+      </div>
+
       <div className="repair-images repair-container">
   <div className="image-container">
     <NavLink to="/contactus">
@@ -171,27 +213,9 @@ const Home = () => {
       <div className="website-hint">Click to Contact Us</div>
       <span className="image-caption">We Work Where You Need Us.</span>
     </NavLink>
+    </div>
   </div>
 </div>
-      
-      <div className="brand-section">
-        <h2 className="brand-title">Shop By Brand</h2>
-        <div className="brand-container certification">
-          <NavLink to="/inventory/grasshopper" className="brand-link">
-            <img src="/images/grasshopper_logo.png" alt="Grasshopper" className="brand-logo" />
-          </NavLink>
-          <NavLink to="/inventory/claas" className="brand-link">
-            <img src="/images/claas-logo.png" alt="CLAAS" className="brand-logo" style={{height: '200px'}} />
-          </NavLink>
-          <NavLink to="/inventory/kioti" className="brand-link">
-            <img src="/images/kioti_logo.png" alt="Kioti" className="brand-logo" style={{width: '100px', height: '100px'}} />
-          </NavLink>
-          <NavLink to="/inventory/versatile" className="brand-link">
-            <img src="/images/versatile_logo.svg.png" alt="Versatile" className="brand-logo" />
-          </NavLink>
-        </div>
-      </div>
-    </div>
   );
 };
 

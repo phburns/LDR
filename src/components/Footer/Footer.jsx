@@ -25,7 +25,7 @@ const Footer = () => {
   return (
     <footer className={`footer ${isVisible ? 'visible' : ''}`}>
       <div className="footer-content">
-        <p>&copy; {new Date().getFullYear()} Larry's Diesel and Repair, LLC. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Larry's Diesel Repair, LLC. All rights reserved.</p>
         <p>Got questions or concerns? <a href='/contactus'>Send us an email</a> or give us a <a href='/contactus'>call</a>. Also check out our facebook to stay up to date with us!
          <a href="https://www.facebook.com/larrysdieselrepair/" target="_blank" rel="noopener noreferrer">
            <Icon icon={facebookIcon} className="facebook-icon" />
