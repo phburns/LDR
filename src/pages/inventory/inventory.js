@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import "./inventory.css";
+import { useMediaQuery} from 'react-responsive';
 
 const capitalizeString = (str) => {
   if (!str) return '';
@@ -18,6 +19,7 @@ const Inventory = () => {
   const [error, setError] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const isMobile = useMediaQuery({ maxWidth: "768px"})
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -93,6 +95,26 @@ const Inventory = () => {
     }
   };
 
+  const [touchStart, setTouchStart] = useState(null);
+
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    setTouchStart(touch.clientX);
+  };
+  
+  const handleTouchMove = (e) => {
+    if (!touchStart) return;
+    const touch = e.touches[0];
+    const diff = touchStart - touch.clientX;
+  
+    if (diff > 50) {
+      handleNextImage();
+    } else if (diff < -50) {
+      handlePrevImage();
+    }
+    setTouchStart(null);
+  };
+
   return (
     <div className="inventory-container">
       <h1>Our Inventory</h1>
@@ -137,32 +159,51 @@ const Inventory = () => {
               <div className="modal-content" onClick={e => e.stopPropagation()}>
                 <button className="modal-close" onClick={handleCloseModal}>&times;</button>
                 <div className="modal-grid">
-                  <div className="modal-images">
-                    <div className="carousel-container">
-                      <button className="carousel-button prev" onClick={handlePrevImage}>
-                        <span className="iconify" data-icon="mdi:chevron-left"></span>
-                      </button>
-                      <img 
-                        src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
-                        alt={`${selectedItem.make || ''} ${selectedItem.model || ''}`}
-                        className="modal-main-image"
-                      />
-                      <button className="carousel-button next" onClick={handleNextImage}>
-                        <span className="iconify" data-icon="mdi:chevron-right"></span>
-                      </button>
-                    </div>
-                    <div className="other-pictures">
-                      {selectedItem.images?.map((img, index) => (
-                        <img 
-                          key={index} 
-                          src={img} 
-                          alt={`Additional view ${index + 1}`}
-                          className={`modal-thumbnail ${index === activeImageIndex ? 'active' : ''}`}
-                          onClick={() => handleThumbnailClick(index)}
-                        />
-                      ))}
-                    </div>
-                  </div>
+                <div className="modal-images">
+  <div className="carousel-container">
+    <div 
+      className="carousel-container"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+    >
+      <button className="carousel-button prev" onClick={handlePrevImage}>
+        <span className="iconify" data-icon="mdi:chevron-left"></span>
+      </button>
+      <img 
+        src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
+        alt={`${selectedItem.make || ''} ${selectedItem.model || ''}`}
+        className="modal-main-image"
+      />
+      <button className="carousel-button next" onClick={handleNextImage}>
+        <span className="iconify" data-icon="mdi:chevron-right"></span>
+      </button>
+      {isMobile && (
+        <div className="carousel-indicators">
+          {selectedItem.images?.map((_, index) => (
+            <button
+              key={index}
+              className={`carousel-indicator ${index === activeImageIndex ? 'active' : ''}`}
+              onClick={() => handleThumbnailClick(index)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+  {!isMobile && (
+    <div className="other-pictures">
+      {selectedItem.images?.map((image, index) => (
+        <img
+          key={index}
+          src={image}
+          alt={`Additional view ${index + 1}`}
+          className={`modal-thumbnail ${index === activeImageIndex ? 'active' : ''}`}
+          onClick={() => handleThumbnailClick(index)}
+        />
+      ))}
+    </div>
+  )}
+</div>
                   <div className="modal-details">
                     <div className="modal-header">
                       <h2>{`${selectedItem.make} ${selectedItem.model}`}</h2>
