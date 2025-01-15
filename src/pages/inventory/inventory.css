@@ -1,8 +1,6 @@
 .inventory-container {
-  padding-top: var(--header-height);
   max-width: 75vw;
-  margin: 4rem auto;
-  padding: 2rem;
+  margin: auto;
 }
 
 .inventory-container h1 {
