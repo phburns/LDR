@@ -4,6 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import "./inventory.css";
 
+const capitalizeString = (str) => {
+  if (!str) return '';
+  return str.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.toLowerCase().slice(1))
+    .join(' ');
+};
+
 const Inventory = () => {
   const { brand } = useParams();
   const [inventory, setInventory] = useState([]);
@@ -111,7 +118,7 @@ const Inventory = () => {
                 </div>
                 <div className="inventory-details">
                   <h3>{(item.make || 'Unknown') + ' ' + (item.model || '')}</h3>
-                  <p className="brand">{item.brand || 'Unknown Brand'}</p>
+                  <p className="brand">{capitalizeString(item.brand) || 'Unknown Brand'}</p>
                   <p className="year">{item.year || 'Year N/A'}</p>
                   <p className="condition">{item.condition || 'Condition N/A'}</p>
                   <p className="description">{item.description || 'No description available'}</p>
@@ -162,12 +169,12 @@ const Inventory = () => {
                       {(selectedItem.brand || selectedItem.year || selectedItem.condition) && (
                         <div className="info-section">
                           <h3>Information</h3>
-                          {selectedItem.brand && <p><strong>Brand:</strong> {selectedItem.brand}</p>}
+                          {selectedItem.brand && <p><strong>Brand:</strong> {capitalizeString(selectedItem.brand)}</p>}
                           {selectedItem.year && <p><strong>Year:</strong> {selectedItem.year}</p>}
                           {selectedItem.condition && <p><strong>Condition:</strong> {selectedItem.condition}</p>}
                         </div>
                       )}
-                      {(selectedItem.horsepower || selectedItem.engineHours || selectedItem.fuelType || selectedItem.drive || selectedItem.weight) && (
+                      {(selectedItem.horsepower || selectedItem.engineHours || selectedItem.fuelType || selectedItem.drive || selectedItem.weight || selectedItem.separator) && (
                         <div className="info-section">
                           <h3>Specifications</h3>
                           {selectedItem.horsepower && <p><strong>Horsepower:</strong> {selectedItem.horsepower}</p>}
@@ -175,6 +182,7 @@ const Inventory = () => {
                           {selectedItem.fuelType && <p><strong>Fuel Type:</strong> {selectedItem.fuelType}</p>}
                           {selectedItem.drive && <p><strong>Drive:</strong> {selectedItem.drive}</p>}
                           {selectedItem.weight && <p><strong>Weight:</strong> {selectedItem.weight}</p>}
+                          {selectedItem.separator && <p><strong>Separator:</strong> {selectedItem.separator}</p>}
                         </div>
                       )}
                       {selectedItem.description && (

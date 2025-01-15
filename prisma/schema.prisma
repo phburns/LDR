@@ -29,6 +29,7 @@ model Machine {
   weight       String?
   drive        String?
   deckSize     String?
+  separator    String?
   images       String[] // Array of base64 encoded images
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
