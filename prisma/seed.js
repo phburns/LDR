@@ -1,22 +1,10 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const bcrypt = require('bcryptjs');
 
-async function main() {
-  const admin = await prisma.admin.create({
-    data: {
-      username: 'admin',
-      password: 'admin'
-    }
-  });
-
-  console.log('Created admin user:', admin);
+async function generateHash() {
+  const password = '4020';
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+  console.log('Hashed password:', hash);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  }); 
+generateHash();
