@@ -21,6 +21,7 @@ const AdminPage = () => {
     weight: '',
     drive: '',
     deckSize: '',
+    separator: '',
     images: []
   });
   const [inventory, setInventory] = useState([]);
@@ -109,6 +110,7 @@ const AdminPage = () => {
           weight: '',
           drive: '',
           deckSize: '',
+          separator: '',
           images: []
         });
       }
@@ -263,20 +265,16 @@ const AdminPage = () => {
 
         <div className="form-group">
           <label htmlFor="brand">Brand *</label>
-          <select
+          <input
+            type="text"
             id="brand"
             name="brand"
             className="form-control"
             value={inventoryData.brand}
             onChange={handleInputChange}
             required
-          >
-            <option value="">Select Brand</option>
-            <option value="Versatile">Versatile</option>
-            <option value="Kioti">Kioti</option>
-            <option value="CLAAS">CLAAS</option>
-            <option value="Grasshopper">Grasshopper</option>
-          </select>
+            placeholder="Enter brand name"
+          />
         </div>
 
         <div className="form-group">
@@ -404,6 +402,19 @@ const AdminPage = () => {
         </div>
 
         <div className="form-group">
+          <label htmlFor="separator">Separator</label>
+          <input
+            type="text"
+            id="separator"
+            name="separator"
+            className="form-control"
+            value={inventoryData.separator}
+            onChange={handleInputChange}
+            placeholder="Enter separator type"
+          />
+        </div>
+
+        <div className="form-group">
           <label htmlFor="images">Images</label>
           <div className="image-upload-container">
             <input
@@ -488,18 +499,14 @@ const AdminPage = () => {
                         </div>
                         <div className="form-group">
                           <label>Brand</label>
-                          <select
+                          <input
+                            type="text"
                             name="brand"
                             value={editFormData.brand}
                             onChange={handleEditInputChange}
                             className="form-control"
-                          >
-                            <option value="">Select Brand</option>
-                            <option value="Versatile">Versatile</option>
-                            <option value="Kioti">Kioti</option>
-                            <option value="CLAAS">CLAAS</option>
-                            <option value="Grasshopper">Grasshopper</option>
-                          </select>
+                            placeholder="Enter brand name"
+                          />
                         </div>
                         <div className="form-group">
                           <label>Year</label>
@@ -529,6 +536,17 @@ const AdminPage = () => {
                             value={editFormData.price}
                             onChange={handleEditInputChange}
                             className="form-control"
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Separator</label>
+                          <input
+                            type="text"
+                            name="separator"
+                            value={editFormData.separator}
+                            onChange={handleEditInputChange}
+                            className="form-control"
+                            placeholder="Enter separator type"
                           />
                         </div>
                         <div className="edit-form-buttons">
