@@ -21,7 +21,7 @@ model Machine {
   model        String
   brand        String
   description  String
-  price        Double?
+  price        double precision?
   horsepower   Int?
   engineHours  Int?
   fuelType     String?
