@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./home.css";
+import '../repair/repair.css';
 
 const Home = () => {
   useEffect(() => {
-    // Initialize Bootstrap carousel
     const bootstrap = require("bootstrap/dist/js/bootstrap.bundle.min.js");
     const carousel = new bootstrap.Carousel(
       document.getElementById("carouselExampleIndicators"),
@@ -113,7 +113,7 @@ const Home = () => {
             <NavLink to="/contactus">
               <img
                 src="/images/ldrshop.png"
-                alt="Slide showcasing an image of Larry's Diesel and Repair Shop"
+                alt="Slide showcasing Larry's Diesel and Repair Shop"
               />
               <div className="website-hint">Click to Contact Us.</div>
             </NavLink>
@@ -148,6 +148,31 @@ const Home = () => {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
+
+      <div className="repair-images repair-container">
+  <div className="image-container">
+    <NavLink to="/contactus">
+      <img 
+        src="/images/enginerepair.jpeg" 
+        alt="close up of an engine in repair" 
+        className="repair-image"
+      />
+      <div className="website-hint">Click to Contact Us</div>
+      <span className="image-caption">Here for All Your Repair Needs.</span>
+    </NavLink>
+  </div>
+  <div className="image-container">
+    <NavLink to="/contactus">
+      <img 
+        src="/images/servicetruck.jpeg" 
+        alt="Larry's Diesel service truck" 
+        className="repair-image"
+      />
+      <div className="website-hint">Click to Contact Us</div>
+      <span className="image-caption">We Work Where You Need Us.</span>
+    </NavLink>
+  </div>
+</div>
       
       <div className="brand-section">
         <h2 className="brand-title">Shop By Brand</h2>

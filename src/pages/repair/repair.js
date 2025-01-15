@@ -10,7 +10,7 @@ const Repair = () => {
       </div>
       
       <div className="repair-content">
-        <div className="repair-description">
+        <div className="repair-description certification">
           <p>
             Larry's Diesel Repair, LLC. has been serving the Crawford County area since 1992. 
             We are a family owned business delivering honest professional repair and maintenance 
@@ -25,7 +25,7 @@ const Repair = () => {
         <div className="repair-images">
           <div className="image-container">
             <img 
-              src="/images/insideshop.jpg" 
+              src="/images/shopwideshot.jpeg" 
               alt="Inside our repair facility" 
               className="repair-image"
             />
@@ -33,7 +33,7 @@ const Repair = () => {
           </div>
           <div className="image-container">
             <img 
-              src="/images/placeholder.jpg" 
+              src="/images/working.jpeg" 
               alt="Detailed repair work" 
               className="repair-image"
             />

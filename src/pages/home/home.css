@@ -15,7 +15,7 @@
 }
 
 .carousel-item img {
-    object-fit: contain; /* Changed from cover to contain to show full image */
+    object-fit: cover; /* Changed from cover to contain to show full image */
     height: 100%;
     width: 100%;
 }
