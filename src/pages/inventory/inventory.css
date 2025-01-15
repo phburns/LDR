@@ -94,6 +94,12 @@
   margin: 0.25rem 0;
 }
 
+.inventory-details .condition {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0.25rem 0;
+}
+
 @media (max-width: 1200px) {
   .inventory-grid {
     grid-template-columns: repeat(3, 1fr);
