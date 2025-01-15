@@ -27,9 +27,20 @@ const Inventory = () => {
 
         // Filter by brand if specified
         if (brand) {
-          inventoryData = inventoryData.filter(item => 
-            item.brand?.toLowerCase() === brand.toLowerCase()
-          );
+          if (brand.toLowerCase() === 'new') {
+            inventoryData = inventoryData.filter(item => 
+              item.condition?.toLowerCase() === 'new'
+            );
+          } else if (brand.toLowerCase() === 'pre-owned') {
+            inventoryData = inventoryData.filter(item => 
+              item.condition?.toLowerCase() === 'used' || 
+              item.condition?.toLowerCase() === 'pre-owned'
+            );
+          } else {
+            inventoryData = inventoryData.filter(item => 
+              item.brand?.toLowerCase() === brand.toLowerCase()
+            );
+          }
         }
         
         setInventory(inventoryData);
@@ -102,6 +113,7 @@ const Inventory = () => {
                   <h3>{(item.make || 'Unknown') + ' ' + (item.model || '')}</h3>
                   <p className="brand">{item.brand || 'Unknown Brand'}</p>
                   <p className="year">{item.year || 'Year N/A'}</p>
+                  <p className="condition">{item.condition || 'Condition N/A'}</p>
                   <p className="description">{item.description || 'No description available'}</p>
                   <p className="price">${((item.price || 0).toLocaleString())}</p>
                 </div>
