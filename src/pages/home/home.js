@@ -125,8 +125,8 @@ const Home = () => {
               <div className="website-hint">Click to visit website</div>
             </a>
             <div className='carousel-caption d-none d-md-block'>
-                <h5>Grasshopper Mowers</h5>
-                <p>Committed to the Cut.</p>
+                <h5>IronCraft</h5>
+                <p>Helping Manage Your Land one Attachment at a Time.</p>
             </div>
           </div>
           <div className="carousel-item">
