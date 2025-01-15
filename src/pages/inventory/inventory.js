@@ -44,9 +44,13 @@ const Inventory = () => {
               item.condition?.toLowerCase() === 'pre-owned'
             );
           } else {
-            inventoryData = inventoryData.filter(item => 
-              item.brand?.toLowerCase() === brand.toLowerCase()
-            );
+            inventoryData = inventoryData.filter(item => {
+              const itemBrand = item.brand?.toLowerCase() || '';
+              const searchBrand = brand.toLowerCase();
+              return itemBrand === searchBrand || 
+                     (searchBrand === 'claas' && itemBrand.includes('claas')) ||
+                     (itemBrand === 'claas' && searchBrand.includes('claas'));
+            });
           }
         }
         
