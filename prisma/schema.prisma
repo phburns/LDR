@@ -21,7 +21,7 @@ model Machine {
   model        String
   brand        String
   description  String
-  price        varchar?
+  price        Int?
   horsepower   Int?
   engineHours  Int?
   fuelType     String?
