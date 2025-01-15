@@ -9,7 +9,7 @@ const Repair = () => {
         <span className="subtitle">Serving Crawford County Since 1992.</span>
       </div>
       
-      <div className="repair-content">
+      <div className="repair-content text-black">
         <div className="repair-description certification">
           <p>
             Larry's Diesel Repair, LLC. has been serving the Crawford County area since 1992. 
@@ -42,11 +42,11 @@ const Repair = () => {
         </div>
 
         <div className="repair-cta">
-          <div className="certification">
+          <div className="certification text-black">
             <h3>Authorized CAT Service Center</h3>
             <p>We look forward to taking care of your repair needs.</p>
           </div>
-          <div className="certification">
+          <div className="certification text-black">
             <h3>Schedule Your Repair</h3>
             <p>Call us at: <a href="tel:620-231-5420">620-231-5420</a> or send us an <a href='/contactus'>email</a></p>
           </div>

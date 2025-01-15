@@ -10,6 +10,7 @@ import Home from './pages/home/home';
 import Inventory from './pages/inventory/inventory';
 import Repair from './pages/repair/repair';
 import NotFound from './components/NotFound/NotFound';
+import Layout from './components/Layout/Layout';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <NavbarHook />
         </header>
         <main className='main-content'>
+        <Layout>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/inventory' element={<Inventory />} />
@@ -28,6 +30,7 @@ function App() {
             <Route path='/admin' element={<AdminPage />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
+        </Layout>
         </main>
         <Footer />
       </div>

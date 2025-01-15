@@ -72,6 +72,20 @@
     pointer-events: none; /* Prevents the hint from interfering with clicks */
 }
 
+.image-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.image-container:hover .website-hint {
+    opacity: 1;
+}
+
+.carousel-item a:hover .website-hint,
+.image-container:hover .website-hint {
+    opacity: 1;
+}
+
 .carousel-item a:hover .website-hint {
     opacity: 1;
 }
