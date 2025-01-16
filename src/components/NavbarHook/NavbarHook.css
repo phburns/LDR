@@ -84,7 +84,6 @@
   z-index: var(--z-fixed);
 }
 
-
 .nav {
   display: flex;
   align-items: center;
@@ -100,20 +99,38 @@
   transition: color 0.4s;
   font-size: var(--h2-font-size);
   font-family: var(--second-font);
-  margin-left: 15px; 
-  margin-top: -15px;
+  margin-left: 10px;
+  margin-top: -25px;
 }
 
 .navbar-brand {
   display: flex;
   align-items: center;
+  gap: 1rem;
+}
+
+.nav__logo-img {
+  height: 3.5rem;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 0px;
+}
+
+@media screen and (max-width: 768px) {
+  .nav__logo-img {
+    display: none;
+  }
+
+  .nav__logo {
+    margin-top: -12px;
+  }
 }
 
 .nav__toggle {
   font-size: 2rem;
   color: var(--title-color);
   cursor: pointer;
-  margin-top: -17px;
+  margin-top: -18px;
   margin-left: 0px;
 }
 .nav__close {
@@ -132,7 +149,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  align-items: center; 
+  align-items: center;
 }
 
 .nav__item {
@@ -148,21 +165,21 @@
   padding: 0;
   margin-top: -5px;
 }
-  
+
 .nav__link:hover {
-  color: #FFA810;
+  color: #ffa810;
 }
-  
+
 .nav__close {
   position: absolute;
   top: 1rem;
   right: 1.5rem;
 }
-  
+
 .show-menu {
   right: 0;
 }
-  
+
 .nav__list__web {
   display: flex;
   flex-direction: row;
@@ -182,7 +199,7 @@
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   border-radius: 4px;
   padding: 0.5rem 0;
@@ -202,7 +219,7 @@
 .dropdown-item:active,
 .dropdown-item:hover {
   background-color: rgba(0, 0, 0, 0.05);
-  color: #AF231C !important;
+  color: #af231c !important;
   text-decoration: none;
 }
 
@@ -223,7 +240,6 @@
   transform: rotate(180deg);
 }
 
-
 @media screen and (max-width: 1150px) {
   .dropdown-menu {
     position: static;
@@ -236,15 +252,15 @@
   }
 
   .nav__item.dropdown .dropdown-menu {
-    display: none; 
+    display: none;
   }
 
   .dropdown:hover .dropdown-menu {
-    display: none; 
+    display: none;
   }
 
   .dropdown-menu.show {
-    display: block !important; 
+    display: block !important;
   }
 
   .dropdown-item {
@@ -255,9 +271,8 @@
   .dropdown-item:hover,
   .dropdown-item.active {
     background-color: rgba(0, 0, 0, 0.05);
-    color: #FFA810 !important; 
+    color: #ffa810 !important;
   }
-
 }
 
 @media screen and (min-width: 1151px) {

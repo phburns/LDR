@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { IoChevronDown, IoClose, IoMenu } from "react-icons/io5";
+import { useMediaQuery } from "react-responsive";
 import { NavLink } from "react-router-dom";
-import { IoClose, IoMenu, IoChevronDown } from "react-icons/io5";
-import {useMediaQuery} from "react-responsive";
 import "./NavbarHook.css";
 
 const NavbarHook = () => {
@@ -84,6 +84,7 @@ const toggleDropdown = (dropdownName) => {
     <header className="header">
       <nav className="nav container">
         <div className="navbar-brand">
+          <img src="/images/logo.png" alt="Larry's Diesel Repair Logo" className="nav__logo-img nav__logo" />
           <NavLink to="/" className="nav__logo">
             Larry's Diesel Repair
           </NavLink>
