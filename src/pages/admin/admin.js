@@ -788,7 +788,7 @@ const AdminPage = () => {
                         />
                       </div>
                       <div className="edit-form-buttons">
-                        <button type="submit" className="btn btn-success">
+                        <button type="submit" className="btn save-button">
                           Save
                         </button>
                         <button
@@ -800,7 +800,7 @@ const AdminPage = () => {
                         </button>
                         <button
                           type="button"
-                          className="btn btn-primary"
+                          className="btn manage-button"
                           onClick={(e) => handleImageManagement(e, editingItem)}
                         >
                           Manage Images
@@ -862,7 +862,7 @@ const AdminPage = () => {
             </div>
             
             <div className="image-upload-section">
-              <label className="btn btn-primary mb-3">
+              <label className="btn manage-button  mb-3">
                 Add Images
                 <input
                   type="file"
@@ -897,7 +897,7 @@ const AdminPage = () => {
                 Cancel
               </button>
               <button 
-                className="btn btn-primary"
+                className="btn save-button"
                 onClick={handleSaveImages}
               >
                 Save Changes
