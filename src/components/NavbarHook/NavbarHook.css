@@ -87,33 +87,53 @@
 .nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  position: relative;
   height: var(--header-height);
-  padding: 1rem;
 }
 
 .nav__logo {
-  text-decoration: none;
-  color: var(--title-color);
-  transition: color 0.4s;
-  font-size: var(--h2-font-size);
   font-family: var(--second-font);
-  margin-left: 10px;
-  margin-top: -25px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.nav.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .navbar-brand {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-shrink: 0;
+  font-size: var(--h2-font-size);
+  font-family: var(--body-font);
+  color: black !important;
+  margin-bottom: 8px;
+}
+
+.navbar-brand a {
+  color: black !important;
+  text-decoration: none;
+}
+
+.navbar-brand a:hover {
+  color: #ffa810 !important;
 }
 
 .nav__logo-img {
   height: 3.5rem;
   width: auto;
   object-fit: contain;
-  margin-bottom: 0px;
+  margin-bottom: 2px;
+
 }
 
 @media screen and (max-width: 768px) {
@@ -122,15 +142,19 @@
   }
 
   .nav__logo {
-    margin-top: -12px;
+    margin: 0;
+  }
+
+  .nav.container {
+    padding: 0 1rem;
   }
 }
 
 .nav__toggle {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: var(--title-color);
   cursor: pointer;
-  margin-top: -18px;
+  margin-top: -12px;
   margin-left: 0px;
 }
 .nav__close {
@@ -146,16 +170,15 @@
 
 .nav__list {
   display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
   align-items: center;
+  gap:2rem;
+  margin-left: 0;
 }
 
 .nav__item {
-  margin-left: 20px;
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .nav__link {
@@ -163,7 +186,10 @@
   color: var(--title-color);
   font-size: 1.5rem;
   padding: 0;
-  margin-top: -5px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+
 }
 
 .nav__link:hover {
@@ -187,6 +213,7 @@
   align-items: center;
   list-style-type: none;
   padding: 0;
+  margin-top: 8px
 }
 
 .dropdown {
