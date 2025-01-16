@@ -1,10 +1,10 @@
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
+import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import "./inventory.css";
-import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 
 const capitalizeString = (str) => {
   if (!str) return "";
@@ -21,7 +21,9 @@ const Inventory = () => {
   const [error, setError] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [enlargedImage, setEnlargedImage] = useState(null);
   const isMobile = useMediaQuery({ maxWidth: "768px" });
+  const [touchStartX, setTouchStartX] = useState(null);
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -74,6 +76,7 @@ const Inventory = () => {
 
   const handleCardClick = (item) => {
     setSelectedItem(item);
+    setActiveImageIndex(0);
   };
 
   const handleCloseModal = () => {
@@ -100,24 +103,30 @@ const Inventory = () => {
     }
   };
 
-  const [touchStart, setTouchStart] = useState(null);
-
-  const handleTouchStart = (e) => {
-    const touch = e.touches[0];
-    setTouchStart(touch.clientX);
+  const handleImageEnlarge = (e, image) => {
+    e.stopPropagation();
+    setEnlargedImage(image);
   };
 
-  const handleTouchMove = (e) => {
-    if (!touchStart) return;
-    const touch = e.touches[0];
-    const diff = touchStart - touch.clientX;
+  const handleCloseEnlarged = () => {
+    setEnlargedImage(null);
+  };
+
+  const handleModalTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleModalTouchMove = (e) => {
+    if (!touchStartX) return;
+    const touchEndX = e.touches[0].clientX;
+    const diff = touchStartX - touchEndX;
 
     if (diff > 50) {
       handleNextImage();
     } else if (diff < -50) {
       handlePrevImage();
     }
-    setTouchStart(null);
+    setTouchStartX(null);
   };
 
   return (
@@ -141,7 +150,7 @@ const Inventory = () => {
                   <img
                     src={item.images?.[0] || "/images/placeholder.jpg"}
                     alt={`${item.make || ""} ${item.model || ""}`}
-                    className="inventory-image"
+                    className="inventory-image hover-enlarge"
                     onError={(e) => {
                       e.target.src = "/images/placeholder.jpg";
                     }}
@@ -175,51 +184,53 @@ const Inventory = () => {
                   &times;
                 </button>
                 <div className="modal-grid">
-                <div className="modal-images">
-  <div className="carousel-container">
-    <div 
-      className="carousel-container"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-    >
-      <button className="carousel-button prev" onClick={handlePrevImage}>
-        <IoChevronBack size={24}/>
-      </button>
-      <img 
-        src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
-        alt={`${selectedItem.make || ''} ${selectedItem.model || ''}`}
-        className="modal-main-image"
-      />
-      <button className="carousel-button next" onClick={handleNextImage}>
-        <IoChevronForward size={24}/>
-      </button>
-      {isMobile && (
-        <div className="carousel-indicators">
-          {selectedItem.images?.map((_, index) => (
-            <button
-              key={index}
-              className={`carousel-indicator ${index === activeImageIndex ? 'active' : ''}`}
-              onClick={() => handleThumbnailClick(index)}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  </div>
-  {!isMobile && (
-    <div className="other-pictures">
-      {selectedItem.images?.map((image, index) => (
-        <img
-          key={index}
-          src={image}
-          alt={`Additional view ${index + 1}`}
-          className={`modal-thumbnail ${index === activeImageIndex ? 'active' : ''}`}
-          onClick={() => handleThumbnailClick(index)}
-        />
-      ))}
-    </div>
-  )}
-</div>
+                  <div className="modal-images">
+                    <div 
+                      className="carousel-container"
+                      onTouchStart={handleModalTouchStart}
+                      onTouchMove={handleModalTouchMove}
+                      onTouchEnd={() => setTouchStartX(null)}
+                    >
+                      <button className="carousel-button prev" onClick={handlePrevImage}>
+                        <IoChevronBack size={24}/>
+                      </button>
+                      <div className="modal-main-image-container">
+                        <img 
+                          src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
+                          alt={`${selectedItem.make || ''} ${selectedItem.model || ''}`}
+                          className="modal-main-image"
+                          onClick={(e) => handleImageEnlarge(e, selectedItem.images?.[activeImageIndex])}
+                        />
+                      </div>
+                      <button className="carousel-button next" onClick={handleNextImage}>
+                        <IoChevronForward size={24}/>
+                      </button>
+                      {isMobile && (
+                        <div className="carousel-indicators">
+                          {selectedItem.images?.map((_, index) => (
+                            <button
+                              key={index}
+                              className={`carousel-indicator ${index === activeImageIndex ? 'active' : ''}`}
+                              onClick={() => handleThumbnailClick(index)}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    {!isMobile && (
+                      <div className="other-pictures">
+                        {selectedItem.images?.map((image, index) => (
+                          <img
+                            key={index}
+                            src={image}
+                            alt={`Additional view ${index + 1}`}
+                            className={`modal-thumbnail ${index === activeImageIndex ? 'active' : ''} hover-enlarge`}
+                            onClick={() => handleThumbnailClick(index)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <div className="modal-details">
                     <div className="modal-header">
                       <h2>{`${selectedItem.make} ${selectedItem.model}`}</h2>
@@ -306,6 +317,21 @@ const Inventory = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {enlargedImage && (
+            <div className="enlarged-image-overlay" onClick={handleCloseEnlarged}>
+              <div className="enlarged-image-container">
+                <img 
+                  src={enlargedImage} 
+                  alt="Enlarged view" 
+                  className="enlarged-image"
+                />
+                <button className="modal-close" onClick={handleCloseEnlarged}>
+                  &times;
+                </button>
               </div>
             </div>
           )}
