@@ -240,7 +240,7 @@
   }
 
   .dropdown:hover .dropdown-menu {
-    display: none; 
+    display: none;
   }
 
   .dropdown-menu.show {
