@@ -1,11 +1,13 @@
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import SuccessModal from "../../components/SuccessModal/SuccessModal";
 import "./admin.css";
 
 const AdminPage = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [inventoryData, setInventoryData] = useState({
     condition: "",
     year: "",
@@ -107,6 +109,7 @@ const AdminPage = () => {
 
       if (response.status === 201) {
         setSuccess("Inventory added successfully!");
+        setShowSuccessModal(true);
         setInventoryData({
           condition: "",
           year: "",
@@ -210,6 +213,7 @@ const AdminPage = () => {
         setEditingItem(null);
         setEditFormData(null);
         setSuccess("Item updated successfully");
+        setShowSuccessModal(true);
       }
     } catch (error) {
       setError(
@@ -246,6 +250,7 @@ const AdminPage = () => {
           )
         );
         setSuccess("Item visibility updated successfully");
+        setShowSuccessModal(true);
       }
     } catch (error) {
       setError("Failed to update item visibility");
@@ -327,6 +332,7 @@ const AdminPage = () => {
         setEditingItem(prev => ({...prev, images: updatedImages}));
         setEditFormData(prev => ({...prev, images: updatedImages}));
         setSuccess("Image deleted successfully");
+        setShowSuccessModal(true);
       }
     } catch (error) {
       setError("Failed to delete image");
@@ -354,6 +360,7 @@ const AdminPage = () => {
         setEditingItem(prev => ({...prev, images: tempEditingImages}));
         setEditFormData(prev => ({...prev, images: tempEditingImages}));
         setSuccess("Images updated successfully");
+        setShowSuccessModal(true);
         setShowImageModal(false);
       }
     } catch (error) {
@@ -396,6 +403,7 @@ const AdminPage = () => {
         setEditingItem(prev => ({...prev, images: updatedImages}));
         setEditFormData(prev => ({...prev, images: updatedImages}));
         setSuccess("Images added successfully");
+        setShowSuccessModal(true);
         setShowImageModal(false);
       }
     } catch (error) {
@@ -407,7 +415,12 @@ const AdminPage = () => {
   return (
     <div className="admin-container">
       {error && <div className="alert alert-danger">{error}</div>}
-      {success && <div className="alert alert-success">{success}</div>}
+      {showSuccessModal && (
+        <SuccessModal
+          message={success}
+          onClose={() => setShowSuccessModal(false)}
+        />
+      )}
 
       <form onSubmit={handleInventorySubmit} className="inventory-form">
         <h2>Add New Machine</h2>
@@ -776,17 +789,19 @@ const AdminPage = () => {
                           className="form-control"
                         />
                       </div>
-                      <div className="form-group">
-                        <label>Separator</label>
-                        <input
-                          type="text"
-                          name="separator"
-                          value={editFormData.separator}
-                          onChange={handleEditInputChange}
-                          className="form-control"
-                          placeholder="Enter separator type"
-                        />
-                      </div>
+                      {editFormData.separator && (
+                        <div className="form-group">
+                          <label>Separator</label>
+                          <input
+                            type="text"
+                            name="separator"
+                            value={editFormData.separator}
+                            onChange={handleEditInputChange}
+                            className="form-control"
+                            placeholder="Enter separator type"
+                          />
+                        </div>
+                      )}
                       <div className="edit-form-buttons">
                         <button type="submit" className="btn save-button">
                           Save
