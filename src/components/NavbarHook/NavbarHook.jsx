@@ -39,13 +39,13 @@ const toggleDropdown = (dropdownName) => {
           </NavLink>
         </li>
         <li className="nav__item dropdown">
-          <div 
-            className={linkClassName} 
-            onClick={() => isMobile && toggleDropdown('inventory')}
-            style={{cursor: 'pointer'}}
-          >
+          <NavLink to={!isMobile ? "/inventory" : "#"} 
+          className={linkClassName} 
+          onClick={() => isMobile && toggleDropdown('inventory')}
+          style={{cursor: 'pointer'}}>
+
             Inventory <IoChevronDown className='dropdown-icon' />
-          </div>
+          </NavLink>
           <ul className={`dropdown-menu ${activeDropdown === 'inventory' ? 'show' : ''}`}>
             <li><NavLink to="/inventory/new" className="dropdown-item" onClick={closeMobileMenu}>New Equipment</NavLink></li>
             <li><NavLink to="/inventory/pre-owned" className="dropdown-item" onClick={closeMobileMenu}>Pre-Owned</NavLink></li>
@@ -57,13 +57,14 @@ const toggleDropdown = (dropdownName) => {
           </ul>
         </li>
         <li className="nav__item dropdown">
-          <div 
+          <NavLink
+            to={!isMobile ? "/repair" : "#"} 
             className={linkClassName}
             onClick={() => isMobile && toggleDropdown('repairs')}
             style={{cursor: 'pointer'}}
           >
             Repairs <IoChevronDown className='dropdown-icon' />
-          </div>
+          </NavLink>
           <ul className={`dropdown-menu ${activeDropdown === 'repairs' ? 'show' : ''}`}>
             <li><NavLink to="/repair" className="dropdown-item" onClick={closeMobileMenu}>About Our Repairs</NavLink></li>
             <li><NavLink to="/contactus" className="dropdown-item" onClick={closeMobileMenu}>Schedule Repair</NavLink></li>
