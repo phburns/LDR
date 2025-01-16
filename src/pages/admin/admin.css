@@ -311,6 +311,28 @@
   background-color: #FFA810;
 }
 
+.save-button {
+  background-color: #FFA810;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+  background-color: #AF231C;
+}
+
+.manage-button {
+  background-color: #AF231C;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.manage-button:hover {
+  background-color: #FFA810;
+}
+
 .inventory-image-container {
   position: relative;
 }
