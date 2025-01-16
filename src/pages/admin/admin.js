@@ -302,11 +302,36 @@ const AdminPage = () => {
     setShowImageModal(true);
   };
 
-  const handleDeleteImage = (e, index) => {
+  const handleDeleteImage = async (e, index) => {
     e.stopPropagation();
-    const updatedImages = [...tempEditingImages];
-    updatedImages.splice(index, 1);
-    setTempEditingImages(updatedImages);
+    try {
+      const updatedImages = [...tempEditingImages];
+      updatedImages.splice(index, 1);
+      setTempEditingImages(updatedImages);
+
+      const response = await axios.put(
+        `http://localhost:5000/api/inventory/${editingItem.id}`,
+        {
+          ...editingItem,
+          images: updatedImages
+        }
+      );
+
+      if (response.data) {
+        setEditingImages(updatedImages);
+        setInventory(prevInventory =>
+          prevInventory.map(item =>
+            item.id === editingItem.id ? { ...item, images: updatedImages } : item
+          )
+        );
+        setEditingItem(prev => ({...prev, images: updatedImages}));
+        setEditFormData(prev => ({...prev, images: updatedImages}));
+        setSuccess("Image deleted successfully");
+      }
+    } catch (error) {
+      setError("Failed to delete image");
+      console.error("Image deletion error:", error);
+    }
   };
 
   const handleSaveImages = async () => {
@@ -327,6 +352,7 @@ const AdminPage = () => {
           )
         );
         setEditingItem(prev => ({...prev, images: tempEditingImages}));
+        setEditFormData(prev => ({...prev, images: tempEditingImages}));
         setSuccess("Images updated successfully");
         setShowImageModal(false);
       }
@@ -361,12 +387,16 @@ const AdminPage = () => {
 
       if (response.data) {
         setEditingImages(updatedImages);
+        setTempEditingImages(updatedImages);
         setInventory(prevInventory =>
           prevInventory.map(item =>
             item.id === editingItem.id ? { ...item, images: updatedImages } : item
           )
         );
+        setEditingItem(prev => ({...prev, images: updatedImages}));
+        setEditFormData(prev => ({...prev, images: updatedImages}));
         setSuccess("Images added successfully");
+        setShowImageModal(false);
       }
     } catch (error) {
       setError("Failed to add images");
