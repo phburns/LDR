@@ -86,7 +86,9 @@ const toggleDropdown = (dropdownName) => {
     <header className="header">
       <nav className="nav container">
         <div className="navbar-brand">
+          <NavLink to="/" >
           <img src="/images/logo.png" alt="Larry's Diesel Repair Logo" className="nav__logo-img nav__logo" />
+          </NavLink>
           <NavLink to="/" className="nav__logo">
             Larry's Diesel Repair
           </NavLink>

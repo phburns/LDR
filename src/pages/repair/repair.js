@@ -6,6 +6,7 @@ const Repair = () => {
     <div className="repair-container">
       <div className="repair-hero">
         <h1>Larry's Diesel Repair Services</h1>
+        <img src="/images/logo.png" alt="Repair Hero" className="repair-hero-image" />
         <span className="subtitle">Serving Crawford County Since 1992.</span>
       </div>
 
