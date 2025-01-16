@@ -33,4 +33,5 @@ model Machine {
   images       String[] // Array of base64 encoded images
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  hidden       Boolean   @default(false)
 }
