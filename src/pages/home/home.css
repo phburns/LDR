@@ -1,5 +1,5 @@
 .home-container {
-    padding-top: 0; /* Use the navbar height variable */
+    padding-top: 0; 
     margin-top: 0;
     padding: 20px;
 }
@@ -10,12 +10,12 @@
 }
 
 .carousel-item {
-    height: calc(100vh - var(--header-height)); /* Adjust height based on viewport minus navbar */
-    max-height: 700px; /* Optional: set a maximum height */
+    height: calc(100vh - var(--header-height));
+    max-height: 700px; 
 }
 
 .carousel-item img {
-    object-fit: cover; /* Changed from cover to contain to show full image */
+    object-fit: contain; 
     height: 100%;
     width: 100%;
 }
@@ -31,7 +31,7 @@
 }
 
 .carousel-caption {
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  background-color: rgba(0, 0, 0, 0.7); 
   padding: 15px;
   border-radius: 5px;
 }
@@ -133,7 +133,6 @@
     object-fit: contain;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .brand-container {
         gap: 1.5rem;
@@ -156,4 +155,34 @@
         font-size: 2rem;
         margin-bottom: 30px;
     }
+
+    .carousel-item {
+        height: 300px; 
+        max-height: none;
+      }
+    
+      .carousel-item img {
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+      }
+    
+      .carousel {
+        margin: 0 -20px; 
+      }
+
+      .carousel-caption {
+        padding: 10px;
+        bottom: 20px;
+      }
+    
+      .carousel-caption h5 {
+        font-size: 1rem;
+        margin-bottom: 5px;
+      }
+    
+      .carousel-caption p {
+        font-size: 0.8rem;
+        margin-bottom: 0;
+      }
 }

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import "./inventory.css";
+import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 
 const capitalizeString = (str) => {
   if (!str) return "";
@@ -174,72 +175,51 @@ const Inventory = () => {
                   &times;
                 </button>
                 <div className="modal-grid">
-                  <div className="modal-images">
-                    <div className="carousel-container">
-                      <div
-                        className="carousel-container"
-                        onTouchStart={handleTouchStart}
-                        onTouchMove={handleTouchMove}
-                      >
-                        <button
-                          className="carousel-button prev"
-                          onClick={handlePrevImage}
-                        >
-                          <span
-                            className="iconify"
-                            data-icon="mdi:chevron-left"
-                          ></span>
-                        </button>
-                        <img
-                          src={
-                            selectedItem.images?.[activeImageIndex] ||
-                            "/images/placeholder.jpg"
-                          }
-                          alt={`${selectedItem.make || ""} ${
-                            selectedItem.model || ""
-                          }`}
-                          className="modal-main-image"
-                        />
-                        <button
-                          className="carousel-button next"
-                          onClick={handleNextImage}
-                        >
-                          <span
-                            className="iconify"
-                            data-icon="mdi:chevron-right"
-                          ></span>
-                        </button>
-                        {isMobile && (
-                          <div className="carousel-indicators">
-                            {selectedItem.images?.map((_, index) => (
-                              <button
-                                key={index}
-                                className={`carousel-indicator ${
-                                  index === activeImageIndex ? "active" : ""
-                                }`}
-                                onClick={() => handleThumbnailClick(index)}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    {!isMobile && (
-                      <div className="other-pictures">
-                        {selectedItem.images?.map((image, index) => (
-                          <img
-                            key={index}
-                            src={image}
-                            alt={`Additional view ${index + 1}`}
-                            className={`modal-thumbnail ${
-                              index === activeImageIndex ? "active" : ""
-                            }`}
-                            onClick={() => handleThumbnailClick(index)}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                <div className="modal-images">
+  <div className="carousel-container">
+    <div 
+      className="carousel-container"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+    >
+      <button className="carousel-button prev" onClick={handlePrevImage}>
+        <span className="iconify" data-icon="mdi:chevron-left"></span>
+      </button>
+      <img 
+        src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
+        alt={`${selectedItem.make || ''} ${selectedItem.model || ''}`}
+        className="modal-main-image"
+      />
+      <button className="carousel-button next" onClick={handleNextImage}>
+        <span className="iconify" data-icon="mdi:chevron-right"></span>
+      </button>
+      {isMobile && (
+        <div className="carousel-indicators">
+          {selectedItem.images?.map((_, index) => (
+            <button
+              key={index}
+              className={`carousel-indicator ${index === activeImageIndex ? 'active' : ''}`}
+              onClick={() => handleThumbnailClick(index)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+  {!isMobile && (
+    <div className="other-pictures">
+      {selectedItem.images?.map((image, index) => (
+        <img
+          key={index}
+          src={image}
+          alt={`Additional view ${index + 1}`}
+          className={`modal-thumbnail ${index === activeImageIndex ? 'active' : ''}`}
+          onClick={() => handleThumbnailClick(index)}
+        />
+      ))}
+    </div>
+  )}
+</div>
                   <div className="modal-details">
                     <div className="modal-header">
                       <h2>{`${selectedItem.make} ${selectedItem.model}`}</h2>
