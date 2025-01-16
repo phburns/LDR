@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import "./inventory.css";
 import { useMediaQuery} from 'react-responsive';
+import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 
 const capitalizeString = (str) => {
   if (!str) return '';
@@ -167,7 +168,7 @@ const Inventory = () => {
       onTouchMove={handleTouchMove}
     >
       <button className="carousel-button prev" onClick={handlePrevImage}>
-        <span className="iconify" data-icon="mdi:chevron-left"></span>
+        <IoChevronBack size={24}/>
       </button>
       <img 
         src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
@@ -175,7 +176,7 @@ const Inventory = () => {
         className="modal-main-image"
       />
       <button className="carousel-button next" onClick={handleNextImage}>
-        <span className="iconify" data-icon="mdi:chevron-right"></span>
+        <IoChevronForward size={24}/>
       </button>
       {isMobile && (
         <div className="carousel-indicators">

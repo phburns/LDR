@@ -236,15 +236,15 @@
   }
 
   .nav__item.dropdown .dropdown-menu {
-    display: none; /* Ensure hidden by default */
+    display: none; 
   }
 
   .dropdown:hover .dropdown-menu {
-    display: none; /* Disable hover behavior on mobile */
+    display: none; 
   }
 
   .dropdown-menu.show {
-    display: block !important; /* Force show when active */
+    display: block !important; 
   }
 
   .dropdown-item {
