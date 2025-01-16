@@ -39,7 +39,8 @@ const toggleDropdown = (dropdownName) => {
           </NavLink>
         </li>
         <li className="nav__item dropdown">
-          <NavLink to={!isMobile ? "/inventory" : "#"} 
+          <NavLink
+           to={!isMobile ? "/inventory" : "#"} 
           className={linkClassName} 
           onClick={() => isMobile && toggleDropdown('inventory')}
           style={{cursor: 'pointer'}}>
@@ -47,6 +48,7 @@ const toggleDropdown = (dropdownName) => {
             Inventory <IoChevronDown className='dropdown-icon' />
           </NavLink>
           <ul className={`dropdown-menu ${activeDropdown === 'inventory' ? 'show' : ''}`}>
+            <li><NavLink to="/inventory" className="dropdown-item" onClick={closeMobileMenu}>All Inventory</NavLink></li>
             <li><NavLink to="/inventory/new" className="dropdown-item" onClick={closeMobileMenu}>New Equipment</NavLink></li>
             <li><NavLink to="/inventory/pre-owned" className="dropdown-item" onClick={closeMobileMenu}>Pre-Owned</NavLink></li>
             <li><NavLink to="/inventory/versatile" className="dropdown-item" onClick={closeMobileMenu}>Versatile</NavLink></li>
@@ -57,7 +59,7 @@ const toggleDropdown = (dropdownName) => {
           </ul>
         </li>
         <li className="nav__item dropdown">
-          <NavLink
+          <NavLink 
             to={!isMobile ? "/repair" : "#"} 
             className={linkClassName}
             onClick={() => isMobile && toggleDropdown('repairs')}
