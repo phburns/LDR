@@ -231,6 +231,7 @@ const AdminPage = () => {
             id="year"
             name="year"
             className="form-control"
+            placeholder="Enter Machine Year"
             value={inventoryData.year}
             onChange={handleInputChange}
             required
@@ -244,6 +245,7 @@ const AdminPage = () => {
             id="make"
             name="make"
             className="form-control"
+            placeholder="Enter Machine Make"
             value={inventoryData.make}
             onChange={handleInputChange}
             required
@@ -257,6 +259,7 @@ const AdminPage = () => {
             id="model"
             name="model"
             className="form-control"
+            placeholder="Enter Machine Model"
             value={inventoryData.model}
             onChange={handleInputChange}
             required
@@ -273,7 +276,7 @@ const AdminPage = () => {
             value={inventoryData.brand}
             onChange={handleInputChange}
             required
-            placeholder="Enter brand name"
+            placeholder="Enter Machine Brand Name"
           />
         </div>
 
@@ -317,6 +320,7 @@ const AdminPage = () => {
             id="horsepower"
             name="horsepower"
             className="form-control"
+            placeholder="Enter Machine Horsepower"
             value={inventoryData.horsepower}
             onChange={handleInputChange}
           />
@@ -329,6 +333,7 @@ const AdminPage = () => {
             id="engineHours"
             name="engineHours"
             className="form-control"
+            placeholder="Enter Machine Engine Hours"
             value={inventoryData.engineHours}
             onChange={handleInputChange}
           />
@@ -341,6 +346,7 @@ const AdminPage = () => {
             id="fuelType"
             name="fuelType"
             className="form-control"
+            placeholder="Enter Machine Fuel Type"
             value={inventoryData.fuelType}
             onChange={handleInputChange}
           />
@@ -353,6 +359,7 @@ const AdminPage = () => {
             id="liftCapacity"
             name="liftCapacity"
             className="form-control"
+            placeholder="Enter Machine Lift Capacity"
             value={inventoryData.liftCapacity}
             onChange={handleInputChange}
           />
@@ -365,6 +372,7 @@ const AdminPage = () => {
             id="weight"
             name="weight"
             className="form-control"
+            placeholder="Enter Machine Weight"
             value={inventoryData.weight}
             onChange={handleInputChange}
           />
@@ -377,6 +385,7 @@ const AdminPage = () => {
             id="drive"
             name="drive"
             className="form-control"
+            placeholder="Enter Machine Drive Type"
             value={inventoryData.drive}
             onChange={handleInputChange}
           />
@@ -392,9 +401,9 @@ const AdminPage = () => {
               className="form-control"
               value={inventoryData.deckSize}
               onChange={handleInputChange}
-              placeholder="e.g., 52 inch"
+              placeholder="Enter Mower Deck Size (e.g., 52 inch)"
             />
-            <span className="input-group-text">inches</span>
+            <span className="input-group-text">Inches</span>
           </div>
           <small className="text-muted">
             Enter deck size for mowers (if applicable)
@@ -445,7 +454,7 @@ const AdminPage = () => {
           </div>
         )}
 
-        <button type="submit" className="btn btn-success">Add Inventory</button>
+        <button type="submit" className="add-button">Add Inventory</button>
       </form>
 
       <div className="current-inventory">

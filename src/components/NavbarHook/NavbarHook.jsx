@@ -39,7 +39,7 @@ const NavbarHook = () => {
             <li><NavLink to="/inventory/versatile" className="dropdown-item" onClick={closeMobileMenu}>Versatile</NavLink></li>
             <li><NavLink to="/inventory/kioti" className="dropdown-item" onClick={closeMobileMenu}>Kioti</NavLink></li>
             <li><NavLink to="/inventory/grasshopper" className="dropdown-item" onClick={closeMobileMenu}>Grasshopper</NavLink></li>
-            <li><NavLink to="/inventory/claas" className="dropdown-item" onClick={closeMobileMenu}>CLAAS Lexion</NavLink></li>
+            <li><NavLink to="/inventory/claas" className="dropdown-item" onClick={closeMobileMenu}>CLAAS</NavLink></li>
             <li><NavLink to="/inventory/ironcraft" className="dropdown-item" onClick={closeMobileMenu}>IronCraft</NavLink></li>
           </ul>
         </li>
