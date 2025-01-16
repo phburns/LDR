@@ -60,8 +60,11 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const machineData = req.body;
-
+    const machineData = { ...req.body };
+    
+    // Remove id from the data object since Prisma doesn't allow updating id
+    delete machineData.id;
+    
     const existingMachine = await prisma.machine.findUnique({
       where: { id }
     });
@@ -73,7 +76,6 @@ router.put("/:id", async (req, res) => {
     const updatedMachine = await prisma.machine.update({
       where: { id },
       data: {
-        ...existingMachine,
         ...machineData,
         // Only parse numeric fields if they're included in the update
         year: machineData.year ? parseInt(machineData.year) : existingMachine.year,

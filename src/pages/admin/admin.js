@@ -30,6 +30,7 @@ const AdminPage = () => {
   const [editFormData, setEditFormData] = useState(null);
   const [showImageModal, setShowImageModal] = useState(false);
   const [editingImages, setEditingImages] = useState(null);
+  const [tempEditingImages, setTempEditingImages] = useState(null);
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -183,7 +184,7 @@ const AdminPage = () => {
         throw new Error("Required fields are missing");
       }
 
-      const dataToSubmit = {
+      const { id, ...dataToSubmit } = {
         ...editFormData,
         year: parseInt(editFormData.year),
         price: parseFloat(editFormData.price),
@@ -200,18 +201,21 @@ const AdminPage = () => {
         dataToSubmit
       );
 
-      if (!response.data) {
-        throw new Error("No data received from server");
+      if (response.status === 200) {
+        setInventory((prev) =>
+          prev.map((item) =>
+            item.id === editingItem.id ? response.data : item
+          )
+        );
+        setEditingItem(null);
+        setEditFormData(null);
+        setSuccess("Item updated successfully");
       }
-
-      setInventory((prev) =>
-        prev.map((item) => (item.id === editingItem.id ? response.data : item))
-      );
-      setEditingItem(null);
-      setEditFormData(null);
-      setSuccess("Item updated successfully");
     } catch (error) {
-      setError(error.message || "Failed to update item");
+      setError(
+        error.response?.data?.message ||
+          "Failed to update inventory. Please try again."
+      );
     }
   };
 
@@ -294,33 +298,41 @@ const AdminPage = () => {
     e.stopPropagation();
     setEditingItem(item);
     setEditingImages(item.images || []);
+    setTempEditingImages(item.images || []);
     setShowImageModal(true);
   };
 
-  const handleDeleteImage = async (index) => {
+  const handleDeleteImage = (e, index) => {
+    e.stopPropagation();
+    const updatedImages = [...tempEditingImages];
+    updatedImages.splice(index, 1);
+    setTempEditingImages(updatedImages);
+  };
+
+  const handleSaveImages = async () => {
     try {
-      const updatedImages = editingImages.filter((_, i) => i !== index);
       const response = await axios.put(
         `http://localhost:5000/api/inventory/${editingItem.id}`,
         {
           ...editingItem,
-          images: updatedImages
+          images: tempEditingImages
         }
       );
 
       if (response.data) {
-        setEditingImages(updatedImages);
+        setEditingImages(tempEditingImages);
         setInventory(prevInventory =>
           prevInventory.map(item =>
-            item.id === editingItem.id ? { ...item, images: updatedImages } : item
+            item.id === editingItem.id ? { ...item, images: tempEditingImages } : item
           )
         );
-        setEditingItem(prev => ({...prev, images: updatedImages}));
-        setSuccess("Image deleted successfully");
+        setEditingItem(prev => ({...prev, images: tempEditingImages}));
+        setSuccess("Images updated successfully");
+        setShowImageModal(false);
       }
     } catch (error) {
-      setError("Failed to delete image");
-      console.error("Image delete error:", error);
+      setError("Failed to update images");
+      console.error("Image update error:", error);
     }
   };
 
@@ -826,20 +838,46 @@ const AdminPage = () => {
             </div>
             
             <div className="image-upload-section">
+              <label className="btn btn-primary mb-3">
+                Add Images
+                <input
+                  type="file"
+                  onChange={handleAddMoreImages}
+                  multiple
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                />
+              </label>
             </div>
 
             <div className="image-grid">
-              {editingImages?.map((image, index) => (
+              {tempEditingImages?.map((image, index) => (
                 <div key={index} className="image-item">
                   <img src={image} alt={`Item ${index + 1}`} />
                   <button
+                    type="button"
                     className="delete-image-button"
-                    onClick={() => handleDeleteImage(index)}
+                    onClick={(e) => handleDeleteImage(e, index)}
                   >
                     <Icon icon="mdi:trash-can-outline" width="1.2rem" height="1.2rem" />
                   </button>
                 </div>
               ))}
+            </div>
+
+            <div className="modal-footer">
+              <button 
+                className="btn btn-secondary"
+                onClick={() => setShowImageModal(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                className="btn btn-primary"
+                onClick={handleSaveImages}
+              >
+                Save Changes
+              </button>
             </div>
           </div>
         </div>
