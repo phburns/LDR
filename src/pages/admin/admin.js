@@ -859,12 +859,6 @@ const AdminPage = () => {
           <div className="image-management-modal" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Manage Images</h3>
-              <button 
-                className="close-button"
-                onClick={() => setShowImageModal(false)}
-              >
-                ×
-              </button>
             </div>
             
             <div className="image-upload-section">
