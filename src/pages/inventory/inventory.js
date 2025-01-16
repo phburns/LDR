@@ -129,6 +129,35 @@ const Inventory = () => {
     setTouchStartX(null);
   };
 
+const [touchStart, setTouchStart] = useState(null);
+const [touchEnd, setTouchEnd] = useState(null);
+
+// Add these handler functions
+const handleTouchStart = (e) => {
+  setTouchStart(e.touches[0].clientX);
+};
+
+const handleTouchMove = (e) => {
+  setTouchEnd(e.touches[0].clientX);
+};
+
+const handleTouchEnd = () => {
+  if (!touchStart || !touchEnd) return;
+
+  const distance = touchStart - touchEnd;
+  const isLeftSwipe = distance > 50;
+  const isRightSwipe = distance < -50;
+
+  if (isLeftSwipe) {
+    handleNextImage();
+  } else if (isRightSwipe) {
+    handlePrevImage();
+  }
+
+  setTouchStart(null);
+  setTouchEnd(null);
+};
+
   return (
     <div className="inventory-container">
       <h1>Our Inventory</h1>
@@ -194,7 +223,10 @@ const Inventory = () => {
                       <button className="carousel-button prev" onClick={handlePrevImage}>
                         <IoChevronBack size={24}/>
                       </button>
-                      <div className="modal-main-image-container">
+                      <div className="modal-main-image-container"
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}>
                         <img 
                           src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
                           alt={`${selectedItem.make || ''} ${selectedItem.model || ''}`}
