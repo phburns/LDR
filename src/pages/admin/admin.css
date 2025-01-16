@@ -20,7 +20,6 @@
   margin-bottom: 1rem;
 }
 
-/* Style form inputs and select */
 .inventory-form .form-control,
 .inventory-form select {
   background-color: #f8f9fa;

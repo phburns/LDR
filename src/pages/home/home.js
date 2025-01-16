@@ -30,7 +30,7 @@ const Home = () => {
               />
               <div className="website-hint">Click to visit website</div>
             </a>
-            <div className='carousel-caption d-none d-md-block'>
+            <div className='carousel-caption'>
                 <h5>Versatile Tractor</h5>
                 <p>Simply Powerful. Simply Versatile.</p>
             </div>
@@ -43,7 +43,7 @@ const Home = () => {
               />
               <div className="website-hint">Click to visit website</div>
             </a>
-            <div className='carousel-caption d-none d-md-block'>
+            <div className='carousel-caption'>
                 <h5>CLAAS</h5>
                 <p>Increase Your Productivity. </p>
             </div>
@@ -56,7 +56,7 @@ const Home = () => {
               />
               <div className="website-hint">Click to visit website</div>
             </a>
-            <div className='carousel-caption d-none d-md-block'>
+            <div className='carousel-caption'>
                 <h5>Kioti Tractors</h5>
                 <p>Unleash the Possibility of the Land.</p>
             </div>
@@ -70,7 +70,7 @@ const Home = () => {
               />
               <div className="website-hint">Click to visit website</div>
             </a>
-            <div className='carousel-caption d-none d-md-block'>
+            <div className='carousel-caption'>
                 <h5>Grasshopper Mowers</h5>
                 <p>Committed to the Cut.</p>
             </div>
@@ -84,7 +84,7 @@ const Home = () => {
               />
               <div className="website-hint">Click to visit website</div>
             </a>
-            <div className='carousel-caption d-none d-md-block'>
+            <div className='carousel-caption '>
                 <h5>IronCraft</h5>
                 <p>Helping Manage Your Land one Attachment at a Time.</p>
             </div>
@@ -97,7 +97,7 @@ const Home = () => {
               />
               <div className="website-hint">Click to Contact Us.</div>
             </NavLink>
-            <div className='carousel-caption d-none d-md-block'>
+            <div className='carousel-caption'>
               <h5>Our Shop</h5>
               <p>Serving Crawford County Since 1992.</p>
             </div>
@@ -137,7 +137,7 @@ const Home = () => {
             <img src="/images/grasshopper_logo.png" alt="Grasshopper" className="brand-logo" />
           </NavLink>
           <NavLink to="/inventory/claas" className="brand-link">
-            <img src="/images/claaslogo.png" alt="CLAAS" className="brand-logo" style={{height: '200px'}} />
+            <img src="/images/claaslogo.png" alt="CLAAS" className="brand-logo" style={{height: '100px'}} />
           </NavLink>
           <NavLink to="/inventory/kioti" className="brand-link">
             <img src="/images/kioti_logo.png" alt="Kioti" className="brand-logo" style={{width: '100px', height: '100px'}} />

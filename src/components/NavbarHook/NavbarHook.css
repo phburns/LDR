@@ -211,14 +211,40 @@
   color: var(--title-color);
 }
 
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-icon {
+  transition: transform 0.3s ease;
+}
+
+.dropdown-menu.show + .dropdown-icon {
+  transform: rotate(180deg);
+}
+
 
 @media screen and (max-width: 1150px) {
   .dropdown-menu {
     position: static;
-    display: block;
+    display: none;
     background-color: transparent;
     box-shadow: none;
     padding-left: 1rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  .nav__item.dropdown .dropdown-menu {
+    display: none; /* Ensure hidden by default */
+  }
+
+  .dropdown:hover .dropdown-menu {
+    display: none; /* Disable hover behavior on mobile */
+  }
+
+  .dropdown-menu.show {
+    display: block !important; /* Force show when active */
   }
 
   .dropdown-item {
@@ -232,4 +258,10 @@
     color: #FFA810 !important; 
   }
 
+}
+
+@media screen and (min-width: 1151px) {
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
 }

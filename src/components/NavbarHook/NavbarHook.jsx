@@ -6,7 +6,16 @@ import "./NavbarHook.css";
 
 const NavbarHook = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const isMobile = useMediaQuery({ maxWidth: "1150px" });
+
+const toggleDropdown = (dropdownName) => {
+  if (activeDropdown === dropdownName) {
+    setActiveDropdown(null);
+  } else {
+    setActiveDropdown(dropdownName);
+  }
+};
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -30,10 +39,14 @@ const NavbarHook = () => {
           </NavLink>
         </li>
         <li className="nav__item dropdown">
-          <NavLink to="/inventory" className={linkClassName} onClick={closeMobileMenu}>
-            Inventory <IoChevronDown ClassName='dropdown-icon' />
-          </NavLink>
-          <ul className="dropdown-menu">
+          <div 
+            className={linkClassName} 
+            onClick={() => isMobile && toggleDropdown('inventory')}
+            style={{cursor: 'pointer'}}
+          >
+            Inventory <IoChevronDown className='dropdown-icon' />
+          </div>
+          <ul className={`dropdown-menu ${activeDropdown === 'inventory' ? 'show' : ''}`}>
             <li><NavLink to="/inventory/new" className="dropdown-item" onClick={closeMobileMenu}>New Equipment</NavLink></li>
             <li><NavLink to="/inventory/pre-owned" className="dropdown-item" onClick={closeMobileMenu}>Pre-Owned</NavLink></li>
             <li><NavLink to="/inventory/versatile" className="dropdown-item" onClick={closeMobileMenu}>Versatile</NavLink></li>
@@ -44,21 +57,26 @@ const NavbarHook = () => {
           </ul>
         </li>
         <li className="nav__item dropdown">
-          <NavLink to="/repair" className={linkClassName} onClick={closeMobileMenu}>
-            Repairs <IoChevronDown ClassName='dropdown-icon' />
-          </NavLink>
-          <ul className="dropdown-menu">
+          <div 
+            className={linkClassName}
+            onClick={() => isMobile && toggleDropdown('repairs')}
+            style={{cursor: 'pointer'}}
+          >
+            Repairs <IoChevronDown className='dropdown-icon' />
+          </div>
+          <ul className={`dropdown-menu ${activeDropdown === 'repairs' ? 'show' : ''}`}>
             <li><NavLink to="/repair" className="dropdown-item" onClick={closeMobileMenu}>About Our Repairs</NavLink></li>
             <li><NavLink to="/contactus" className="dropdown-item" onClick={closeMobileMenu}>Schedule Repair</NavLink></li>
           </ul>
         </li>
-        <li className="nav__item dropdown">
+        <li className="nav__item">
           <NavLink to="/contactus" className={linkClassName} onClick={closeMobileMenu}>
-              Contact Us
+            Contact Us
           </NavLink>
         </li>
       </ul>
     );
+
   };
 
   return (
