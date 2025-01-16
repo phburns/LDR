@@ -1,65 +1,69 @@
-import axios from 'axios';
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from "react-responsive";
+import { useParams } from "react-router-dom";
 import "./inventory.css";
-import { useMediaQuery} from 'react-responsive';
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 
 const capitalizeString = (str) => {
-  if (!str) return '';
-  return str.split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.toLowerCase().slice(1))
-    .join(' ');
+  if (!str) return "";
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.toLowerCase().slice(1))
+    .join(" ");
 };
 
 const Inventory = () => {
   const { brand } = useParams();
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const isMobile = useMediaQuery({ maxWidth: "768px"})
+  const isMobile = useMediaQuery({ maxWidth: "768px" });
 
   useEffect(() => {
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/api/inventory');
+        const response = await axios.get("http://localhost:5000/api/inventory");
         if (!response.data) {
-          throw new Error('No data received from server');
+          throw new Error("No data received from server");
         }
-        
-        let inventoryData = Array.isArray(response.data) 
-          ? response.data.filter(item => item && item.id)
+
+        let inventoryData = Array.isArray(response.data)
+          ? response.data.filter((item) => item && item.id && !item.hidden)
           : [];
 
         // Filter by brand if specified
         if (brand) {
-          if (brand.toLowerCase() === 'new') {
-            inventoryData = inventoryData.filter(item => 
-              item.condition?.toLowerCase() === 'new'
+          if (brand.toLowerCase() === "new") {
+            inventoryData = inventoryData.filter(
+              (item) => item.condition?.toLowerCase() === "new"
             );
-          } else if (brand.toLowerCase() === 'pre-owned') {
-            inventoryData = inventoryData.filter(item => 
-              item.condition?.toLowerCase() === 'used' || 
-              item.condition?.toLowerCase() === 'pre-owned'
+          } else if (brand.toLowerCase() === "pre-owned") {
+            inventoryData = inventoryData.filter(
+              (item) =>
+                item.condition?.toLowerCase() === "used" ||
+                item.condition?.toLowerCase() === "pre-owned"
             );
           } else {
-            inventoryData = inventoryData.filter(item => {
-              const itemBrand = item.brand?.toLowerCase() || '';
+            inventoryData = inventoryData.filter((item) => {
+              const itemBrand = item.brand?.toLowerCase() || "";
               const searchBrand = brand.toLowerCase();
-              return itemBrand === searchBrand || 
-                     (searchBrand === 'claas' && itemBrand.includes('claas')) ||
-                     (itemBrand === 'claas' && searchBrand.includes('claas'));
+              return (
+                itemBrand === searchBrand ||
+                (searchBrand === "claas" && itemBrand.includes("claas")) ||
+                (itemBrand === "claas" && searchBrand.includes("claas"))
+              );
             });
           }
         }
-        
+
         setInventory(inventoryData);
       } catch (error) {
-        setError('Failed to load inventory items');
+        setError("Failed to load inventory items");
       } finally {
         setLoading(false);
       }
@@ -82,7 +86,7 @@ const Inventory = () => {
 
   const handleNextImage = () => {
     if (selectedItem?.images) {
-      setActiveImageIndex((prev) => 
+      setActiveImageIndex((prev) =>
         prev === selectedItem.images.length - 1 ? 0 : prev + 1
       );
     }
@@ -90,7 +94,7 @@ const Inventory = () => {
 
   const handlePrevImage = () => {
     if (selectedItem?.images) {
-      setActiveImageIndex((prev) => 
+      setActiveImageIndex((prev) =>
         prev === 0 ? selectedItem.images.length - 1 : prev - 1
       );
     }
@@ -102,12 +106,12 @@ const Inventory = () => {
     const touch = e.touches[0];
     setTouchStart(touch.clientX);
   };
-  
+
   const handleTouchMove = (e) => {
     if (!touchStart) return;
     const touch = e.touches[0];
     const diff = touchStart - touch.clientX;
-  
+
     if (diff > 50) {
       handleNextImage();
     } else if (diff < -50) {
@@ -119,7 +123,7 @@ const Inventory = () => {
   return (
     <div className="inventory-container">
       <h1>Our Inventory</h1>
-      
+
       {loading ? (
         <div className="text-center">Loading inventory...</div>
       ) : error ? (
@@ -128,28 +132,34 @@ const Inventory = () => {
         <>
           <div className="inventory-grid">
             {inventory.map((item) => (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className="inventory-card"
                 onClick={() => handleCardClick(item)}
               >
                 <div className="inventory-image-container">
-                  <img 
-                    src={item.images?.[0] || '/images/placeholder.jpg'} 
-                    alt={`${item.make || ''} ${item.model || ''}`}
+                  <img
+                    src={item.images?.[0] || "/images/placeholder.jpg"}
+                    alt={`${item.make || ""} ${item.model || ""}`}
                     className="inventory-image"
                     onError={(e) => {
-                      e.target.src = '/images/placeholder.jpg';
+                      e.target.src = "/images/placeholder.jpg";
                     }}
                   />
                 </div>
                 <div className="inventory-details">
-                  <h3>{(item.make || 'Unknown') + ' ' + (item.model || '')}</h3>
-                  <p className="brand">{capitalizeString(item.brand) || 'Unknown Brand'}</p>
-                  <p className="year">{item.year || 'Year N/A'}</p>
-                  <p className="condition">{item.condition || 'Condition N/A'}</p>
-                  <p className="description">{item.description || 'No description available'}</p>
-                  <p className="price">${((item.price || 0).toLocaleString())}</p>
+                  <h3>{(item.make || "Unknown") + " " + (item.model || "")}</h3>
+                  <p className="brand">
+                    {capitalizeString(item.brand) || "Unknown Brand"}
+                  </p>
+                  <p className="year">{item.year || "Year N/A"}</p>
+                  <p className="condition">
+                    {item.condition || "Condition N/A"}
+                  </p>
+                  <p className="description">
+                    {item.description || "No description available"}
+                  </p>
+                  <p className="price">${(item.price || 0).toLocaleString()}</p>
                 </div>
               </div>
             ))}
@@ -157,8 +167,13 @@ const Inventory = () => {
 
           {selectedItem && (
             <div className="modal-overlay" onClick={handleCloseModal}>
-              <div className="modal-content" onClick={e => e.stopPropagation()}>
-                <button className="modal-close" onClick={handleCloseModal}>&times;</button>
+              <div
+                className="modal-content"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button className="modal-close" onClick={handleCloseModal}>
+                  &times;
+                </button>
                 <div className="modal-grid">
                 <div className="modal-images">
   <div className="carousel-container">
@@ -168,7 +183,7 @@ const Inventory = () => {
       onTouchMove={handleTouchMove}
     >
       <button className="carousel-button prev" onClick={handlePrevImage}>
-        <IoChevronBack size={24}/>
+        <span className="iconify" data-icon="mdi:chevron-left"></span>
       </button>
       <img 
         src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
@@ -176,7 +191,7 @@ const Inventory = () => {
         className="modal-main-image"
       />
       <button className="carousel-button next" onClick={handleNextImage}>
-        <IoChevronForward size={24}/>
+        <span className="iconify" data-icon="mdi:chevron-right"></span>
       </button>
       {isMobile && (
         <div className="carousel-indicators">
@@ -209,26 +224,77 @@ const Inventory = () => {
                     <div className="modal-header">
                       <h2>{`${selectedItem.make} ${selectedItem.model}`}</h2>
                       <br />
-                      <p className="modal-price fw-bold">${selectedItem.price?.toLocaleString()}</p>
+                      <p className="modal-price fw-bold">
+                        ${selectedItem.price?.toLocaleString()}
+                      </p>
                     </div>
                     <div className="modal-info">
-                      {(selectedItem.brand || selectedItem.year || selectedItem.condition) && (
+                      {(selectedItem.brand ||
+                        selectedItem.year ||
+                        selectedItem.condition) && (
                         <div className="info-section">
                           <h3>Information</h3>
-                          {selectedItem.brand && <p><strong>Brand:</strong> {capitalizeString(selectedItem.brand)}</p>}
-                          {selectedItem.year && <p><strong>Year:</strong> {selectedItem.year}</p>}
-                          {selectedItem.condition && <p><strong>Condition:</strong> {selectedItem.condition}</p>}
+                          {selectedItem.brand && (
+                            <p>
+                              <strong>Brand:</strong>{" "}
+                              {capitalizeString(selectedItem.brand)}
+                            </p>
+                          )}
+                          {selectedItem.year && (
+                            <p>
+                              <strong>Year:</strong> {selectedItem.year}
+                            </p>
+                          )}
+                          {selectedItem.condition && (
+                            <p>
+                              <strong>Condition:</strong>{" "}
+                              {selectedItem.condition}
+                            </p>
+                          )}
                         </div>
                       )}
-                      {(selectedItem.horsepower || selectedItem.engineHours || selectedItem.fuelType || selectedItem.drive || selectedItem.weight || selectedItem.separator) && (
+                      {(selectedItem.horsepower ||
+                        selectedItem.engineHours ||
+                        selectedItem.fuelType ||
+                        selectedItem.drive ||
+                        selectedItem.weight ||
+                        selectedItem.separator) && (
                         <div className="info-section">
                           <h3>Specifications</h3>
-                          {selectedItem.horsepower && <p><strong>Horsepower:</strong> {selectedItem.horsepower}</p>}
-                          {selectedItem.engineHours && <p><strong>Engine Hours:</strong> {selectedItem.engineHours}</p>}
-                          {selectedItem.fuelType && <p><strong>Fuel Type:</strong> {selectedItem.fuelType}</p>}
-                          {selectedItem.drive && <p><strong>Drive:</strong> {selectedItem.drive}</p>}
-                          {selectedItem.weight && <p><strong>Weight:</strong> {selectedItem.weight}</p>}
-                          {selectedItem.separator && <p><strong>Separator:</strong> {selectedItem.separator}</p>}
+                          {selectedItem.horsepower && (
+                            <p>
+                              <strong>Horsepower:</strong>{" "}
+                              {selectedItem.horsepower}
+                            </p>
+                          )}
+                          {selectedItem.engineHours && (
+                            <p>
+                              <strong>Engine Hours:</strong>{" "}
+                              {selectedItem.engineHours}
+                            </p>
+                          )}
+                          {selectedItem.fuelType && (
+                            <p>
+                              <strong>Fuel Type:</strong>{" "}
+                              {selectedItem.fuelType}
+                            </p>
+                          )}
+                          {selectedItem.drive && (
+                            <p>
+                              <strong>Drive:</strong> {selectedItem.drive}
+                            </p>
+                          )}
+                          {selectedItem.weight && (
+                            <p>
+                              <strong>Weight:</strong> {selectedItem.weight}
+                            </p>
+                          )}
+                          {selectedItem.separator && (
+                            <p>
+                              <strong>Separator:</strong>{" "}
+                              {selectedItem.separator}
+                            </p>
+                          )}
                         </div>
                       )}
                       {selectedItem.description && (

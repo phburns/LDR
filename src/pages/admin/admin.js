@@ -1,53 +1,57 @@
 import { Icon } from "@iconify/react";
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import './admin.css';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import "./admin.css";
 
 const AdminPage = () => {
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [inventoryData, setInventoryData] = useState({
-    condition: '',
-    year: '',
-    make: '',
-    model: '',
-    brand: '',
-    description: '',
-    price: '',
-    horsepower: '',
-    engineHours: '',
-    fuelType: '',
-    liftCapacity: '',
-    weight: '',
-    drive: '',
-    deckSize: '',
-    separator: '',
-    images: []
+    condition: "",
+    year: "",
+    make: "",
+    model: "",
+    brand: "",
+    description: "",
+    price: "",
+    horsepower: "",
+    engineHours: "",
+    fuelType: "",
+    liftCapacity: "",
+    weight: "",
+    drive: "",
+    deckSize: "",
+    separator: "",
+    images: [],
   });
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState(null);
   const [editFormData, setEditFormData] = useState(null);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [editingImages, setEditingImages] = useState(null);
 
   useEffect(() => {
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/api/inventory');
-        
+        const response = await axios.get("http://localhost:5000/api/inventory");
+
         if (!response.data) {
-          throw new Error('No data received from server');
+          throw new Error("No data received from server");
         }
-        
+
         // Filter out any null or invalid items, using id instead of _id
-        const inventoryData = Array.isArray(response.data) 
-          ? response.data.filter(item => item && item.id)
+        const inventoryData = Array.isArray(response.data)
+          ? response.data.filter((item) => item && item.id)
           : [];
-        
+
         setInventory(inventoryData);
-        
       } catch (error) {
-        setError('Failed to load inventory items: ' + (error.response?.data?.message || error.message));
+        setError(
+          "Failed to load inventory items: " +
+            (error.response?.data?.message || error.message)
+        );
       } finally {
         setLoading(false);
       }
@@ -58,7 +62,7 @@ const AdminPage = () => {
 
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    const imagePromises = files.map(file => {
+    const imagePromises = files.map((file) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => resolve(e.target.result);
@@ -69,79 +73,91 @@ const AdminPage = () => {
 
     try {
       const base64Images = await Promise.all(imagePromises);
-      setInventoryData(prev => ({
+      setInventoryData((prev) => ({
         ...prev,
-        images: [...prev.images, ...base64Images]
+        images: [...prev.images, ...base64Images],
       }));
     } catch (error) {
-      setError('Error processing images');
+      setError("Error processing images");
     }
   };
 
   const handleInventorySubmit = async (e) => {
     e.preventDefault();
-    setError(''); 
-    setSuccess(''); 
-    
+    setError("");
+    setSuccess("");
+
     try {
       const dataToSubmit = {
         ...inventoryData,
         price: inventoryData.price ? parseFloat(inventoryData.price) : null,
-        horsepower: inventoryData.horsepower ? parseInt(inventoryData.horsepower) : null,
-        engineHours: inventoryData.engineHours ? parseInt(inventoryData.engineHours) : null,
+        horsepower: inventoryData.horsepower
+          ? parseInt(inventoryData.horsepower)
+          : null,
+        engineHours: inventoryData.engineHours
+          ? parseInt(inventoryData.engineHours)
+          : null,
       };
 
-      const response = await axios.post('http://localhost:5000/api/inventory', dataToSubmit);
-      
+      const response = await axios.post(
+        "http://localhost:5000/api/inventory",
+        dataToSubmit
+      );
+
       if (response.status === 201) {
-        setSuccess('Inventory added successfully!');
+        setSuccess("Inventory added successfully!");
         setInventoryData({
-          condition: '',
-          year: '',
-          make: '',
-          model: '',
-          brand: '',
-          description: '',
-          price: '',
-          horsepower: '',
-          engineHours: '',
-          fuelType: '',
-          liftCapacity: '',
-          weight: '',
-          drive: '',
-          deckSize: '',
-          separator: '',
-          images: []
+          condition: "",
+          year: "",
+          make: "",
+          model: "",
+          brand: "",
+          description: "",
+          price: "",
+          horsepower: "",
+          engineHours: "",
+          fuelType: "",
+          liftCapacity: "",
+          weight: "",
+          drive: "",
+          deckSize: "",
+          separator: "",
+          images: [],
         });
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Failed to add inventory. Please try again.');
+      setError(
+        error.response?.data?.message ||
+          "Failed to add inventory. Please try again."
+      );
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setInventoryData(prev => ({
+    setInventoryData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this item?')) {
+    if (window.confirm("Are you sure you want to delete this item?")) {
       try {
         await axios.delete(`http://localhost:5000/api/inventory/${id}`);
-        setInventory(prevInventory => prevInventory.filter(item => item._id !== id));
-        setSuccess('Item deleted successfully');
+        setInventory((prevInventory) =>
+          prevInventory.filter((item) => item._id !== id)
+        );
+        setSuccess("Item deleted successfully");
       } catch (error) {
-        setError('Failed to delete item');
+        setError("Failed to delete item");
       }
     }
   };
 
   const handleEditClick = (item) => {
     if (!item || !item.id) {
-      setError('Cannot edit this item: Invalid data');
+      setError("Cannot edit this item: Invalid data");
       return;
     }
     setEditingItem(item);
@@ -150,9 +166,9 @@ const AdminPage = () => {
 
   const handleEditInputChange = (e) => {
     const { name, value } = e.target;
-    setEditFormData(prev => ({
+    setEditFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -160,38 +176,42 @@ const AdminPage = () => {
     e.preventDefault();
     try {
       if (!editingItem || !editingItem.id) {
-        throw new Error('No item selected for editing');
+        throw new Error("No item selected for editing");
       }
 
       if (!editFormData || !editFormData.make || !editFormData.model) {
-        throw new Error('Required fields are missing');
+        throw new Error("Required fields are missing");
       }
 
       const dataToSubmit = {
         ...editFormData,
         year: parseInt(editFormData.year),
         price: parseFloat(editFormData.price),
-        horsepower: editFormData.horsepower ? parseInt(editFormData.horsepower) : null,
-        engineHours: editFormData.engineHours ? parseInt(editFormData.engineHours) : null,
+        horsepower: editFormData.horsepower
+          ? parseInt(editFormData.horsepower)
+          : null,
+        engineHours: editFormData.engineHours
+          ? parseInt(editFormData.engineHours)
+          : null,
       };
 
       const response = await axios.put(
         `http://localhost:5000/api/inventory/${editingItem.id}`,
         dataToSubmit
       );
-      
+
       if (!response.data) {
-        throw new Error('No data received from server');
+        throw new Error("No data received from server");
       }
 
-      setInventory(prev => prev.map(item => 
-        item.id === editingItem.id ? response.data : item
-      ));
+      setInventory((prev) =>
+        prev.map((item) => (item.id === editingItem.id ? response.data : item))
+      );
       setEditingItem(null);
       setEditFormData(null);
-      setSuccess('Item updated successfully');
+      setSuccess("Item updated successfully");
     } catch (error) {
-      setError(error.message || 'Failed to update item');
+      setError(error.message || "Failed to update item");
     }
   };
 
@@ -200,14 +220,156 @@ const AdminPage = () => {
     setEditFormData(null);
   };
 
+  const handleToggleVisibility = async (id, currentHidden) => {
+    try {
+      const itemToUpdate = inventory.find(item => item.id === id);
+      if (!itemToUpdate) {
+        throw new Error("Item not found");
+      }
+
+      const response = await axios.put(
+        `http://localhost:5000/api/inventory/${id}`,
+        {
+          ...itemToUpdate,
+          hidden: !currentHidden
+        }
+      );
+
+      if (response.data) {
+        setInventory((prevInventory) =>
+          prevInventory.map((item) =>
+            item.id === id ? { ...item, hidden: !currentHidden } : item
+          )
+        );
+        setSuccess("Item visibility updated successfully");
+      }
+    } catch (error) {
+      setError("Failed to update item visibility");
+      console.error("Visibility update error:", error);
+    }
+  };
+
+  const handleAdditionalImageUpload = async (e, itemId) => {
+    e.stopPropagation();
+    const files = Array.from(e.target.files);
+    const imagePromises = files.map((file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsDataURL(file);
+      });
+    });
+
+    try {
+      const base64Images = await Promise.all(imagePromises);
+      const itemToUpdate = inventory.find(item => item.id === itemId);
+      
+      const updatedImages = [...(itemToUpdate.images || []), ...base64Images];
+      
+      const response = await axios.put(
+        `http://localhost:5000/api/inventory/${itemId}`,
+        {
+          ...itemToUpdate,
+          images: updatedImages
+        }
+      );
+
+      if (response.data) {
+        setInventory(prevInventory =>
+          prevInventory.map(item =>
+            item.id === itemId ? { ...item, images: updatedImages } : item
+          )
+        );
+        setSuccess("Images added successfully");
+      }
+    } catch (error) {
+      setError("Failed to upload images");
+      console.error("Image upload error:", error);
+    }
+  };
+
+  const handleImageManagement = (e, item) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setEditingItem(item);
+    setEditingImages(item.images || []);
+    setShowImageModal(true);
+  };
+
+  const handleDeleteImage = async (index) => {
+    try {
+      const updatedImages = editingImages.filter((_, i) => i !== index);
+      const response = await axios.put(
+        `http://localhost:5000/api/inventory/${editingItem.id}`,
+        {
+          ...editingItem,
+          images: updatedImages
+        }
+      );
+
+      if (response.data) {
+        setEditingImages(updatedImages);
+        setInventory(prevInventory =>
+          prevInventory.map(item =>
+            item.id === editingItem.id ? { ...item, images: updatedImages } : item
+          )
+        );
+        setEditingItem(prev => ({...prev, images: updatedImages}));
+        setSuccess("Image deleted successfully");
+      }
+    } catch (error) {
+      setError("Failed to delete image");
+      console.error("Image delete error:", error);
+    }
+  };
+
+  const handleAddMoreImages = async (e) => {
+    const files = Array.from(e.target.files);
+    const imagePromises = files.map((file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsDataURL(file);
+      });
+    });
+
+    try {
+      const base64Images = await Promise.all(imagePromises);
+      const updatedImages = [...editingImages, ...base64Images];
+      
+      const response = await axios.put(
+        `http://localhost:5000/api/inventory/${editingItem.id}`,
+        {
+          ...editingItem,
+          images: updatedImages
+        }
+      );
+
+      if (response.data) {
+        setEditingImages(updatedImages);
+        setInventory(prevInventory =>
+          prevInventory.map(item =>
+            item.id === editingItem.id ? { ...item, images: updatedImages } : item
+          )
+        );
+        setSuccess("Images added successfully");
+      }
+    } catch (error) {
+      setError("Failed to add images");
+      console.error("Image upload error:", error);
+    }
+  };
+
   return (
     <div className="admin-container">
       {error && <div className="alert alert-danger">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
-      
+
       <form onSubmit={handleInventorySubmit} className="inventory-form">
         <h2>Add New Machine</h2>
-        
+
         <div className="form-group">
           <label htmlFor="condition">Condition *</label>
           <select
@@ -435,9 +597,7 @@ const AdminPage = () => {
               multiple
               accept="image/*"
             />
-            <small className="text-muted">
-              Upload one or more photos
-            </small>
+            <small className="text-muted">Upload one or more photos</small>
           </div>
         </div>
 
@@ -454,7 +614,9 @@ const AdminPage = () => {
           </div>
         )}
 
-        <button type="submit" className="add-button">Add Inventory</button>
+        <button type="submit" className="add-button">
+          Add Inventory
+        </button>
       </form>
 
       <div className="current-inventory">
@@ -466,131 +628,222 @@ const AdminPage = () => {
         ) : inventory && inventory.length > 0 ? (
           <div className="inventory-grid">
             {inventory
-              .filter(item => item && item.id)
+              .filter((item) => item && item.id)
               .map((item) => (
-                  <div 
-                    key={item.id}
-                    className={`inventory-card ${editingItem?.id === item.id ? 'editing' : ''}`}
-                    onClick={() => !editingItem && handleEditClick(item)}
+                <div
+                  key={item.id}
+                  className={`inventory-card ${
+                    editingItem?.id === item.id ? "editing" : ""
+                  }`}
+                  onClick={() => !editingItem && handleEditClick(item)}
+                >
+                  <button
+                    className="delete-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(item.id);
+                    }}
+                    aria-label="Delete item"
                   >
-                    <button
-                      className="delete-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(item.id);
-                      }}
-                      aria-label="Delete item"
+                    <Icon
+                      icon="mdi:trash-can-outline"
+                      width="1.2rem"
+                      height="1.2rem"
+                    />
+                  </button>
+
+                  <button
+                    className="visibility-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleVisibility(item.id, item.hidden);
+                    }}
+                    aria-label={item.hidden ? "Show item" : "Hide item"}
+                  >
+                    <Icon
+                      icon={item.hidden ? "mdi:eye-off" : "mdi:eye"}
+                      width="1.2rem"
+                      height="1.2rem"
+                    />
+                  </button>
+
+                  {editingItem?.id === item.id ? (
+                    <form
+                      onSubmit={handleEditSubmit}
+                      className="edit-form"
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      <Icon icon="mdi:trash-can-outline" width="1.2rem" height="1.2rem" />
-                    </button>
-                    
-                    {editingItem?.id === item.id ? (
-                      <form onSubmit={handleEditSubmit} className="edit-form" onClick={e => e.stopPropagation()}>
-                        <div className="form-group">
-                          <label>Make</label>
-                          <input
-                            type="text"
-                            name="make"
-                            value={editFormData.make}
-                            onChange={handleEditInputChange}
-                            className="form-control"
-                          />
+                      <div className="form-group">
+                        <label>Make</label>
+                        <input
+                          type="text"
+                          name="make"
+                          value={editFormData.make}
+                          onChange={handleEditInputChange}
+                          className="form-control"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Model</label>
+                        <input
+                          type="text"
+                          name="model"
+                          value={editFormData.model}
+                          onChange={handleEditInputChange}
+                          className="form-control"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Brand</label>
+                        <input
+                          type="text"
+                          name="brand"
+                          value={editFormData.brand}
+                          onChange={handleEditInputChange}
+                          className="form-control"
+                          placeholder="Enter brand name"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Year</label>
+                        <input
+                          type="number"
+                          name="year"
+                          value={editFormData.year}
+                          onChange={handleEditInputChange}
+                          className="form-control"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Description</label>
+                        <textarea
+                          name="description"
+                          value={editFormData.description}
+                          onChange={handleEditInputChange}
+                          className="form-control"
+                          rows="3"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Price</label>
+                        <input
+                          type="number"
+                          name="price"
+                          value={editFormData.price}
+                          onChange={handleEditInputChange}
+                          className="form-control"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Separator</label>
+                        <input
+                          type="text"
+                          name="separator"
+                          value={editFormData.separator}
+                          onChange={handleEditInputChange}
+                          className="form-control"
+                          placeholder="Enter separator type"
+                        />
+                      </div>
+                      <div className="edit-form-buttons">
+                        <button type="submit" className="btn btn-success">
+                          Save
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handleEditCancel}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={(e) => handleImageManagement(e, editingItem)}
+                        >
+                          Manage Images
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <>
+                      <div className="inventory-image-container">
+                        <img
+                          src={item.images?.[0] || "/images/placeholder.jpg"}
+                          alt={`${item.make || ""} ${item.model || ""}`}
+                          className="inventory-image"
+                          onError={(e) => {
+                            e.target.src = "/images/placeholder.jpg";
+                          }}
+                        />
+                        <div className="image-actions">
+                          <label className="add-image-button" onClick={(e) => e.stopPropagation()}>
+                            <Icon icon="mdi:image-plus" width="1.2rem" height="1.2rem" />
+                            <input
+                              type="file"
+                              onChange={(e) => handleAdditionalImageUpload(e, item.id)}
+                              multiple
+                              accept="image/*"
+                              style={{ display: 'none' }}
+                            />
+                          </label>
                         </div>
-                        <div className="form-group">
-                          <label>Model</label>
-                          <input
-                            type="text"
-                            name="model"
-                            value={editFormData.model}
-                            onChange={handleEditInputChange}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Brand</label>
-                          <input
-                            type="text"
-                            name="brand"
-                            value={editFormData.brand}
-                            onChange={handleEditInputChange}
-                            className="form-control"
-                            placeholder="Enter brand name"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Year</label>
-                          <input
-                            type="number"
-                            name="year"
-                            value={editFormData.year}
-                            onChange={handleEditInputChange}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Description</label>
-                          <textarea
-                            name="description"
-                            value={editFormData.description}
-                            onChange={handleEditInputChange}
-                            className="form-control"
-                            rows="3"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Price</label>
-                          <input
-                            type="number"
-                            name="price"
-                            value={editFormData.price}
-                            onChange={handleEditInputChange}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Separator</label>
-                          <input
-                            type="text"
-                            name="separator"
-                            value={editFormData.separator}
-                            onChange={handleEditInputChange}
-                            className="form-control"
-                            placeholder="Enter separator type"
-                          />
-                        </div>
-                        <div className="edit-form-buttons">
-                          <button type="submit" className="btn btn-success">Save</button>
-                          <button type="button" className="btn btn-secondary" onClick={handleEditCancel}>Cancel</button>
-                        </div>
-                      </form>
-                    ) : (
-                      <>
-                        <div className="inventory-image-container">
-                          <img 
-                            src={item.images?.[0] || '/images/placeholder.jpg'} 
-                            alt={`${item.make || ''} ${item.model || ''}`}
-                            className="inventory-image"
-                            onError={(e) => {
-                              e.target.src = '/images/placeholder.jpg';
-                            }}
-                          />
-                        </div>
-                        <div className="inventory-details">
-                          <h3>{(item.make || 'Unknown') + ' ' + (item.model || '')}</h3>
-                          <p className="brand">{item.brand || 'Unknown Brand'}</p>
-                          <p className="year">{item.year || 'Year N/A'}</p>
-                          <p className="description">{item.description || 'No description available'}</p>
-                          <p className="price">${((item.price || 0).toLocaleString())}</p>
-                        </div>
-                      </>
-                    )}
-                  </div>
+                      </div>
+                      <div className="inventory-details">
+                        <h3>
+                          {(item.make || "Unknown") + " " + (item.model || "")}
+                        </h3>
+                        <p className="brand">{item.brand || "Unknown Brand"}</p>
+                        <p className="year">{item.year || "Year N/A"}</p>
+                        <p className="description">
+                          {item.description || "No description available"}
+                        </p>
+                        <p className="price">
+                          ${(item.price || 0).toLocaleString()}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </div>
               ))}
           </div>
         ) : (
           <div className="text-center">No inventory items found</div>
         )}
       </div>
+
+      {showImageModal && (
+        <div className="modal-overlay" onClick={() => setShowImageModal(false)}>
+          <div className="image-management-modal" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Manage Images</h3>
+              <button 
+                className="close-button"
+                onClick={() => setShowImageModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="image-upload-section">
+            </div>
+
+            <div className="image-grid">
+              {editingImages?.map((image, index) => (
+                <div key={index} className="image-item">
+                  <img src={image} alt={`Item ${index + 1}`} />
+                  <button
+                    className="delete-image-button"
+                    onClick={() => handleDeleteImage(index)}
+                  >
+                    <Icon icon="mdi:trash-can-outline" width="1.2rem" height="1.2rem" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
