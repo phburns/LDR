@@ -32,7 +32,6 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    console.log("Fetching machines from database...");
     const machines = await prisma.machine.findMany({
       orderBy: {
         createdAt: "desc",
