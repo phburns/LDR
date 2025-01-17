@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "../repair/repair.css";
 import "./home.css";
 
 const Home = () => {
+
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     const carousel = document.getElementById("carouselExampleIndicators");
     if (carousel) {
@@ -19,6 +22,7 @@ const Home = () => {
       <div className="banner-background"></div>
       <div className="home-container">
         <div className="content">
+          <div ClassName='carousel-section'>
           <div
             id="carouselExampleIndicators"
             className="carousel slide"
@@ -151,6 +155,7 @@ const Home = () => {
               <span className="visually-hidden">Next</span>
             </button>
           </div>
+          </div>
 
           <div className="brand-section">
             <h2 className="brand-title">Shop Our Inventory By Brand</h2>
@@ -210,15 +215,26 @@ const Home = () => {
               </NavLink>
             </div>
 
-            <div className="image-container">
-              <NavLink to="/contactus">
+            <div className="image-container storehours-container">
                 <img
                   src="/images/storehours.jpg"
                   alt="Larry's Diesel Store Hours"
                   className="repair-image"
+                  onClick={() => setShowModal(true)}
+                  style={{ cursor: "pointer" }}
                 />
-              </NavLink>
             </div>
+            {showModal && (
+        <div className="modal" onClick={() => setShowModal(false)}>
+          <div className="modal-content">
+            <img
+              src="/images/storehours.jpg"
+              alt="Larry's Diesel Store Hours"
+              style={{ width: '100%', height: 'auto', maxWidth: '90vw' }}
+            />
+          </div>
+        </div>
+      )}
           </div>
         </div>
 

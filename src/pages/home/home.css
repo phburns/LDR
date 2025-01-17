@@ -34,18 +34,31 @@ html, body {
     z-index: 2;
   }
 
+  .carousel-section {
+    padding: 40px 20px;
+    background-color: white;
+    position: fixed;
+    z-index: 1;
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+
 .carousel {
     max-width: 1200px;
     margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 600px;
 }
 
 .carousel-item {
     height: calc(100vh - var(--header-height));
-    max-height: 700px; 
+    max-height: 600px; 
 }
 
 .carousel-item img {
-    object-fit: contain; 
+    object-fit: cover; 
+    object-position: center;
     height: 100%;
     width: 100%;
 }
@@ -210,24 +223,28 @@ html, body {
         margin-bottom: 30px;
     }
 
+    .carousel {
+        height: 300px;
+        margin: 0 ; 
+        border-radius: 0;
+      }
+
     .carousel-item {
         height: 300px; 
         max-height: none;
       }
     
       .carousel-item img {
-        object-fit: contain;
         width: 100%;
         height: 100%;
+        object-fit: cover;
+        object-position: center;
       }
     
-      .carousel {
-        margin: 0 -20px; 
-      }
-
       .carousel-caption {
         padding: 10px;
-        bottom: 20px;
+        bottom: 0;
+        background-color:rgba(0, 0, 0, 0.7);
       }
     
       .carousel-caption h5 {
@@ -241,7 +258,43 @@ html, body {
       }
 }
 
+@media screen and (max-width: 768px) {
+    .storehours-container {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .storehours-container img {
+      width: 100%;
+      max-width: 350px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      object-fit: contain;
+    }
+  }
+
 
   body, #root {
     background-color: transparent;
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    padding: 20px;
+    border-radius: 8px;
+    max-height: 90vh;
+    overflow: auto;
   }
