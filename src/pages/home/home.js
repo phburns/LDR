@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./home.css";
 import '../repair/repair.css';
+import farmBackground from './images/farmbackground.jpg';
 
 const Home = () => {
   useEffect(() => {
@@ -15,7 +16,10 @@ const Home = () => {
 }, []);
 
   return (
-    <div className="home-container">
+    <>
+      <div className='banner-background'
+      style={{ backgroundImage: `url(${farmBackground})`}}></div>
+      <div className="home-container">
       <div
         id="carouselExampleIndicators"
         className="carousel slide"
@@ -151,7 +155,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="repair-images repair-container">
+<div className="repair-images repair-container">
   <div className="image-container">
     <NavLink to="/contactus">
       <img 
@@ -174,8 +178,9 @@ const Home = () => {
       <span className="image-caption">We Work Where You Need Us.</span>
     </NavLink>
     </div>
-  </div>
 </div>
+      </div>
+    </>
   );
 };
 
