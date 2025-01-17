@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import "./home.css";
 import '../repair/repair.css';
-import farmBackground from './images/farmbackground.jpg';
+import "./home.css";
 
 const Home = () => {
   useEffect(() => {
@@ -18,7 +17,7 @@ const Home = () => {
   return (
     <>
       <div className='banner-background'
-      style={{ backgroundImage: `url(${farmBackground})`}}></div>
+      style={{ backgroundImage: `url('/images/farmbackground.jpg')`}}></div>
       <div className="home-container">
       <div
         id="carouselExampleIndicators"

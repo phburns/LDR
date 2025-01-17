@@ -33,6 +33,7 @@ const AdminPage = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [editingImages, setEditingImages] = useState(null);
   const [tempEditingImages, setTempEditingImages] = useState(null);
+  const [showAdditionalFieldsModal, setShowAdditionalFieldsModal] = useState(false);
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -802,6 +803,26 @@ const AdminPage = () => {
                           />
                         </div>
                       )}
+                      <div className="button-group mb-3">
+                        <button
+                          type="button"
+                          className="btn manage-button"
+                          onClick={(e) => handleImageManagement(e, editingItem)}
+                        >
+                          Manage Images
+                        </button>
+                        <button
+                          type="button"
+                          className="btn manage-button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setShowAdditionalFieldsModal(true);
+                          }}
+                        >
+                          Additional Fields
+                        </button>
+                      </div>
                       <div className="edit-form-buttons">
                         <button type="submit" className="btn save-button">
                           Save
@@ -812,13 +833,6 @@ const AdminPage = () => {
                           onClick={handleEditCancel}
                         >
                           Cancel
-                        </button>
-                        <button
-                          type="button"
-                          className="btn manage-button"
-                          onClick={(e) => handleImageManagement(e, editingItem)}
-                        >
-                          Manage Images
                         </button>
                       </div>
                     </form>
@@ -914,6 +928,127 @@ const AdminPage = () => {
               <button 
                 className="btn save-button"
                 onClick={handleSaveImages}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showAdditionalFieldsModal && (
+        <div className="modal-overlay" onClick={() => setShowAdditionalFieldsModal(false)}>
+          <div className="additional-fields-modal" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Additional Fields</h3>
+            </div>
+            
+            <form className="additional-fields-form">
+              <div className="form-group">
+                <label>Horsepower</label>
+                <input
+                  type="number"
+                  name="horsepower"
+                  value={editFormData.horsepower}
+                  onChange={handleEditInputChange}
+                  className="form-control"
+                  placeholder="Enter horsepower"
+                />
+              </div>
+              <div className="form-group">
+                <label>Engine Hours</label>
+                <input
+                  type="number"
+                  name="engineHours"
+                  value={editFormData.engineHours}
+                  onChange={handleEditInputChange}
+                  className="form-control"
+                  placeholder="Enter engine hours"
+                />
+              </div>
+              <div className="form-group">
+                <label>Fuel Type</label>
+                <input
+                  type="text"
+                  name="fuelType"
+                  value={editFormData.fuelType}
+                  onChange={handleEditInputChange}
+                  className="form-control"
+                  placeholder="Enter fuel type"
+                />
+              </div>
+              <div className="form-group">
+                <label>Lift Capacity</label>
+                <input
+                  type="text"
+                  name="liftCapacity"
+                  value={editFormData.liftCapacity}
+                  onChange={handleEditInputChange}
+                  className="form-control"
+                  placeholder="Enter lift capacity"
+                />
+              </div>
+              <div className="form-group">
+                <label>Weight</label>
+                <input
+                  type="text"
+                  name="weight"
+                  value={editFormData.weight}
+                  onChange={handleEditInputChange}
+                  className="form-control"
+                  placeholder="Enter weight"
+                />
+              </div>
+              <div className="form-group">
+                <label>Drive</label>
+                <input
+                  type="text"
+                  name="drive"
+                  value={editFormData.drive}
+                  onChange={handleEditInputChange}
+                  className="form-control"
+                  placeholder="Enter drive type"
+                />
+              </div>
+              <div className="form-group">
+                <label>Deck Size</label>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    name="deckSize"
+                    value={editFormData.deckSize}
+                    onChange={handleEditInputChange}
+                    className="form-control"
+                    placeholder="Enter deck size"
+                  />
+                  <span className="input-group-text">Inches</span>
+                </div>
+              </div>
+              <div className="form-group">
+                <label>Separator</label>
+                <input
+                  type="text"
+                  name="separator"
+                  value={editFormData.separator}
+                  onChange={handleEditInputChange}
+                  className="form-control"
+                  placeholder="Enter separator type"
+                />
+              </div>
+            </form>
+
+            <div className="modal-footer">
+              <button 
+                className="btn btn-secondary"
+                onClick={() => setShowAdditionalFieldsModal(false)}
+              >
+                Close
+              </button>
+              <button 
+                className="btn save-button"
+                onClick={() => {
+                  setShowAdditionalFieldsModal(false);
+                }}
               >
                 Save Changes
               </button>
