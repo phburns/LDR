@@ -75,8 +75,10 @@ const AdminPage = () => {
         ...prev,
         images: [...prev.images, ...imageUrls],
       }));
+      setError(""); // Clear any previous errors
     } catch (error) {
-      setError("Error uploading images: " + error.message);
+      setError(error.message || "Error uploading images. Please check your AWS credentials in the .env file.");
+      console.error("Image upload error:", error);
     }
   };
 
@@ -282,9 +284,10 @@ const AdminPage = () => {
           )
         );
         setSuccess("Images added successfully");
+        setError(""); // Clear any previous errors
       }
     } catch (error) {
-      setError("Failed to upload images");
+      setError(error.message || "Failed to upload images. Please check your AWS credentials in the .env file.");
       console.error("Image upload error:", error);
     }
   };
@@ -326,10 +329,11 @@ const AdminPage = () => {
         setEditingItem(prev => ({...prev, images: updatedImages}));
         setEditFormData(prev => ({...prev, images: updatedImages}));
         setSuccess("Image deleted successfully");
+        setError(""); // Clear any previous errors
         setShowSuccessModal(true);
       }
     } catch (error) {
-      setError("Failed to delete image");
+      setError(error.message || "Failed to delete image. Please check your AWS credentials in the .env file.");
       console.error("Image deletion error:", error);
     }
   };
@@ -390,11 +394,12 @@ const AdminPage = () => {
         setEditingItem(prev => ({...prev, images: updatedImages}));
         setEditFormData(prev => ({...prev, images: updatedImages}));
         setSuccess("Images added successfully");
+        setError(""); // Clear any previous errors
         setShowSuccessModal(true);
         setShowImageModal(false);
       }
     } catch (error) {
-      setError("Failed to add images");
+      setError(error.message || "Failed to add images. Please check your AWS credentials in the .env file.");
       console.error("Image upload error:", error);
     }
   };
@@ -405,7 +410,10 @@ const AdminPage = () => {
       {showSuccessModal && (
         <SuccessModal
           message={success}
-          onClose={() => setShowSuccessModal(false)}
+          onClose={() => {
+            setShowSuccessModal(false);
+            window.location.reload();
+          }}
         />
       )}
 
