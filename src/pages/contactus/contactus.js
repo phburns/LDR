@@ -32,8 +32,8 @@ const ContactUs = () => {
                         <p>BJ <a href="mailto:BJParadee@larrysdiesel.com">BJParadee@larrysdiesel.com</a></p>
                         
                         <p><strong>Office:</strong></p>
-                        <p>Paula <a href="mailto:Paula.J@larrysdiesel.com">Paula.J@larrysdiesel.com</a></p>
-                        <p>Donya <a href="mailto:Donya.M@larrysdiesel.com">Donya.M@larrysdiesel.com</a></p>
+                        <p>Paula <a href="mailto:PaulaJean@ckt.net">PaulaJean@ckt.net</a></p>
+                        <p>Donya <a href="mailto:DonyaMurray@hotmail.com">DonyaMurray@hotmail.com</a></p>
                     </div>
                 </div>
             </div>
