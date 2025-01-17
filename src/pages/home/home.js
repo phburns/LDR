@@ -213,14 +213,10 @@ const Home = () => {
             <div className="image-container">
               <NavLink to="/contactus">
                 <img
-                  src="/images/servicetruck.jpeg"
-                  alt="Larry's Diesel service truck"
+                  src="/images/storehours.jpg"
+                  alt="Larry's Diesel Store Hours"
                   className="repair-image"
                 />
-                <div className="website-hint">Click to Contact Us</div>
-                <span className="image-caption">
-                  We Work Where You Need Us.
-                </span>
               </NavLink>
             </div>
           </div>
