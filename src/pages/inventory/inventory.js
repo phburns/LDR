@@ -29,7 +29,7 @@ const Inventory = () => {
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/inventory");
+        const response = await axios.get("/api/inventory");
         if (!response.data) {
           throw new Error("No data received from server");
         }
@@ -301,7 +301,9 @@ const handleTouchEnd = () => {
                         selectedItem.fuelType ||
                         selectedItem.drive ||
                         selectedItem.weight ||
-                        selectedItem.separator) && (
+                        selectedItem.separator ||
+                        selectedItem.deckSize ||
+                        selectedItem.liftCapacity) && (
                         <div className="info-section">
                           <h3>Specifications</h3>
                           {selectedItem.horsepower && (
@@ -330,6 +332,16 @@ const handleTouchEnd = () => {
                           {selectedItem.weight && (
                             <p>
                               <strong>Weight:</strong> {selectedItem.weight}
+                            </p>
+                          )}
+                          {selectedItem.deckSize && (
+                            <p>
+                              <strong>Deck Size:</strong> {selectedItem.deckSize} Inches
+                            </p>
+                          )}
+                          {selectedItem.liftCapacity && (
+                            <p>
+                              <strong>Lift Capacity:</strong> {selectedItem.liftCapacity}
                             </p>
                           )}
                           {selectedItem.separator && (

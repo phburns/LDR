@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import SuccessModal from "../../components/SuccessModal/SuccessModal";
+import { deleteFromS3, uploadToS3 } from "../../utils/s3";
 import "./admin.css";
 
 const AdminPage = () => {
@@ -39,7 +40,7 @@ const AdminPage = () => {
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/inventory");
+        const response = await axios.get("/api/inventory");
 
         if (!response.data) {
           throw new Error("No data received from server");
@@ -66,23 +67,16 @@ const AdminPage = () => {
 
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    const imagePromises = files.map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.onerror = (e) => reject(e);
-        reader.readAsDataURL(file);
-      });
-    });
-
     try {
-      const base64Images = await Promise.all(imagePromises);
-      setInventoryData((prev) => ({
+      const uploadPromises = files.map(file => uploadToS3(file));
+      const imageUrls = await Promise.all(uploadPromises);
+      
+      setInventoryData(prev => ({
         ...prev,
-        images: [...prev.images, ...base64Images],
+        images: [...prev.images, ...imageUrls],
       }));
     } catch (error) {
-      setError("Error processing images");
+      setError("Error uploading images: " + error.message);
     }
   };
 
@@ -92,20 +86,15 @@ const AdminPage = () => {
     setSuccess("");
 
     try {
-      const dataToSubmit = {
-        ...inventoryData,
-        price: inventoryData.price ? parseFloat(inventoryData.price) : null,
-        horsepower: inventoryData.horsepower
-          ? parseInt(inventoryData.horsepower)
-          : null,
-        engineHours: inventoryData.engineHours
-          ? parseInt(inventoryData.engineHours)
-          : null,
-      };
-
+      // Send the data directly as JSON, no need for FormData
       const response = await axios.post(
-        "http://localhost:5000/api/inventory",
-        dataToSubmit
+        "/api/inventory",
+        inventoryData,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
 
       if (response.status === 201) {
@@ -149,13 +138,29 @@ const AdminPage = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/inventory/${id}`);
+        // Find the item to get its images
+        const itemToDelete = inventory.find(item => item.id === id);
+        if (!itemToDelete) {
+          throw new Error("Item not found");
+        }
+
+        // Delete all associated images from S3
+        if (itemToDelete.images && itemToDelete.images.length > 0) {
+          const deletePromises = itemToDelete.images.map(imageUrl => deleteFromS3(imageUrl));
+          await Promise.all(deletePromises);
+        }
+
+        // Delete the item from the database
+        await axios.delete(`/api/inventory/${id}`);
+        
+        // Update local state
         setInventory((prevInventory) =>
-          prevInventory.filter((item) => item._id !== id)
+          prevInventory.filter((item) => item.id !== id)
         );
-        setSuccess("Item deleted successfully");
+        setSuccess("Item and associated images deleted successfully");
       } catch (error) {
-        setError("Failed to delete item");
+        setError("Failed to delete item: " + error.message);
+        console.error("Delete error:", error);
       }
     }
   };
@@ -188,21 +193,14 @@ const AdminPage = () => {
         throw new Error("Required fields are missing");
       }
 
-      const { id, ...dataToSubmit } = {
-        ...editFormData,
-        year: parseInt(editFormData.year),
-        price: parseFloat(editFormData.price),
-        horsepower: editFormData.horsepower
-          ? parseInt(editFormData.horsepower)
-          : null,
-        engineHours: editFormData.engineHours
-          ? parseInt(editFormData.engineHours)
-          : null,
-      };
-
       const response = await axios.put(
-        `http://localhost:5000/api/inventory/${editingItem.id}`,
-        dataToSubmit
+        `/api/inventory/${editingItem.id}`,
+        editFormData,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
 
       if (response.status === 200) {
@@ -237,7 +235,7 @@ const AdminPage = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:5000/api/inventory/${id}`,
+        `/api/inventory/${id}`,
         {
           ...itemToUpdate,
           hidden: !currentHidden
@@ -262,23 +260,15 @@ const AdminPage = () => {
   const handleAdditionalImageUpload = async (e, itemId) => {
     e.stopPropagation();
     const files = Array.from(e.target.files);
-    const imagePromises = files.map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.onerror = (e) => reject(e);
-        reader.readAsDataURL(file);
-      });
-    });
-
     try {
-      const base64Images = await Promise.all(imagePromises);
-      const itemToUpdate = inventory.find(item => item.id === itemId);
+      const uploadPromises = files.map(file => uploadToS3(file));
+      const newImageUrls = await Promise.all(uploadPromises);
       
-      const updatedImages = [...(itemToUpdate.images || []), ...base64Images];
+      const itemToUpdate = inventory.find(item => item.id === itemId);
+      const updatedImages = [...(itemToUpdate.images || []), ...newImageUrls];
       
       const response = await axios.put(
-        `http://localhost:5000/api/inventory/${itemId}`,
+        `/api/inventory/${itemId}`,
         {
           ...itemToUpdate,
           images: updatedImages
@@ -311,12 +301,15 @@ const AdminPage = () => {
   const handleDeleteImage = async (e, index) => {
     e.stopPropagation();
     try {
+      const imageUrl = tempEditingImages[index];
+      await deleteFromS3(imageUrl);
+      
       const updatedImages = [...tempEditingImages];
       updatedImages.splice(index, 1);
       setTempEditingImages(updatedImages);
 
       const response = await axios.put(
-        `http://localhost:5000/api/inventory/${editingItem.id}`,
+        `/api/inventory/${editingItem.id}`,
         {
           ...editingItem,
           images: updatedImages
@@ -344,7 +337,7 @@ const AdminPage = () => {
   const handleSaveImages = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/inventory/${editingItem.id}`,
+        `/api/inventory/${editingItem.id}`,
         {
           ...editingItem,
           images: tempEditingImages
@@ -372,21 +365,14 @@ const AdminPage = () => {
 
   const handleAddMoreImages = async (e) => {
     const files = Array.from(e.target.files);
-    const imagePromises = files.map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.onerror = (e) => reject(e);
-        reader.readAsDataURL(file);
-      });
-    });
-
     try {
-      const base64Images = await Promise.all(imagePromises);
-      const updatedImages = [...editingImages, ...base64Images];
+      const uploadPromises = files.map(file => uploadToS3(file));
+      const newImageUrls = await Promise.all(uploadPromises);
+      
+      const updatedImages = [...editingImages, ...newImageUrls];
       
       const response = await axios.put(
-        `http://localhost:5000/api/inventory/${editingItem.id}`,
+        `/api/inventory/${editingItem.id}`,
         {
           ...editingItem,
           images: updatedImages

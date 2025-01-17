@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 router.post("/", async (req, res) => {
   try {
     const machineData = req.body;
+    
     const newMachine = await prisma.machine.create({
       data: {
         ...machineData,
@@ -19,10 +20,12 @@ router.post("/", async (req, res) => {
           : null,
         price: machineData.price ? parseFloat(machineData.price) : null,
         deckSize: machineData.deckSize || null,
+        images: machineData.images || [] // Store the S3 URLs directly
       },
     });
     res.status(201).json(newMachine);
   } catch (error) {
+    console.error("Error creating machine:", error);
     res.status(500).json({ message: "Error creating machine" });
   }
 });
@@ -48,11 +51,15 @@ router.get("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    
+    // Delete the machine from the database
     await prisma.machine.delete({
       where: { id },
     });
+    
     res.status(200).json({ message: "Machine deleted successfully" });
   } catch (error) {
+    console.error("Delete error:", error);
     res.status(500).json({ message: "Error deleting machine" });
   }
 });
@@ -77,12 +84,12 @@ router.put("/:id", async (req, res) => {
       where: { id },
       data: {
         ...machineData,
-        // Only parse numeric fields if they're included in the update
         year: machineData.year ? parseInt(machineData.year) : existingMachine.year,
         horsepower: machineData.horsepower ? parseInt(machineData.horsepower) : existingMachine.horsepower,
         engineHours: machineData.engineHours ? parseInt(machineData.engineHours) : existingMachine.engineHours,
         price: machineData.price ? parseFloat(machineData.price) : existingMachine.price,
-        hidden: machineData.hidden !== undefined ? machineData.hidden : existingMachine.hidden
+        hidden: machineData.hidden !== undefined ? machineData.hidden : existingMachine.hidden,
+        images: machineData.images || existingMachine.images
       },
     });
 
