@@ -17,8 +17,14 @@ const capitalizeString = (str) => {
 const Inventory = () => {
   const { brand } = useParams();
   const [inventory, setInventory] = useState([]);
+  const [filteredInventory, setFilteredInventory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedType, setSelectedType] = useState("");
+  const [brands, setBrands] = useState([]);
+  const [types] = useState(["Tractor", "Harvester", "Mower", "Attachment"]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [enlargedImage, setEnlargedImage] = useState(null);
@@ -29,7 +35,10 @@ const Inventory = () => {
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("/api/inventory");
+        console.log("Making request to inventory endpoint");
+        const response = await axios.get("http://localhost:5000/api/inventory");
+        console.log("Response received:", response);
+
         if (!response.data) {
           throw new Error("No data received from server");
         }
@@ -38,7 +47,12 @@ const Inventory = () => {
           ? response.data.filter((item) => item && item.id && !item.hidden)
           : [];
 
-        // Filter by brand if specified
+
+        // Extract unique brands
+        const uniqueBrands = [...new Set(inventoryData.map(item => item.brand))].filter(Boolean);
+        setBrands(uniqueBrands);
+
+        // Filter by brand if specified in URL
         if (brand) {
           if (brand.toLowerCase() === "new") {
             inventoryData = inventoryData.filter(
@@ -64,8 +78,11 @@ const Inventory = () => {
         }
 
         setInventory(inventoryData);
+        setFilteredInventory(inventoryData);
       } catch (error) {
-        setError("Failed to load inventory items");
+        console.error("Detailed fetch error:", error);
+        const errorMessage = error.response?.data?.details || error.response?.data?.message || error.message;
+        setError("Failed to load inventory items: " + errorMessage);
       } finally {
         setLoading(false);
       }
@@ -73,6 +90,32 @@ const Inventory = () => {
 
     fetchInventory();
   }, [brand]);
+
+  useEffect(() => {
+    let filtered = [...inventory];
+
+    // Apply search filter
+    if (searchTerm) {
+      const search = searchTerm.toLowerCase();
+      filtered = filtered.filter(item => 
+        item.make?.toLowerCase().includes(search) ||
+        item.model?.toLowerCase().includes(search) ||
+        item.description?.toLowerCase().includes(search)
+      );
+    }
+
+    // Apply brand filter
+    if (selectedBrand) {
+      filtered = filtered.filter(item => item.brand === selectedBrand);
+    }
+
+    // Apply type filter
+    if (selectedType) {
+      filtered = filtered.filter(item => item.type === selectedType);
+    }
+
+    setFilteredInventory(filtered);
+  }, [searchTerm, selectedBrand, selectedType, inventory]);
 
   const handleCardClick = (item) => {
     setSelectedItem(item);
@@ -162,14 +205,52 @@ const handleTouchEnd = () => {
     <div className="inventory-container">
       <h1>Our Inventory</h1>
 
+      <div className="inventory-filters">
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search inventory..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="form-control"
+          />
+        </div>
+        <div className="filter-dropdowns">
+          <select
+            className="form-select"
+            value={selectedBrand}
+            onChange={(e) => setSelectedBrand(e.target.value)}
+          >
+            <option value="">All Brands</option>
+            {brands.map((brand) => (
+              <option key={brand} value={brand}>
+                {capitalizeString(brand)}
+              </option>
+            ))}
+          </select>
+          <select
+            className="form-select"
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
+          >
+            <option value="">All Types</option>
+            {types.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {loading ? (
         <div className="text-center">Loading inventory...</div>
       ) : error ? (
         <div className="text-center text-danger">{error}</div>
-      ) : inventory && inventory.length > 0 ? (
+      ) : filteredInventory && filteredInventory.length > 0 ? (
         <>
           <div className="inventory-grid">
-            {inventory.map((item) => (
+            {filteredInventory.map((item) => (
               <div
                 key={item.id}
                 className="inventory-card"

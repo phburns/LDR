@@ -15,6 +15,7 @@ const AdminPage = () => {
     make: "",
     model: "",
     brand: "",
+    type: "",
     description: "",
     price: "",
     horsepower: "",
@@ -40,7 +41,9 @@ const AdminPage = () => {
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("/api/inventory");
+        console.log("Making request to inventory endpoint");
+        const response = await axios.get("http://localhost:5000/api/inventory");
+        
 
         if (!response.data) {
           throw new Error("No data received from server");
@@ -53,9 +56,10 @@ const AdminPage = () => {
 
         setInventory(inventoryData);
       } catch (error) {
+        console.error("Detailed fetch error:", error);
+        const errorMessage = error.response?.data?.details || error.response?.data?.message || error.message;
         setError(
-          "Failed to load inventory items: " +
-            (error.response?.data?.message || error.message)
+          "Failed to load inventory items: " + errorMessage
         );
       } finally {
         setLoading(false);
@@ -88,9 +92,8 @@ const AdminPage = () => {
     setSuccess("");
 
     try {
-      // Send the data directly as JSON, no need for FormData
       const response = await axios.post(
-        "/api/inventory",
+        "http://localhost:5000/api/inventory",
         inventoryData,
         {
           headers: {
@@ -108,6 +111,7 @@ const AdminPage = () => {
           make: "",
           model: "",
           brand: "",
+          type: "",
           description: "",
           price: "",
           horsepower: "",
@@ -153,7 +157,7 @@ const AdminPage = () => {
         }
 
         // Delete the item from the database
-        await axios.delete(`/api/inventory/${id}`);
+        await axios.delete(`http://localhost:5000/api/inventory/${id}`);
         
         // Update local state
         setInventory((prevInventory) =>
@@ -195,9 +199,19 @@ const AdminPage = () => {
         throw new Error("Required fields are missing");
       }
 
+      // Ensure all fields are properly formatted
+      const dataToUpdate = {
+        ...editFormData,
+        year: parseInt(editFormData.year),
+        price: parseFloat(editFormData.price),
+        horsepower: editFormData.horsepower ? parseInt(editFormData.horsepower) : null,
+        engineHours: editFormData.engineHours ? parseInt(editFormData.engineHours) : null,
+        type: editFormData.type || null,
+      };
+
       const response = await axios.put(
-        `/api/inventory/${editingItem.id}`,
-        editFormData,
+        `http://localhost:5000/api/inventory/${editingItem.id}`,
+        dataToUpdate,
         {
           headers: {
             'Content-Type': 'application/json'
@@ -433,6 +447,24 @@ const AdminPage = () => {
             <option value="">Select Condition</option>
             <option value="new">New</option>
             <option value="pre-owned">Pre-Owned</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="type">Type *</label>
+          <select
+            id="type"
+            name="type"
+            className="form-control"
+            value={inventoryData.type}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Select Type</option>
+            <option value="Tractor">Tractor</option>
+            <option value="Harvester">Harvester</option>
+            <option value="Mower">Mower</option>
+            <option value="Attachment">Attachment</option>
           </select>
         </div>
 
@@ -938,6 +970,21 @@ const AdminPage = () => {
             </div>
             
             <form className="additional-fields-form">
+              <div className="form-group">
+                <label>Type</label>
+                <select
+                  name="type"
+                  value={editFormData.type}
+                  onChange={handleEditInputChange}
+                  className="form-control"
+                >
+                  <option value="">Select Type</option>
+                  <option value="Tractor">Tractor</option>
+                  <option value="Harvester">Harvester</option>
+                  <option value="Mower">Mower</option>
+                  <option value="Attachment">Attachment</option>
+                </select>
+              </div>
               <div className="form-group">
                 <label>Horsepower</label>
                 <input

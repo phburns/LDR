@@ -20,6 +20,7 @@ model Machine {
   make         String
   model        String
   brand        String
+  type         String?  // "tractor", "harvester", "mower", "attachment"
   description  String
   price        Int?
   horsepower   Int?

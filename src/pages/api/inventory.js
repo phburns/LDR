@@ -39,12 +39,22 @@ router.get("/", async (req, res) => {
     });
 
     if (!machines || machines.length === 0) {
+      console.log("No machines found");
       return res.json([]);
     }
 
     res.json(machines);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching machines" });
+    console.error("Detailed error fetching machines:", {
+      message: error.message,
+      stack: error.stack,
+      code: error.code,
+      meta: error.meta
+    });
+    res.status(500).json({ 
+      message: "Error fetching machines",
+      details: error.message 
+    });
   }
 });
 
@@ -89,6 +99,7 @@ router.put("/:id", async (req, res) => {
         engineHours: machineData.engineHours ? parseInt(machineData.engineHours) : existingMachine.engineHours,
         price: machineData.price ? parseFloat(machineData.price) : existingMachine.price,
         hidden: machineData.hidden !== undefined ? machineData.hidden : existingMachine.hidden,
+        type: machineData.type || existingMachine.type,
         images: machineData.images || existingMachine.images
       },
     });
