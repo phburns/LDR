@@ -209,6 +209,7 @@ const Home = () => {
                 </span>
               </NavLink>
             </div>
+
             <div className="image-container">
               <NavLink to="/contactus">
                 <img
@@ -222,6 +223,27 @@ const Home = () => {
                 </span>
               </NavLink>
             </div>
+          </div>
+        </div>
+
+        <div className="brand-section">
+          <h2 className="brand-title">Check out our Other Partners:</h2>
+          <div className="other-partners-container certification">
+            <NavLink to="https://www.reichardind.com/" className="brand-link">
+              <img
+                src="/images/reichardlogo.png"
+                alt="reichard industries logo"
+                className="brand-logo"
+              />
+            </NavLink>
+            <NavLink to="https://maywes.com/" className="brand-link">
+              <img
+                src="/images/mayweslogo.jpg"
+                alt="May Wes Manufactuing logo"
+                className="brand-logo"
+              />
+            </NavLink>
+            <div />
           </div>
         </div>
       </div>

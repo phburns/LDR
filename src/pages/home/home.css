@@ -152,6 +152,17 @@ html, body {
     padding: 2rem;
 }
 
+.other-partners-container {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
 
 .brand-link {
     display: block;
@@ -170,6 +181,14 @@ html, body {
 
 @media (max-width: 768px) {
     .brand-container {
+        gap: 1.5rem;
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        justify-items: center;
+        justify-content: center;
+    }
+
+    .other-partners-container {
         gap: 1.5rem;
         grid-template-columns: 1fr;
         padding: 1rem;
