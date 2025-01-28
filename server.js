@@ -3,6 +3,8 @@ const cors = require('cors');
 const inventoryRouter = require('./src/pages/api/inventory');
 const authRoutes = require('./src/pages/api/auth');
 const { PrismaClient } = require('@prisma/client');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const app = express();
 const prisma = new PrismaClient();
@@ -25,14 +27,70 @@ async function testConnection() {
 
 testConnection();
 
-// Configure CORS
-app.use(cors({
-  origin: 'http://localhost:3000',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type']
-}));
-
+// Configure CORS - make sure this comes before routes
+app.use(cors());
 app.use(express.json({ limit: '50mb' }));
+
+// Email routing configuration
+const emailRoutes = {
+  general: 'Dennis.B@larrysdiesel.com',
+  parts: 'BJParadee@larrysdiesel.com',
+  sales: 'Dennis.B@larrysdiesel.com',
+  repair: 'Herb.S@larrysdiesel.com'
+};
+
+// Create reusable transporter
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+// Contact form endpoint - make sure this comes before other route handlers
+app.post('/api/contact', async (req, res) => {
+  console.log('Received contact form submission:', req.body); // Add logging
+  try {
+    const { name, company, email, telephone, subject, contactMethod, enquiry } = req.body;
+
+    // Determine recipient based on subject
+    const toEmail = emailRoutes[subject] || emailRoutes.general;
+
+    // Email content
+    const mailOptions = {
+      from: process.env.SMTP_USER,
+      to: toEmail,
+      subject: `New Contact Form Submission: ${subject}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        ${company ? `<p><strong>Company:</strong> ${company}</p>` : ''}
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Telephone:</strong> ${telephone}</p>
+        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>Preferred Contact Method:</strong> ${contactMethod}</p>
+        <p><strong>Enquiry:</strong></p>
+        <p>${enquiry}</p>
+      `
+    };
+
+    // Send email
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully to:', toEmail); // Add logging
+    res.status(200).json({ message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ message: 'Error sending email', error: error.message });
+  }
+});
+
+// Other route handlers
 app.use('/api/inventory', inventoryRouter);
 app.use('/api/auth', authRoutes);
 

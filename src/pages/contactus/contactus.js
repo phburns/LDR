@@ -1,12 +1,53 @@
-import { useForm } from '@formspree/react';
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 import './contactus.css';
 
 const ContactUs = () => {
-    const [state, handleSubmit] = useForm("YOUR_FORM_ID");
+    const [formData, setFormData] = useState({
+        name: '',
+        company: '',
+        email: '',
+        telephone: '',
+        subject: '',
+        contactMethod: '',
+        enquiry: ''
+    });
+    const [submitStatus, setSubmitStatus] = useState({ loading: false, success: false, error: null });
 
-    if (state.succeeded) {
-        return <p>Thanks for your submission!</p>;
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSubmitStatus({ loading: true, success: false, error: null });
+
+        try {
+            await axios.post('http://localhost:5000/api/contact', formData);
+            setSubmitStatus({ loading: false, success: true, error: null });
+            setFormData({
+                name: '',
+                company: '',
+                email: '',
+                telephone: '',
+                subject: '',
+                contactMethod: '',
+                enquiry: ''
+            });
+        } catch (error) {
+            setSubmitStatus({ 
+                loading: false, 
+                success: false, 
+                error: 'Failed to send message. Please try again later.'
+            });
+        }
+    };
+
+    if (submitStatus.success) {
+        return <p className="success-message">Thanks for your submission! We'll get back to you soon.</p>;
     }
 
     return (
@@ -48,6 +89,8 @@ const ContactUs = () => {
                             name="name"
                             className='form-control'
                             required
+                            value={formData.name}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className='col-md-6'>
@@ -57,6 +100,8 @@ const ContactUs = () => {
                             type="text"
                             name="company"
                             className='form-control'
+                            value={formData.company}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -69,6 +114,8 @@ const ContactUs = () => {
                             name="email"
                             className='form-control'
                             required
+                            value={formData.email}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className='col-md-6'>
@@ -79,12 +126,21 @@ const ContactUs = () => {
                             name="telephone"
                             className='form-control'
                             required
+                            value={formData.telephone}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
                 <div className='mb-3'>
                     <label htmlFor="subject" className='form-label'>Subject *</label>
-                    <select id="subject" name="subject" className='form-select' required>
+                    <select 
+                        id="subject" 
+                        name="subject" 
+                        className='form-select' 
+                        required
+                        value={formData.subject}
+                        onChange={handleChange}
+                    >
                         <option value="">Please Select</option>
                         <option value="general">General Inquiry</option>
                         <option value="parts">Parts</option>
@@ -94,7 +150,14 @@ const ContactUs = () => {
                 </div>
                 <div className='mb-3'>
                     <label htmlFor="contactMethod" className='form-label'>Preferred Method of Contact *</label>
-                    <select id="contactMethod" name="contactMethod" className='form-select' required>
+                    <select 
+                        id="contactMethod" 
+                        name="contactMethod" 
+                        className='form-select' 
+                        required
+                        value={formData.contactMethod}
+                        onChange={handleChange}
+                    >
                         <option value="">Please Select</option>
                         <option value="email">Email</option>
                         <option value="phone">Phone Call</option>
@@ -109,10 +172,21 @@ const ContactUs = () => {
                         className='form-control'
                         rows="5"
                         required
+                        value={formData.enquiry}
+                        onChange={handleChange}
                     />
                 </div>
-                <button type="submit" className='btn btn-success' disabled={state.submitting}>
-                    Submit Inquiry Form
+                {submitStatus.error && (
+                    <div className="alert alert-danger" role="alert">
+                        {submitStatus.error}
+                    </div>
+                )}
+                <button 
+                    type="submit" 
+                    className='btn btn-success'
+                    disabled={submitStatus.loading}
+                >
+                    {submitStatus.loading ? 'Sending...' : 'Submit Inquiry Form'}
                 </button>
             </form>
         </div>
