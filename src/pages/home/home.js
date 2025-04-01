@@ -185,7 +185,7 @@ const Home = () => {
               </NavLink>
               <NavLink to="/inventory/versatile" className="brand-link">
                 <img
-                  src="/images/versatile_logo.svg.png"
+                  src="/images/Versatile_Logo.png"
                   alt="Versatile"
                   className="brand-logo"
                 />
