@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import SuccessModal from "../../components/SuccessModal/SuccessModal";
-import { deleteFromS3, uploadToS3 } from "../../utils/s3";
 import "./admin.css";
 
 const AdminPage = () => {
@@ -72,8 +71,18 @@ const AdminPage = () => {
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     try {
-      const uploadPromises = files.map(file => uploadToS3(file));
-      const imageUrls = await Promise.all(uploadPromises);
+      const formData = new FormData();
+      files.forEach(file => {
+        formData.append('images', file);
+      });
+
+      const response = await axios.post('http://localhost:5000/api/inventory/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const imageUrls = response.data.imageUrls;
       
       setInventoryData(prev => ({
         ...prev,
@@ -81,7 +90,7 @@ const AdminPage = () => {
       }));
       setError(""); // Clear any previous errors
     } catch (error) {
-      setError(error.message || "Error uploading images. Please check your AWS credentials in the .env file.");
+      setError(error.message || "Error uploading images. Please try again.");
       console.error("Image upload error:", error);
     }
   };
@@ -144,19 +153,6 @@ const AdminPage = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
-        // Find the item to get its images
-        const itemToDelete = inventory.find(item => item.id === id);
-        if (!itemToDelete) {
-          throw new Error("Item not found");
-        }
-
-        // Delete all associated images from S3
-        if (itemToDelete.images && itemToDelete.images.length > 0) {
-          const deletePromises = itemToDelete.images.map(imageUrl => deleteFromS3(imageUrl));
-          await Promise.all(deletePromises);
-        }
-
-        // Delete the item from the database
         await axios.delete(`http://localhost:5000/api/inventory/${id}`);
         
         // Update local state
@@ -277,28 +273,40 @@ const AdminPage = () => {
     e.stopPropagation();
     const files = Array.from(e.target.files);
     try {
-      const uploadPromises = files.map(file => uploadToS3(file));
-      const newImageUrls = await Promise.all(uploadPromises);
-      
-      const itemToUpdate = inventory.find(item => item.id === itemId);
-      const updatedImages = [...(itemToUpdate.images || []), ...newImageUrls];
-      
-      const response = await axios.put(
-        `/api/inventory/${itemId}`,
-        {
-          ...itemToUpdate,
-          images: updatedImages
-        }
-      );
+      const formData = new FormData();
+      files.forEach(file => {
+        formData.append('images', file);
+      });
 
-      if (response.data) {
-        setInventory(prevInventory =>
-          prevInventory.map(item =>
-            item.id === itemId ? { ...item, images: updatedImages } : item
-          )
+      const response = await axios.post(`http://localhost:5000/api/inventory/${itemId}/add-images`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.data.success) {
+        const newImageUrls = response.data.imageUrls;
+        
+        const itemToUpdate = inventory.find(item => item.id === itemId);
+        const updatedImages = [...(itemToUpdate.images || []), ...newImageUrls];
+        
+        const responseUpdate = await axios.put(
+          `/api/inventory/${itemId}`,
+          {
+            ...itemToUpdate,
+            images: updatedImages
+          }
         );
-        setSuccess("Images added successfully");
-        setError(""); // Clear any previous errors
+
+        if (responseUpdate.data) {
+          setInventory(prevInventory =>
+            prevInventory.map(item =>
+              item.id === itemId ? { ...item, images: updatedImages } : item
+            )
+          );
+          setSuccess("Images added successfully");
+          setError(""); // Clear any previous errors
+        }
       }
     } catch (error) {
       setError(error.message || "Failed to upload images. Please check your AWS credentials in the .env file.");
@@ -319,21 +327,14 @@ const AdminPage = () => {
     e.stopPropagation();
     try {
       const imageUrl = tempEditingImages[index];
-      await deleteFromS3(imageUrl);
+      const response = await axios.post(`http://localhost:5000/api/inventory/${editingItem.id}/delete-image`, {
+        imageUrl
+      });
       
-      const updatedImages = [...tempEditingImages];
-      updatedImages.splice(index, 1);
-      setTempEditingImages(updatedImages);
-
-      const response = await axios.put(
-        `/api/inventory/${editingItem.id}`,
-        {
-          ...editingItem,
-          images: updatedImages
-        }
-      );
-
-      if (response.data) {
+      if (response.data.success) {
+        const updatedImages = [...tempEditingImages];
+        updatedImages.splice(index, 1);
+        setTempEditingImages(updatedImages);
         setEditingImages(updatedImages);
         setInventory(prevInventory =>
           prevInventory.map(item =>
@@ -347,7 +348,7 @@ const AdminPage = () => {
         setShowSuccessModal(true);
       }
     } catch (error) {
-      setError(error.message || "Failed to delete image. Please check your AWS credentials in the .env file.");
+      setError(error.message || "Failed to delete image. Please try again.");
       console.error("Image deletion error:", error);
     }
   };
@@ -384,20 +385,21 @@ const AdminPage = () => {
   const handleAddMoreImages = async (e) => {
     const files = Array.from(e.target.files);
     try {
-      const uploadPromises = files.map(file => uploadToS3(file));
-      const newImageUrls = await Promise.all(uploadPromises);
-      
-      const updatedImages = [...editingImages, ...newImageUrls];
-      
-      const response = await axios.put(
-        `/api/inventory/${editingItem.id}`,
-        {
-          ...editingItem,
-          images: updatedImages
-        }
-      );
+      const formData = new FormData();
+      files.forEach(file => {
+        formData.append('images', file);
+      });
 
-      if (response.data) {
+      const response = await axios.post(`http://localhost:5000/api/inventory/${editingItem.id}/add-images`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.data.success) {
+        const newImageUrls = response.data.imageUrls;
+        const updatedImages = [...editingImages, ...newImageUrls];
+        
         setEditingImages(updatedImages);
         setTempEditingImages(updatedImages);
         setInventory(prevInventory =>
@@ -413,7 +415,7 @@ const AdminPage = () => {
         setShowImageModal(false);
       }
     } catch (error) {
-      setError(error.message || "Failed to add images. Please check your AWS credentials in the .env file.");
+      setError(error.message || "Failed to add images. Please try again.");
       console.error("Image upload error:", error);
     }
   };
