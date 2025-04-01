@@ -1,6 +1,6 @@
 This favicon was generated using the following font:
 
-- Font Title: Merriweather
+- Font Title: Oranienbaum
 - Font Author: undefined
-- Font Source: https://fonts.gstatic.com/s/merriweather/v30/u-440qyriQwlOrhSvowK_l5OeyxNV-bnrw.ttf
+- Font Source: https://fonts.gstatic.com/s/oranienbaum/v15/OZpHg_txtzZKMuXLIVrx-3zn7kz3dpHc.ttf
 - Font License: undefined)
