@@ -1,8 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
+const AWS = require('aws-sdk');
 
 const prisma = new PrismaClient();
+
+// Configure AWS
+AWS.config.update({
+  region: process.env.REACT_APP_AWS_BUCKET_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+
+const s3 = new AWS.S3();
 
 router.post("/", async (req, res) => {
   try {
@@ -62,12 +72,45 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     
+    // First get the machine to get its images
+    const machine = await prisma.machine.findUnique({
+      where: { id }
+    });
+
+    if (!machine) {
+      return res.status(404).json({ message: "Machine not found" });
+    }
+
+    // Delete images from S3 if they exist
+    if (machine.images && machine.images.length > 0) {
+      const deletePromises = machine.images.map(async (imageUrl) => {
+        try {
+          // Extract the key from the URL (e.g., from https://.../inventory/filename.jpg, get inventory/filename.jpg)
+          const key = imageUrl.split('/').slice(-2).join('/');
+          
+          await s3.deleteObject({
+            Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
+            Key: key
+          }).promise();
+        } catch (error) {
+          console.error(`Failed to delete image ${imageUrl}:`, error);
+          throw error;
+        }
+      });
+
+      try {
+        await Promise.all(deletePromises);
+      } catch (error) {
+        return res.status(500).json({ message: "Failed to delete images from S3" });
+      }
+    }
+    
     // Delete the machine from the database
     await prisma.machine.delete({
       where: { id },
     });
     
-    res.status(200).json({ message: "Machine deleted successfully" });
+    res.status(200).json({ message: "Machine and associated images deleted successfully" });
   } catch (error) {
     console.error("Delete error:", error);
     res.status(500).json({ message: "Error deleting machine" });
