@@ -202,12 +202,23 @@ const handleTouchEnd = () => {
   setTouchEnd(null);
 };
 
+  const handleAdminClick = () => {
+    // Check if admin is authenticated
+    const isAuthenticated = localStorage.getItem("adminAuthenticated") === "true";
+    
+    if (isAuthenticated) {
+      navigate('/admin');
+    } else {
+      navigate('/admin'); // This will redirect to the login page via the Route condition
+    }
+  };
+
   return (
     <div className="inventory-container">
       <div className="admin-button-container">
         <button 
           className="btn btn-primary admin-button" 
-          onClick={() => navigate('/admin')}
+          onClick={handleAdminClick}
         >
           Admin
         </button>

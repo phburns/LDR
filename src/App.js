@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import AdminLogin from "./components/AdminLogin/AdminLogin";
 import Footer from "./components/Footer/Footer";
+import Layout from "./components/Layout/Layout";
 import NavbarHook from "./components/NavbarHook/NavbarHook";
 import NotFound from "./components/NotFound/NotFound";
 import AdminPage from "./pages/admin/admin";
@@ -11,9 +12,28 @@ import ContactUs from "./pages/contactus/contactus";
 import Home from "./pages/home/home";
 import Inventory from "./pages/inventory/inventory";
 import Repair from "./pages/repair/repair";
-import Layout from "./components/Layout/Layout";
 
 function App() {
+  const [isAdmin, setIsAdmin] = React.useState(localStorage.getItem("adminAuthenticated") === "true");
+
+  React.useEffect(() => {
+    // Check for admin authentication on mount and when localStorage changes
+    const checkAdmin = () => {
+      setIsAdmin(localStorage.getItem("adminAuthenticated") === "true");
+    };
+    
+    // Add event listener for storage changes (in case another tab updates localStorage)
+    window.addEventListener('storage', checkAdmin);
+    
+    // Check on mount
+    checkAdmin();
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('storage', checkAdmin);
+    };
+  }, []);
+
   return (
     <Router>
       <div className="App">
@@ -30,13 +50,7 @@ function App() {
               <Route path="/contactus" element={<ContactUs />} />
               <Route
                 path="/admin"
-                element={
-                  localStorage.getItem("adminAuthenticated") === "true" ? (
-                    <AdminPage />
-                  ) : (
-                    <AdminLogin />
-                  )
-                }
+                element={isAdmin ? <AdminPage /> : <AdminLogin />}
               />
               <Route path="*" element={<NotFound />} />
             </Routes>

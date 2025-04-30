@@ -23,21 +23,15 @@ const AdminLogin = () => {
       console.log('Server response:', response.data);
       
       if (response.data.success) {
-        console.log('Login successful, attempting navigation...');
+        console.log('Login successful, setting localStorage and redirecting...');
         localStorage.setItem('adminAuthenticated', 'true');
-        setTimeout(() => {
-          navigate('/admin');
-          window.location.reload();
-          console.log('Navigation completed');
-        }, 100);
+        navigate('/admin');
       } else {
         setError('Invalid password');
-        setTimeout(() => navigate('/'), 2000);
       }
     } catch (error) {
       console.error('Login error:', error);
       setError('Server error. Please make sure the backend is running.');
-      // Don't redirect immediately on error so user can see the message
     }
   };
 
