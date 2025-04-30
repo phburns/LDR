@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.730.0",
     "@formspree/react": "^2.5.1",
     "@iconify-icons/mdi": "^1.2.48",
     "@iconify/react": "^5.2.0",
