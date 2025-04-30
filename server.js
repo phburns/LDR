@@ -11,11 +11,8 @@ const app = express();
 const prisma = new PrismaClient();
 
 // Validate AWS credentials at startup
-console.log("AWS Configuration at startup:");
-console.log("Region:", process.env.AWS_BUCKET_REGION);
-console.log("Bucket:", process.env.AWS_BUCKET_NAME);
-console.log("Access Key ID exists:", !!process.env.AWS_ACCESS_KEY_ID);
-console.log("Secret Access Key exists:", !!process.env.AWS_SECRET_ACCESS_KEY);
+console.log("Vercel Blob Configuration at startup:");
+console.log("BLOB_READ_WRITE_TOKEN exists:", !!process.env.BLOB_READ_WRITE_TOKEN);
 
 // Test database connection
 async function testConnection() {

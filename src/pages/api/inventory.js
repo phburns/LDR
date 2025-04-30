@@ -12,6 +12,40 @@ const prisma = new PrismaClient();
 console.log("Vercel Blob Configuration Check:");
 console.log("BLOB_READ_WRITE_TOKEN exists:", !!process.env.BLOB_READ_WRITE_TOKEN);
 
+// Add this endpoint for testing Vercel Blob
+router.get("/test-blob", async (req, res) => {
+  try {
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      return res.status(500).json({ 
+        success: false,
+        message: "Vercel Blob token is not configured" 
+      });
+    }
+    
+    // List the first 10 blobs to verify connection
+    const blobs = await list({ limit: 10 });
+    
+    return res.status(200).json({ 
+      success: true,
+      message: "Vercel Blob connection successful",
+      count: blobs.blobs.length,
+      blobs: blobs.blobs.map(b => ({
+        url: b.url,
+        pathname: b.pathname,
+        size: b.size,
+        uploadedAt: b.uploadedAt
+      }))
+    });
+  } catch (error) {
+    console.error("Blob test error:", error);
+    return res.status(500).json({ 
+      success: false,
+      message: "Failed to connect to Vercel Blob",
+      error: error.message
+    });
+  }
+});
+
 // Helper function to validate MongoDB ObjectId
 function isValidObjectId(id) {
   try {

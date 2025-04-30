@@ -8,11 +8,16 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Get the base URL depending on environment
+  const baseUrl = process.env.NODE_ENV === 'production' 
+    ? '' // Empty string for relative URLs in production
+    : 'http://localhost:5000';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Attempting login with password:', password);
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${baseUrl}/api/auth/login`, {
         password
       });
       console.log('Server response:', response.data);
@@ -31,8 +36,8 @@ const AdminLogin = () => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError('Invalid password');
-      setTimeout(() => navigate('/'), 2000);
+      setError('Server error. Please make sure the backend is running.');
+      // Don't redirect immediately on error so user can see the message
     }
   };
 

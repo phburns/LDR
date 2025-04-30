@@ -4,6 +4,10 @@ import React, { useEffect, useState } from "react";
 import SuccessModal from "../../components/SuccessModal/SuccessModal";
 import "./admin.css";
 
+const baseUrl = process.env.NODE_ENV === "production"
+  ? "" // Empty string for relative URLs in production
+  : "http://localhost:5000";
+
 const AdminPage = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -41,7 +45,7 @@ const AdminPage = () => {
       setLoading(true);
       try {
         console.log("Making request to inventory endpoint");
-        const response = await axios.get("http://localhost:5000/api/inventory");
+        const response = await axios.get(`${baseUrl}/api/inventory`);
         
 
         if (!response.data) {
@@ -76,7 +80,7 @@ const AdminPage = () => {
         formData.append('images', file);
       });
 
-      const response = await axios.post('http://localhost:5000/api/inventory/upload', formData, {
+      const response = await axios.post(`${baseUrl}/api/inventory/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -102,7 +106,7 @@ const AdminPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/inventory",
+        `${baseUrl}/api/inventory`,
         inventoryData,
         {
           headers: {
@@ -153,7 +157,7 @@ const AdminPage = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/inventory/${id}`);
+        await axios.delete(`${baseUrl}/api/inventory/${id}`);
         
         // Update local state
         setInventory((prevInventory) =>
@@ -206,7 +210,7 @@ const AdminPage = () => {
       };
 
       const response = await axios.put(
-        `http://localhost:5000/api/inventory/${editingItem.id}`,
+        `${baseUrl}/api/inventory/${editingItem.id}`,
         dataToUpdate,
         {
           headers: {
@@ -247,7 +251,7 @@ const AdminPage = () => {
       }
 
       const response = await axios.put(
-        `/api/inventory/${id}`,
+        `${baseUrl}/api/inventory/${id}`,
         {
           ...itemToUpdate,
           hidden: !currentHidden
@@ -278,7 +282,7 @@ const AdminPage = () => {
         formData.append('images', file);
       });
 
-      const response = await axios.post(`http://localhost:5000/api/inventory/${itemId}/add-images`, formData, {
+      const response = await axios.post(`${baseUrl}/api/inventory/${itemId}/add-images`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -291,7 +295,7 @@ const AdminPage = () => {
         const updatedImages = [...(itemToUpdate.images || []), ...newImageUrls];
         
         const responseUpdate = await axios.put(
-          `/api/inventory/${itemId}`,
+          `${baseUrl}/api/inventory/${itemId}`,
           {
             ...itemToUpdate,
             images: updatedImages
@@ -327,7 +331,7 @@ const AdminPage = () => {
     e.stopPropagation();
     try {
       const imageUrl = tempEditingImages[index];
-      const response = await axios.post(`http://localhost:5000/api/inventory/${editingItem.id}/delete-image`, {
+      const response = await axios.post(`${baseUrl}/api/inventory/${editingItem.id}/delete-image`, {
         imageUrl
       });
       
@@ -356,7 +360,7 @@ const AdminPage = () => {
   const handleSaveImages = async () => {
     try {
       const response = await axios.put(
-        `/api/inventory/${editingItem.id}`,
+        `${baseUrl}/api/inventory/${editingItem.id}`,
         {
           ...editingItem,
           images: tempEditingImages
@@ -390,7 +394,7 @@ const AdminPage = () => {
         formData.append('images', file);
       });
 
-      const response = await axios.post(`http://localhost:5000/api/inventory/${editingItem.id}/add-images`, formData, {
+      const response = await axios.post(`${baseUrl}/api/inventory/${editingItem.id}/add-images`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
