@@ -34,7 +34,6 @@
   },
 
   "overrides": {
-    "ajv": "8.11.2",
     "ajv-keywords": "5.1.0"
   },
 
