@@ -14,26 +14,6 @@ import Inventory from "./pages/inventory/inventory";
 import Repair from "./pages/repair/repair";
 
 function App() {
-  const [isAdmin, setIsAdmin] = React.useState(localStorage.getItem("adminAuthenticated") === "true");
-
-  React.useEffect(() => {
-    // Check for admin authentication on mount and when localStorage changes
-    const checkAdmin = () => {
-      setIsAdmin(localStorage.getItem("adminAuthenticated") === "true");
-    };
-    
-    // Add event listener for storage changes (in case another tab updates localStorage)
-    window.addEventListener('storage', checkAdmin);
-    
-    // Check on mount
-    checkAdmin();
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener('storage', checkAdmin);
-    };
-  }, []);
-
   return (
     <Router>
       <div className="App">
@@ -50,7 +30,13 @@ function App() {
               <Route path="/contactus" element={<ContactUs />} />
               <Route
                 path="/admin"
-                element={isAdmin ? <AdminPage /> : <AdminLogin />}
+                element={
+                  localStorage.getItem("adminAuthenticated") === "true" ? (
+                    <AdminPage />
+                  ) : (
+                    <AdminLogin />
+                  )
+                }
               />
               <Route path="*" element={<NotFound />} />
             </Routes>

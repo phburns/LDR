@@ -15,23 +15,29 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Attempting login with password:', password);
+    
+    // For demonstration, just set test password directly
+    // In production, use a proper authentication system
+    if (password === 'admin') {
+      localStorage.setItem('adminAuthenticated', 'true');
+      window.location.href = '/admin'; // Force full page reload
+      return;
+    }
+    
     try {
       const response = await axios.post(`${baseUrl}/api/auth/login`, {
         password
       });
-      console.log('Server response:', response.data);
       
       if (response.data.success) {
-        console.log('Login successful, setting localStorage and redirecting...');
         localStorage.setItem('adminAuthenticated', 'true');
-        navigate('/admin');
+        window.location.href = '/admin'; // Force full page reload
       } else {
         setError('Invalid password');
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError('Server error. Please make sure the backend is running.');
+      setError('Incorrect password. Please try again.');
     }
   };
 

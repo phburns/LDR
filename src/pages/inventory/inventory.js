@@ -203,14 +203,7 @@ const handleTouchEnd = () => {
 };
 
   const handleAdminClick = () => {
-    // Check if admin is authenticated
-    const isAuthenticated = localStorage.getItem("adminAuthenticated") === "true";
-    
-    if (isAuthenticated) {
-      navigate('/admin');
-    } else {
-      navigate('/admin'); // This will redirect to the login page via the Route condition
-    }
+    navigate('/admin');
   };
 
   return (
