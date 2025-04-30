@@ -1,34 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
-const { S3Client, DeleteObjectCommand, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { put, del, list } = require('@vercel/blob');
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 const { ObjectId } = require('mongodb');
 
 const prisma = new PrismaClient();
 
-// Debug logging for AWS configuration
-console.log("AWS Configuration Check:");
-console.log("Region exists:", !!process.env.AWS_BUCKET_REGION);
-console.log("Bucket name exists:", !!process.env.AWS_BUCKET_NAME);
-console.log("Access Key ID exists:", !!process.env.AWS_ACCESS_KEY_ID);
-console.log("Secret Access Key exists:", !!process.env.AWS_SECRET_ACCESS_KEY);
-
-// Initialize S3 client with error handling
-let s3Client;
-try {
-  s3Client = new S3Client({
-    region: process.env.AWS_BUCKET_REGION,
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
-  console.log("S3 client initialized successfully");
-} catch (error) {
-  console.error("Failed to initialize S3 client:", error);
-}
+// Debug logging for Vercel Blob configuration
+console.log("Vercel Blob Configuration Check:");
+console.log("BLOB_READ_WRITE_TOKEN exists:", !!process.env.BLOB_READ_WRITE_TOKEN);
 
 // Helper function to validate MongoDB ObjectId
 function isValidObjectId(id) {
@@ -39,22 +21,19 @@ function isValidObjectId(id) {
   }
 }
 
-// Helper function to upload a single image to S3
-async function uploadImageToS3(file) {
+// Helper function to upload a single image to Vercel Blob
+async function uploadImageToBlob(file) {
   try {
-    const key = `inventory/${Date.now()}-${file.originalname}`;
-    const command = new PutObjectCommand({
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: key,
-      Body: file.buffer,
-      ContentType: file.mimetype,
+    const filename = `inventory-${Date.now()}-${file.originalname}`;
+    const blob = await put(filename, file.buffer, {
+      contentType: file.mimetype,
+      access: 'public',
     });
-
-    await s3Client.send(command);
-    return `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${key}`;
+    
+    return blob.url;
   } catch (error) {
-    console.error("Error uploading image to S3:", error);
-    throw new Error("Failed to upload image to S3");
+    console.error("Error uploading image to Vercel Blob:", error);
+    throw new Error("Failed to upload image to Vercel Blob");
   }
 }
 
@@ -65,7 +44,7 @@ router.post("/upload", upload.array("images"), async (req, res) => {
       return res.status(400).json({ message: "No images provided" });
     }
 
-    const uploadPromises = req.files.map(file => uploadImageToS3(file));
+    const uploadPromises = req.files.map(file => uploadImageToBlob(file));
     const imageUrls = await Promise.all(uploadPromises);
 
     res.json({ success: true, imageUrls });
@@ -105,7 +84,7 @@ router.post("/:id/add-images", upload.array("images"), async (req, res) => {
 
     console.log("Found machine:", existingMachine);
 
-    const uploadPromises = req.files.map(file => uploadImageToS3(file));
+    const uploadPromises = req.files.map(file => uploadImageToBlob(file));
     const imageUrls = await Promise.all(uploadPromises);
 
     console.log("Successfully uploaded images:", imageUrls);
@@ -151,16 +130,8 @@ router.post("/:id/delete-image", async (req, res) => {
       return res.status(400).json({ message: "No image URL provided" });
     }
 
-    // Extract the key from the URL
-    const key = imageUrl.split('.amazonaws.com/')[1];
-    
-    // Delete from S3
-    const command = new DeleteObjectCommand({
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: key
-    });
-
-    await s3Client.send(command);
+    // Delete from Vercel Blob
+    await del(imageUrl);
 
     // Update the machine's images array
     const machine = await prisma.machine.findUnique({
@@ -209,7 +180,7 @@ router.post("/", async (req, res) => {
           : null,
         price: machineData.price ? parseFloat(machineData.price) : null,
         deckSize: machineData.deckSize || null,
-        images: machineData.images || [] // Store the S3 URLs directly
+        images: machineData.images || [] // Store the Blob URLs directly
       },
     });
     res.status(201).json(newMachine);
@@ -288,33 +259,19 @@ router.delete("/:id", async (req, res, next) => {
       imageCount: machine.images?.length || 0
     });
 
-    // Delete images from S3 if they exist
+    // Delete images from Vercel Blob if they exist
     if (machine.images && machine.images.length > 0) {
       console.log(`Attempting to delete ${machine.images.length} images for machine ${id}`);
       
       const deletePromises = machine.images.map(async (imageUrl) => {
         try {
-          // Extract the key from the URL (e.g., from https://.../inventory/filename.jpg, get inventory/filename.jpg)
-          const key = imageUrl.split('.amazonaws.com/')[1];
-          console.log(`Attempting to delete image with key: ${key}`);
-          
-          const command = new DeleteObjectCommand({
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: key
-          });
-
-          await s3Client.send(command);
-          console.log(`Successfully deleted image: ${key}`);
+          await del(imageUrl);
+          console.log(`Successfully deleted image: ${imageUrl}`);
         } catch (error) {
           console.error(`Failed to delete image ${imageUrl}:`, {
             error: error.message,
-            code: error.code,
             name: error.name,
-            stack: error.stack,
-            command: {
-              bucket: process.env.AWS_BUCKET_NAME,
-              key: key
-            }
+            stack: error.stack
           });
           // Don't throw here, just log the error and continue with other deletions
         }
@@ -323,13 +280,11 @@ router.delete("/:id", async (req, res, next) => {
       try {
         await Promise.all(deletePromises);
       } catch (error) {
-        console.error("S3 deletion error:", {
+        console.error("Blob deletion error:", {
           error: error.message,
-          code: error.code,
-          name: error.name,
-          stack: error.stack
+          name: error.name
         });
-        // Continue with database deletion even if S3 deletion fails
+        // Continue with database deletion even if Blob deletion fails
       }
     }
     

@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.730.0",
     "@aws-sdk/s3-request-presigner": "^3.730.0",
     "@formspree/react": "^2.5.1",
     "@iconify-icons/mdi": "^1.2.48",
     "@iconify/react": "^5.2.0",
     "@prisma/client": "^6.2.1",
+    "@vercel/blob": "^1.0.0",
     "autoprefixer": "^10.4.20",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.7.9",
