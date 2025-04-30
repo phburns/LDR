@@ -15,11 +15,37 @@ import Repair from "./pages/repair/repair";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    setIsAuthenticated(localStorage.getItem("adminAuthenticated") === "true");
+    const checkAuth = () => {
+      try {
+        const auth = localStorage.getItem("adminAuthenticated") === "true";
+        console.log("Auth state:", auth);
+        setIsAuthenticated(auth);
+      } catch (error) {
+        console.error("Error checking auth:", error);
+        setIsAuthenticated(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
   }, []);
   
+  if (isLoading) {
+    return (
+      <div className="loading-overlay">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Router>
       <div className="App">
