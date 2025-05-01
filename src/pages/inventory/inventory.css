@@ -613,13 +613,15 @@
 }
 
 .admin-button-container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
 .admin-button {
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
+  background-color: var(--first-color);
+  border-color: var(--first-color);
 }
