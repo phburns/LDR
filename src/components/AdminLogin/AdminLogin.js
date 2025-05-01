@@ -20,7 +20,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      if (password === process.env.ADMIN_PASSWORD) {
+      if (password === process.env.REACT_APP_ADMIN_PASSWORD) {
         localStorage.setItem('adminAuthenticated', 'true');
         navigate('/admin', { replace: true });
       } else {
