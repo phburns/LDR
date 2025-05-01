@@ -1,6 +1,6 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import AdminLogin from "./components/AdminLogin/AdminLogin";
 import Footer from "./components/Footer/Footer";
@@ -16,26 +16,24 @@ import Repair from "./pages/repair/repair";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   useEffect(() => {
     const checkAuth = () => {
       try {
         const auth = localStorage.getItem("adminAuthenticated") === "true";
         console.log("Auth state:", auth);
         setIsAuthenticated(auth);
-      } catch (error) {
-        console.error("Error checking auth:", error);
+      } catch {
         setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
       }
     };
-
     checkAuth();
-    window.addEventListener('storage', checkAuth);
-    return () => window.removeEventListener('storage', checkAuth);
+    window.addEventListener("storage", checkAuth);
+    return () => window.removeEventListener("storage", checkAuth);
   }, []);
-  
+
   if (isLoading) {
     return (
       <div className="loading-overlay">
@@ -47,7 +45,6 @@ function App() {
   }
 
   return (
-    <Router>
       <div className="App">
         <header>
           <NavbarHook />
@@ -70,7 +67,6 @@ function App() {
         </main>
         <Footer />
       </div>
-    </Router>
   );
 }
 

@@ -37,7 +37,7 @@ const Inventory = () => {
       setLoading(true);
       try {
         console.log("Making request to inventory endpoint");
-        const response = await axios.get("http://localhost:5000/api/inventory");
+        const response = await axios.get("/api/inventory");
         console.log("Response received:", response);
 
         if (!response.data) {
