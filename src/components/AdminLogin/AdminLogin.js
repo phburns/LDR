@@ -21,7 +21,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      if (password === process.env.goatMode) {
+      if (password === goatMode) {
         localStorage.setItem('adminAuthenticated', 'true');
         navigate('/admin', { replace: true });
       } else {
