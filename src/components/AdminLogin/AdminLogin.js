@@ -20,7 +20,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      if (password === '4020') {
+      if (password === process.env.ADMIN_PASSWORD) {
         localStorage.setItem('adminAuthenticated', 'true');
         navigate('/admin', { replace: true });
       } else {
