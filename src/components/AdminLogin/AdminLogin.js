@@ -23,7 +23,7 @@ const AdminLogin = () => {
     try {
       if (password === goatMode) {
         localStorage.setItem('adminAuthenticated', 'true');
-        navigate('/admin', { replace: true });
+        window.location.href = '/admin';
       } else {
         setError('Invalid password');
       }
