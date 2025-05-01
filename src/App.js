@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Routes } from "react-router-dom";
 import "./App.css";
 import AdminLogin from "./components/AdminLogin/AdminLogin";
 import Footer from "./components/Footer/Footer";
@@ -47,7 +47,7 @@ function App() {
   }
 
   return (
-    <Router>
+  
       <div className="App">
         <header>
           <NavbarHook />
@@ -70,7 +70,6 @@ function App() {
         </main>
         <Footer />
       </div>
-    </Router>
   );
 }
 
