@@ -13,35 +13,47 @@ console.log("Vercel Blob Configuration Check:");
 console.log("BLOB_READ_WRITE_TOKEN exists:", !!process.env.BLOB_READ_WRITE_TOKEN);
 
 // Add this endpoint for testing Vercel Blob
-router.get("/test-blob", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    if (!process.env.BLOB_READ_WRITE_TOKEN) {
-      return res.status(500).json({ 
-        success: false,
-        message: "Vercel Blob token is not configured" 
-      });
-    }
+    console.log("Making request to inventory endpoint");
     
-    // List the first 10 blobs to verify connection
-    const blobs = await list({ limit: 10 });
-    
-    return res.status(200).json({ 
-      success: true,
-      message: "Vercel Blob connection successful",
-      count: blobs.blobs.length,
-      blobs: blobs.blobs.map(b => ({
-        url: b.url,
-        pathname: b.pathname,
-        size: b.size,
-        uploadedAt: b.uploadedAt
-      }))
+    const machines = await prisma.machine.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
     });
+
+    console.log(`Found ${machines.length} machines`);
+
+    if (!machines || machines.length === 0) {
+      console.log("No machines found");
+      return res.json([]);
+    }
+
+    // Try to fetch blobs but don't let it crash if there's an issue
+    try {
+      // List the first 1000 blobs to find matching images
+      const blobs = await list({ limit: 1000 });
+      console.log(`Found ${blobs.blobs.length} blobs in storage`);
+      
+      // Enhance machines with any additional blob information if needed
+      // This is optional and depends on your data model
+    } catch (blobError) {
+      console.error("Blob listing error (non-fatal):", blobError);
+      // Continue without blob data
+    }
+
+    res.json(machines);
   } catch (error) {
-    console.error("Blob test error:", error);
-    return res.status(500).json({ 
-      success: false,
-      message: "Failed to connect to Vercel Blob",
-      error: error.message
+    console.error("Detailed error fetching machines:", {
+      message: error.message,
+      stack: error.stack,
+      code: error.code,
+      meta: error.meta
+    });
+    res.status(500).json({ 
+      message: "Error fetching machines",
+      details: error.message 
     });
   }
 });
