@@ -7,6 +7,7 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const goatMode = process.env.REACT_APP_GOAT_MODE;
 
   useEffect(() => {
     if (localStorage.getItem('adminAuthenticated') === 'true') {
@@ -20,7 +21,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      if (password === process.env.REACT_APP_GOAT_MODE) {
+      if (password === process.env.goatMode) {
         localStorage.setItem('adminAuthenticated', 'true');
         navigate('/admin', { replace: true });
       } else {
