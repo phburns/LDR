@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import AdminLogin from "./components/AdminLogin/AdminLogin";
@@ -45,7 +45,6 @@ function App() {
   }
 
   return (
-    <Router>
       <div className="App">
         <header>
           <NavbarHook />
@@ -68,7 +67,6 @@ function App() {
         </main>
         <Footer />
       </div>
-    </Router>
   );
 }
 
