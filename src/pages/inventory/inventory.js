@@ -208,14 +208,6 @@ const handleTouchEnd = () => {
 
   return (
     <div className="inventory-container">
-      <div className="admin-button-container">
-        <button 
-          className="btn btn-primary admin-button" 
-          onClick={handleAdminClick}
-        >
-          Admin
-        </button>
-      </div>
       <h1>Our Inventory</h1>
 
       <div className="inventory-filters">
@@ -296,187 +288,196 @@ const handleTouchEnd = () => {
               </div>
             ))}
           </div>
-
-          {selectedItem && (
-            <div className="modal-overlay" onClick={handleCloseModal}>
-              <div
-                className="modal-content"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button className="modal-close" onClick={handleCloseModal}>
-                  &times;
-                </button>
-                <div className="modal-grid">
-                  <div className="modal-images">
-                    <div 
-                      className="carousel-container"
-                      onTouchStart={handleModalTouchStart}
-                      onTouchMove={handleModalTouchMove}
-                      onTouchEnd={() => setTouchStartX(null)}
-                    >
-                      <button className="carousel-button prev" onClick={handlePrevImage}>
-                        <IoChevronBack size={24}/>
-                      </button>
-                      <div className="modal-main-image-container"
-                      onTouchStart={handleTouchStart}
-                      onTouchMove={handleTouchMove}
-                      onTouchEnd={handleTouchEnd}>
-                        <img 
-                          src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
-                          alt={`${selectedItem.make || ''} ${selectedItem.model || ''}`}
-                          className="modal-main-image"
-                          onClick={(e) => handleImageEnlarge(e, selectedItem.images?.[activeImageIndex])}
-                        />
-                      </div>
-                      <button className="carousel-button next" onClick={handleNextImage}>
-                        <IoChevronForward size={24}/>
-                      </button>
-                      {isMobile && (
-                        <div className="carousel-indicators">
-                          {selectedItem.images?.map((_, index) => (
-                            <button
-                              key={index}
-                              className={`carousel-indicator ${index === activeImageIndex ? 'active' : ''}`}
-                              onClick={() => handleThumbnailClick(index)}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    {!isMobile && (
-                      <div className="other-pictures">
-                        {selectedItem.images?.map((image, index) => (
-                          <img
-                            key={index}
-                            src={image}
-                            alt={`Additional view ${index + 1}`}
-                            className={`modal-thumbnail ${index === activeImageIndex ? 'active' : ''} hover-enlarge`}
-                            onClick={() => handleThumbnailClick(index)}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="modal-details">
-                    <div className="modal-header">
-                      <h2>{`${selectedItem.make} ${selectedItem.model}`}</h2>
-                      <br />
-                      <p className="modal-price fw-bold">
-                        ${selectedItem.price?.toLocaleString()}
-                      </p>
-                    </div>
-                    <div className="modal-info">
-                      {(selectedItem.brand ||
-                        selectedItem.year ||
-                        selectedItem.condition) && (
-                        <div className="info-section">
-                          <h3>Information</h3>
-                          {selectedItem.brand && (
-                            <p>
-                              <strong>Brand:</strong>{" "}
-                              {capitalizeString(selectedItem.brand)}
-                            </p>
-                          )}
-                          {selectedItem.year && (
-                            <p>
-                              <strong>Year:</strong> {selectedItem.year}
-                            </p>
-                          )}
-                          {selectedItem.condition && (
-                            <p>
-                              <strong>Condition:</strong>{" "}
-                              {selectedItem.condition}
-                            </p>
-                          )}
-                        </div>
-                      )}
-                      {(selectedItem.horsepower ||
-                        selectedItem.engineHours ||
-                        selectedItem.fuelType ||
-                        selectedItem.drive ||
-                        selectedItem.weight ||
-                        selectedItem.separator ||
-                        selectedItem.deckSize ||
-                        selectedItem.liftCapacity) && (
-                        <div className="info-section">
-                          <h3>Specifications</h3>
-                          {selectedItem.horsepower && (
-                            <p>
-                              <strong>Horsepower:</strong>{" "}
-                              {selectedItem.horsepower}
-                            </p>
-                          )}
-                          {selectedItem.engineHours && (
-                            <p>
-                              <strong>Engine Hours:</strong>{" "}
-                              {selectedItem.engineHours}
-                            </p>
-                          )}
-                          {selectedItem.fuelType && (
-                            <p>
-                              <strong>Fuel Type:</strong>{" "}
-                              {selectedItem.fuelType}
-                            </p>
-                          )}
-                          {selectedItem.drive && (
-                            <p>
-                              <strong>Drive:</strong> {selectedItem.drive}
-                            </p>
-                          )}
-                          {selectedItem.weight && (
-                            <p>
-                              <strong>Weight:</strong> {selectedItem.weight}
-                            </p>
-                          )}
-                          {selectedItem.deckSize && (
-                            <p>
-                              <strong>Deck Size:</strong> {selectedItem.deckSize} Inches
-                            </p>
-                          )}
-                          {selectedItem.liftCapacity && (
-                            <p>
-                              <strong>Lift Capacity:</strong> {selectedItem.liftCapacity}
-                            </p>
-                          )}
-                          {selectedItem.separator && (
-                            <p>
-                              <strong>Separator:</strong>{" "}
-                              {selectedItem.separator}
-                            </p>
-                          )}
-                        </div>
-                      )}
-                      {selectedItem.description && (
-                        <div className="description-section">
-                          <h3>Description</h3>
-                          <p>{selectedItem.description}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {enlargedImage && (
-            <div className="enlarged-image-overlay" onClick={handleCloseEnlarged}>
-              <div className="enlarged-image-container">
-                <img 
-                  src={enlargedImage} 
-                  alt="Enlarged view" 
-                  className="enlarged-image"
-                />
-                <button className="modal-close" onClick={handleCloseEnlarged}>
-                  &times;
-                </button>
-              </div>
-            </div>
-          )}
         </>
       ) : (
         <div className="text-center">No inventory items available</div>
       )}
+
+      {selectedItem && (
+        <div className="modal-overlay" onClick={handleCloseModal}>
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="modal-close" onClick={handleCloseModal}>
+              &times;
+            </button>
+            <div className="modal-grid">
+              <div className="modal-images">
+                <div 
+                  className="carousel-container"
+                  onTouchStart={handleModalTouchStart}
+                  onTouchMove={handleModalTouchMove}
+                  onTouchEnd={() => setTouchStartX(null)}
+                >
+                  <button className="carousel-button prev" onClick={handlePrevImage}>
+                    <IoChevronBack size={24}/>
+                  </button>
+                  <div className="modal-main-image-container"
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}>
+                    <img 
+                      src={selectedItem.images?.[activeImageIndex] || '/images/placeholder.jpg'} 
+                      alt={`${selectedItem.make || ''} ${selectedItem.model || ''}`}
+                      className="modal-main-image"
+                      onClick={(e) => handleImageEnlarge(e, selectedItem.images?.[activeImageIndex])}
+                    />
+                  </div>
+                  <button className="carousel-button next" onClick={handleNextImage}>
+                    <IoChevronForward size={24}/>
+                  </button>
+                  {isMobile && (
+                    <div className="carousel-indicators">
+                      {selectedItem.images?.map((_, index) => (
+                        <button
+                          key={index}
+                          className={`carousel-indicator ${index === activeImageIndex ? 'active' : ''}`}
+                          onClick={() => handleThumbnailClick(index)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {!isMobile && (
+                  <div className="other-pictures">
+                    {selectedItem.images?.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                        alt={`Additional view ${index + 1}`}
+                        className={`modal-thumbnail ${index === activeImageIndex ? 'active' : ''} hover-enlarge`}
+                        onClick={() => handleThumbnailClick(index)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="modal-details">
+                <div className="modal-header">
+                  <h2>{`${selectedItem.make} ${selectedItem.model}`}</h2>
+                  <br />
+                  <p className="modal-price fw-bold">
+                    ${selectedItem.price?.toLocaleString()}
+                  </p>
+                </div>
+                <div className="modal-info">
+                  {(selectedItem.brand ||
+                    selectedItem.year ||
+                    selectedItem.condition) && (
+                    <div className="info-section">
+                      <h3>Information</h3>
+                      {selectedItem.brand && (
+                        <p>
+                          <strong>Brand:</strong>{" "}
+                          {capitalizeString(selectedItem.brand)}
+                        </p>
+                      )}
+                      {selectedItem.year && (
+                        <p>
+                          <strong>Year:</strong> {selectedItem.year}
+                        </p>
+                      )}
+                      {selectedItem.condition && (
+                        <p>
+                          <strong>Condition:</strong>{" "}
+                          {selectedItem.condition}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {(selectedItem.horsepower ||
+                    selectedItem.engineHours ||
+                    selectedItem.fuelType ||
+                    selectedItem.drive ||
+                    selectedItem.weight ||
+                    selectedItem.separator ||
+                    selectedItem.deckSize ||
+                    selectedItem.liftCapacity) && (
+                    <div className="info-section">
+                      <h3>Specifications</h3>
+                      {selectedItem.horsepower && (
+                        <p>
+                          <strong>Horsepower:</strong>{" "}
+                          {selectedItem.horsepower}
+                        </p>
+                      )}
+                      {selectedItem.engineHours && (
+                        <p>
+                          <strong>Engine Hours:</strong>{" "}
+                          {selectedItem.engineHours}
+                        </p>
+                      )}
+                      {selectedItem.fuelType && (
+                        <p>
+                          <strong>Fuel Type:</strong>{" "}
+                          {selectedItem.fuelType}
+                        </p>
+                      )}
+                      {selectedItem.drive && (
+                        <p>
+                          <strong>Drive:</strong> {selectedItem.drive}
+                        </p>
+                      )}
+                      {selectedItem.weight && (
+                        <p>
+                          <strong>Weight:</strong> {selectedItem.weight}
+                        </p>
+                      )}
+                      {selectedItem.deckSize && (
+                        <p>
+                          <strong>Deck Size:</strong> {selectedItem.deckSize} Inches
+                        </p>
+                      )}
+                      {selectedItem.liftCapacity && (
+                        <p>
+                          <strong>Lift Capacity:</strong> {selectedItem.liftCapacity}
+                        </p>
+                      )}
+                      {selectedItem.separator && (
+                        <p>
+                          <strong>Separator:</strong>{" "}
+                          {selectedItem.separator}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {selectedItem.description && (
+                    <div className="description-section">
+                      <h3>Description</h3>
+                      <p>{selectedItem.description}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {enlargedImage && (
+        <div className="enlarged-image-overlay" onClick={handleCloseEnlarged}>
+          <div className="enlarged-image-container">
+            <img 
+              src={enlargedImage} 
+              alt="Enlarged view" 
+              className="enlarged-image"
+            />
+            <button className="modal-close" onClick={handleCloseEnlarged}>
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="admin-button-container">
+        <button 
+          className="btn btn-primary admin-button" 
+          onClick={handleAdminClick}
+        >
+          Admin
+        </button>
+      </div>
     </div>
   );
 };
