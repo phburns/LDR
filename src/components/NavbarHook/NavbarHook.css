@@ -115,6 +115,7 @@
   padding: 0 2rem;
   max-width: 1400px;
   margin: auto;
+  z-index: 10;
 }
 
 .navbar-brand {
