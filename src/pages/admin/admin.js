@@ -5,7 +5,7 @@ import SuccessModal from "../../components/SuccessModal/SuccessModal";
 import "./admin.css";
 
 const baseUrl = process.env.NODE_ENV === "production"
-  ? "" // Empty string for relative URLs in production
+  ? process.env.REACT_APP_API_URL || window.location.origin
   : "http://localhost:5000";
 
 const AdminPage = () => {
@@ -44,9 +44,12 @@ const AdminPage = () => {
     const fetchInventory = async () => {
       setLoading(true);
       try {
+        console.log("Environment:", process.env.NODE_ENV);
+        console.log("Base URL:", baseUrl);
         console.log("Making request to inventory endpoint");
         const response = await axios.get(`${baseUrl}/api/inventory`);
         
+        console.log("Response received:", response);
 
         if (!response.data) {
           throw new Error("No data received from server");
@@ -57,9 +60,11 @@ const AdminPage = () => {
           ? response.data.filter((item) => item && item.id)
           : [];
 
+        console.log("Processed inventory data:", inventoryData);
         setInventory(inventoryData);
       } catch (error) {
         console.error("Detailed fetch error:", error);
+        console.error("Error response:", error.response);
         const errorMessage = error.response?.data?.details || error.response?.data?.message || error.message;
         setError(
           "Failed to load inventory items: " + errorMessage
@@ -426,6 +431,13 @@ const AdminPage = () => {
 
   return (
     <div className="admin-container">
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
       {error && <div className="alert alert-danger">{error}</div>}
       {showSuccessModal && (
         <SuccessModal

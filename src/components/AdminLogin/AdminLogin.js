@@ -1,43 +1,37 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Get the base URL depending on environment
-  const baseUrl = process.env.NODE_ENV === 'production' 
-    ? '' // Empty string for relative URLs in production
-    : 'http://localhost:5000';
+  useEffect(() => {
+    // Check if already authenticated
+    const isAuth = localStorage.getItem('adminAuthenticated') === 'true';
+    if (isAuth) {
+      window.location.href = '/admin';
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Attempting login with password:', password);
+    setIsLoading(true);
+    setError('');
+    
     try {
-      const response = await axios.post(`${baseUrl}/api/auth/login`, {
-        password
-      });
-      console.log('Server response:', response.data);
-      
-      if (response.data.success) {
-        console.log('Login successful, attempting navigation...');
+      // Simple hardcoded password for demo
+      if (password === '4020') {
         localStorage.setItem('adminAuthenticated', 'true');
-        setTimeout(() => {
-          navigate('/admin');
-          window.location.reload();
-          console.log('Navigation completed');
-        }, 100);
+        window.location.reload(); // Force a reload to ensure state is updated
       } else {
         setError('Invalid password');
-        setTimeout(() => navigate('/'), 2000);
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      setError('Server error. Please make sure the backend is running.');
-      // Don't redirect immediately on error so user can see the message
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('An error occurred during login');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -55,9 +49,16 @@ const AdminLogin = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="form-control"
             required
+            disabled={isLoading}
           />
         </div>
-        <button type="submit" className="btn btn-primary">Login</button>
+        <button 
+          type="submit" 
+          className="btn btn-primary"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
     </div>
   );

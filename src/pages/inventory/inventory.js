@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import { useMediaQuery } from "react-responsive";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./inventory.css";
 
 const capitalizeString = (str) => {
@@ -16,6 +16,7 @@ const capitalizeString = (str) => {
 
 const Inventory = () => {
   const { brand } = useParams();
+  const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -201,8 +202,20 @@ const handleTouchEnd = () => {
   setTouchEnd(null);
 };
 
+  const handleAdminClick = () => {
+    navigate('/admin');
+  };
+
   return (
     <div className="inventory-container">
+      <div className="admin-button-container">
+        <button 
+          className="btn btn-primary admin-button" 
+          onClick={handleAdminClick}
+        >
+          Admin
+        </button>
+      </div>
       <h1>Our Inventory</h1>
 
       <div className="inventory-filters">
